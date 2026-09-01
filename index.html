@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>신장이식 외래 프로토콜 v2.0 — Jin-Myung Kim, MD, PhD (Asan Medical Center)</title>
+<title>신장이식 외래 프로토콜 v2.3 — Jin-Myung Kim, MD, PhD (Asan Medical Center)</title>
 <meta name="author" content="Jin-Myung Kim, MD, PhD — Division of Kidney and Pancreas Transplantation, Asan Medical Center">
-<meta name="version" content="2.0">
+<meta name="version" content="2.3">
 <style>
 :root{
   --navy:#17365D; --blue:#2E5C8A; --blue-l:#5B87BF;
@@ -93,6 +93,58 @@ body{
 #credit .upbtn{display:block;margin-top:7px;font-size:9.5px;padding:3px 8px;border:1px solid #3A5F8C;background:transparent;
  color:#9FBBDC;border-radius:6px;cursor:pointer;font-family:inherit;width:100%}
 #credit .upbtn:hover{background:#2E5C8A;color:#fff}
+
+
+/* ===== 편집 모드 ===== */
+#credit .edbtn{display:block;margin-top:6px;font-size:9.5px;padding:3px 8px;border:1px solid #3A5F8C;background:transparent;
+ color:#9FBBDC;border-radius:6px;cursor:pointer;font-family:inherit;width:100%}
+#credit .edbtn:hover{background:#2E5C8A;color:#fff}
+#credit .edbtn.on{background:#C8892E;border-color:#C8892E;color:#fff;font-weight:700}
+body.editing #side{box-shadow:inset 0 0 0 3px #C8892E}
+#edbar{display:none;align-items:center;gap:9px;flex-wrap:wrap;background:#FFF6E4;border:1px solid #E7C489;
+ border-radius:9px;padding:9px 13px;margin-bottom:14px;font-size:12.5px}
+body.editing #edbar{display:flex}
+#edbar b{color:#8A5A10}
+.edb{font-size:12px;padding:5px 12px;border:1px solid var(--blue);background:#fff;color:var(--blue);
+ border-radius:6px;cursor:pointer;font-family:inherit;font-weight:600}
+.edb:hover{background:var(--blue);color:#fff}
+.edb.pri{background:var(--blue);color:#fff}
+.edb.pri:hover{background:var(--navy)}
+.edb.dan{border-color:var(--red);color:var(--red)}
+.edb.dan:hover{background:var(--red);color:#fff}
+#edit{position:fixed;inset:0;background:rgba(12,24,40,.62);z-index:200;display:none;align-items:center;justify-content:center;padding:22px}
+#edit.on{display:flex}
+#edbox{background:#fff;border-radius:12px;width:100%;max-width:1180px;height:92vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 12px 44px rgba(0,0,0,.35)}
+#edhead{background:var(--navy);color:#fff;padding:12px 18px;display:flex;align-items:center;gap:12px;flex-shrink:0}
+#edhead h3{font-size:15px;flex:1}
+#edmeta{padding:12px 18px;border-bottom:1px solid var(--line);display:grid;grid-template-columns:1fr 1fr;gap:9px 14px;flex-shrink:0}
+#edmeta label{font-size:11px;color:var(--mut);display:block;margin-bottom:3px;font-weight:700}
+#edmeta input,#edmeta select{width:100%;padding:7px 9px;border:1px solid #CBD5E1;border-radius:6px;font-size:13px;font-family:inherit}
+#edmeta input:focus,#edmeta select:focus{outline:none;border-color:var(--blue)}
+#edbody{flex:1;display:flex;overflow:hidden}
+#edleft{width:50%;display:flex;flex-direction:column;border-right:1px solid var(--line)}
+#edtools{padding:7px 10px;border-bottom:1px solid var(--line);display:flex;gap:5px;flex-wrap:wrap;background:#F7FAFF}
+.tb{font-size:11px;padding:4px 9px;border:1px solid #C6D4E6;background:#fff;border-radius:5px;cursor:pointer;font-family:inherit;color:var(--navy)}
+.tb:hover{background:var(--blue);color:#fff;border-color:var(--blue)}
+#edsrc{flex:1;border:none;padding:14px 16px;font-size:13px;line-height:1.75;resize:none;font-family:Consolas,Monaco,"맑은 고딕",monospace;outline:none}
+#edprev{width:50%;overflow-y:auto;padding:16px 20px;background:#FAFBFD}
+#edprev h4{font-size:11px;color:var(--mut);margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px}
+#edfoot{padding:11px 18px;border-top:1px solid var(--line);display:flex;gap:9px;align-items:center;flex-shrink:0;background:#F7FAFF}
+#edfoot .sp{flex:1}
+#edhelp{padding:10px 18px;background:#FFF9EC;border-top:1px solid #EBD9AE;font-size:11.5px;color:#7A5A10;line-height:1.6;flex-shrink:0;display:none}
+#edhelp.on{display:block}
+#edhelp code{background:#fff;border:1px solid #E0CFA8;border-radius:3px;padding:1px 5px;font-size:11px}
+.ednew{margin:10px 9px;padding:8px;border:1.5px dashed #4E7CB0;border-radius:8px;text-align:center;font-size:12px;
+ color:#9FBBDC;cursor:pointer;display:none}
+body.editing .ednew{display:block}
+.ednew:hover{background:rgba(255,255,255,.09);color:#fff}
+
+
+#credit .edbtn{display:none}
+body.unlocked #credit .edbtn{display:block}
+#lockmark{display:none;margin-top:5px;font-size:9px;color:#C8892E}
+body.unlocked #lockmark{display:block}
+#verchip{cursor:pointer;user-select:none}
 
 /* ---------- MAIN ---------- */
 #main{flex:1;overflow-y:auto;padding:22px 30px 70px;height:100%}
@@ -188,18 +240,68 @@ h3.ghd .gdot2{width:11px;height:11px;border-radius:50%}
     <input id="search" type="text" placeholder="증상 · 수치 · 약물명 검색" autocomplete="off">
   </div>
   <div id="nav"></div>
+  <div class="ednew" onclick="openEditor(null,true)">＋ 새 항목 만들기</div>
   <div id="nores">일치하는 항목이 없습니다</div>
   <div id="credit">
     <b>Jin-Myung Kim, MD, PhD</b><br>
     Division of Kidney &amp; Pancreas Transplantation<br>
     Asan Medical Center, Seoul
-    <span class="ver" id="verchip">Version 2.0 · 2026.08</span>
+    <span class="ver" id="verchip">Version 2.3 · 2026.08</span>
     <div id="verline">콘텐츠 <span id="cver">2.0</span> · <span id="cdate">2026.08</span></div>
     <button class="upbtn" id="upcheck">업데이트 확인</button>
+    <button class="edbtn" id="edtoggle" onclick="toggleEdit()">편집 모드</button>
+    <div id="lockmark">🔓 편집 권한 열림</div>
   </div>
 </nav>
 
 <main id="main"></main>
+
+<div id="edit"><div id="edbox">
+  <div id="edhead">
+    <h3 id="edtitle">항목 편집</h3>
+    <button class="edb" onclick="document.getElementById('edhelp').classList.toggle('on')">쓰는 법</button>
+    <button class="edb" onclick="closeEditor()">닫기</button>
+  </div>
+  <div id="edmeta">
+    <div><label>제목</label><input id="f_t" placeholder="예: 고칼륨혈증 대응"></div>
+    <div><label>한 줄 설명 (목록에 작게 표시)</label><input id="f_s" placeholder="예: K &gt; 5.5일 때 무엇부터"></div>
+    <div><label>분류</label><select id="f_g"></select></div>
+    <div><label>검색어 (띄어쓰기로 구분)</label><input id="f_kw" placeholder="예: 칼륨 K 고칼륨 potassium"></div>
+  </div>
+  <div id="edbody">
+    <div id="edleft">
+      <div id="edtools">
+        <button class="tb" onclick="insertSnippet('h')">소제목</button>
+        <button class="tb" onclick="insertSnippet('ul')">목록</button>
+        <button class="tb" onclick="insertSnippet('tbl')">표</button>
+        <button class="tb" onclick="insertSnippet('b')">굵게</button>
+        <button class="tb" onclick="insertSnippet('warn')">빨간 상자</button>
+        <button class="tb" onclick="insertSnippet('note')">노란 상자</button>
+        <button class="tb" onclick="insertSnippet('ok')">초록 상자</button>
+        <button class="tb" onclick="insertSnippet('mut')">작은 설명</button>
+      </div>
+      <textarea id="edsrc" spellcheck="false" oninput="renderPreview()"></textarea>
+    </div>
+    <div id="edprev"><h4>미리보기</h4><div id="edprevbody"></div></div>
+  </div>
+  <div id="edhelp">
+    <b>쓰는 법 — 이것만 알면 됩니다</b><br>
+    <code>## 소제목</code> 줄 앞에 샵 두 개 &nbsp;·&nbsp;
+    <code>- 항목</code> 줄 앞에 붙임표 &nbsp;·&nbsp;
+    <code>**굵게**</code> 별표 두 개로 감싸기 &nbsp;·&nbsp;
+    <code>&gt; 작은 설명</code> 꺾쇠<br>
+    <code>| 항목 | 내용 |</code> 로 표를 만듭니다. <b>첫 줄이 표의 제목 줄</b>이 됩니다.<br>
+    <code>:::주의 제목</code> 으로 시작해서 <code>:::</code> 로 닫으면 <b>색깔 상자</b>가 됩니다. (주의=빨강, 참고=노랑, 권장=초록)<br>
+    빈 줄로 문단을 나눕니다. 오른쪽 미리보기로 결과를 바로 확인하세요.
+  </div>
+  <div id="edfoot">
+    <button class="edb dan" id="eddel" onclick="deleteTopic()">항목 삭제</button>
+    <span class="sp"></span>
+    <button class="edb" onclick="closeEditor()">취소</button>
+    <button class="edb pri" onclick="saveEditor()">저장</button>
+  </div>
+</div></div>
+
 <div id="upbar"><span id="upmsg"></span><button id="upapply">적용</button><button id="updismiss">나중에</button></div>
 
 <script>
@@ -276,13 +378,14 @@ ${BOX('warn','즉시 입원',UL([
 prot: { g:'이식신 기능', t:'단백뇨 증가', s:'UPCR / UACR · 이식신·환자 생존의 독립 예측인자', kw:'단백뇨 알부민뇨 UPCR UACR proteinuria 신증후군',
  rel:['cr','rej','htn','hematuria'], h:`
 <h3>정량 기준과 개입</h3>
-${T(['UPCR (g/g)','UACR (mg/g)','조치'],[
- ['&lt; 0.15','&lt; 30','정상 — 정기 추적'],
- ['0.15–0.5','30–300','RAS blocker 시작/증량, BP &lt; 130/80, <b>3개월 내 재검</b>'],
- ['0.5–1.0','300–700','원인 감별, <b>조직검사 역치 낮춤</b>, RAS blocker 최적화'],
- ['<b>&gt; 1.0</b>','&gt; 700','<b>조직검사 시행</b>, DSA 확인, 신장내과 협진'],
- ['&gt; 3.5 + 저알부민혈증/부종','—','신증후군 범위 — 즉시 조직검사, 입원 고려, 혈전예방 평가']
+${T(['UPCR (mg/g)','UACR (mg/g)','조치'],[
+ ['&lt; 150','&lt; 30','정상 — 정기 추적'],
+ ['150–500','30–300','RAS blocker 시작/증량, BP &lt; 130/80, <b>3개월 내 재검</b>'],
+ ['500–1,000','300–700','원인 감별, <b>조직검사 역치 낮춤</b>, RAS blocker 최적화'],
+ ['<b>&gt; 1,000</b>','&gt; 700','<b>조직검사 시행</b>, DSA 확인, 신장내과 협진'],
+ ['<b>&gt; 3,500</b> + 저알부민혈증/부종','—','신증후군 범위 — 즉시 조직검사, 입원 고려, 혈전예방 평가']
 ],['','','' ])}
+<p class="mut"><b>단위 환산</b> — 본원 UPCR은 <b>mg/g</b> 단위다. 문헌의 g/g 값에 <b>×1,000</b> 하면 된다 (0.5 g/g = 500 mg/g, 1.0 g/g = 1,000 mg/g). mg/mg 단위로 보고되는 기관도 있으니 결과지 단위를 항상 확인한다.</p>
 <p class="mut">이식 3개월 이내의 소량 단백뇨는 자가신 유래일 수 있다 — 3개월 이후 지속 여부로 판정한다. 발열·운동·감염 후에는 재검.</p>
 
 <h3>감별진단</h3>
@@ -334,7 +437,7 @@ ${T(['합병증','시기','단서','조치'],[
 ${BOX('warn','원칙','<b>초음파는 늦추지 않는다.</b> 폐색은 되돌릴 수 있는 원인이며, 진단이 늦으면 회복이 불완전해진다. 원인 미상 Cr 상승에서 초음파는 비용·위험이 거의 없는 검사다.')}` },
 
 /* ================= 면역 ================= */
-fk: { g:'면역억제 · 거부', t:'Tacrolimus 농도 이상 · 용량 조정', s:'목표 범위 · 변동성 · 상호작용', kw:'FK tacrolimus 타크로리무스 trough 농도 프로그랍 CNI 면역억제 변동성',
+fk: { g:'면역억제 · 거부', t:'Tacrolimus 농도 이상 · 용량 조정', s:'목표 범위 · 변동성 · 상호작용', kw:'FK tacrolimus 타크로리무스 trough 농도 프로그랍 아드바그랍 CNI 면역억제 변동성 식전 식후 공복 복용시간 복용법 언제먹나 구토 셀셉트',
  rel:['ddi','rej','dsa','nonadh'], h:`
 <h3>목표 trough (ng/mL, 즉시방출형)</h3>
 ${T(['시기','표준 위험군','고위험군*'],[
@@ -343,6 +446,31 @@ ${T(['시기','표준 위험군','고위험군*'],[
 ],[null,'c','c'])}
 <p class="mut">* 고위험: ABO 부적합 · 사전감작(높은 PRA) · 기존/신규 DSA · 재이식 · 거부반응 병력 · 젊은 연령 · 비순응 이력</p>
 
+
+<h3>복용 시점 — 식전인가 식후인가</h3>
+${T(['약제','복용 시점','이유 · 실무'],[
+ ['<b>Tacrolimus (프로그랍·아드바그랍)</b>','<b>공복 — 식사 1시간 전 또는 식후 2–3시간</b>','음식(특히 지방식)과 함께 먹으면 <b>흡수가 30–40%까지 떨어진다.</b> <b>매일 같은 조건</b>이 절대 원칙 — 항상 공복이든 항상 식후든 <b>일관되게</b>. 조건이 바뀌면 농도가 바뀐다'],
+ ['<b>Cyclosporine (산디문 뉴오랄)</b>','<b>식사와의 관계를 매일 일정하게</b>','흡수가 음식에 덜 민감하나 일관성은 동일하게 중요'],
+ ['<b>Mycophenolate (셀셉트·마이폴틱)</b>','<b>공복이 원칙</b> — 식사 1시간 전 또는 식후 2시간','음식과 먹으면 최고농도가 낮아진다. 다만 <b>위장장애가 심하면 식후 복용을 허용</b>한다(순응도가 더 중요). 제산제·철분과는 <b>2시간 이상 간격</b>'],
+ ['<b>Prednisolone</b>','<b>아침 식후</b>','위장장애를 줄이고 생체 리듬에 맞춘다. 저녁 복용은 불면을 유발'],
+ ['<b>Everolimus / Sirolimus</b>','<b>식사와의 관계를 일정하게</b>','tacrolimus와 같은 원칙'],
+ ['<b>Azathioprine</b>','식후 무방','위장장애 시 식후'],
+])}
+${BOX('warn','환자에게 이렇게 설명한다',UL([
+ '<b>"매일 같은 시각, 같은 조건"</b> — 이 한 문장이 핵심이다. 오늘은 공복, 내일은 식후로 바뀌면 농도가 흔들린다.',
+ '실무적으로는 <b>아침 식사 1시간 전 + 저녁 식사 1시간 전</b>, 또는 <b>아침 6시·저녁 6시처럼 시각을 고정</b>하고 그 시각에 맞춰 식사를 조정하게 하는 것이 지키기 쉽다.',
+ '<b>12시간 간격</b>을 지킨다. 1–2시간 어긋나는 것은 괜찮지만 습관적으로 흔들리면 안 된다.',
+ '<b>자몽·석류주스와 함께 절대 금지.</b> 물과 함께 복용한다.',
+ '<b>채혈 당일 아침은 복용하지 않고</b> 병원에서 채혈 후 복용한다.',
+ '위장장애로 공복 복용이 어려우면 <b>임의로 바꾸지 말고 알려달라</b>고 한다 — 조건을 바꾸면 농도를 다시 맞춰야 한다.',
+]))}
+${T(['상황','대처'],[
+ ['복용 후 <b>1시간 이내 구토</b>','같은 용량을 <b>다시 복용</b>'],
+ ['복용 후 <b>1시간 이후 구토</b>','<b>추가 복용하지 않고</b> 다음 정규 시간에'],
+ ['복용을 잊음','다음 복용까지 여유 있으면 <b>즉시 복용</b>, 임박했으면 <b>건너뛰고 다음 것만</b>. <b>절대 두 배로 복용 금지</b>'],
+ ['48시간 이상 복용 못함','<b>즉시 연락</b> — 거부반응 위험'],
+ ['설사가 심할 때','<b>FK 농도가 오히려 올라간다</b>(흡수 증가) — 농도 확인 필요'],
+])}
 <h3>조정 규칙</h3>
 ${BOX('note','반드시 지킬 것',UL([
  '<b>채혈 시각 확인</b> — 복용 12시간(서방형 24시간) 후가 아니면 해석하지 않는다',
@@ -363,12 +491,12 @@ ${T(['약제','유지 용량','감량·중단 기준'],[
  ['Prednisolone','5 mg qd (또는 2.5 mg)','PTDM·골질환·감염 시 감량 검토 (저위험군에서만)'],
  ['Cyclosporine','C0 유지 75–150 ng/mL','신독성, 잇몸비대, 다모증'],
  ['Azathioprine','1–2 mg/kg/day','<b>Allopurinol/febuxostat 병용 절대금기</b>'],
- ['mTORi (EVL/SRL)','EVL 3–8 · SRL 4–12 ng/mL','단백뇨 &gt; 1 g/day, 창상 문제, 간질성 폐렴 → 중단']
+ ['mTORi (EVL/SRL)','EVL 3–8 · SRL 4–12 ng/mL','단백뇨 &gt; 1,000 mg/g (1 g/day), 창상 문제, 간질성 폐렴 → 중단']
 ])}
 
 <h3>전환 · 감량 전략</h3>
 ${T(['상황','옵션','주의'],[
- ['CNI 신독성 (조직 확인)','CNI 감량 + MMF 증량, 또는 mTORi 전환','DSA 음성 + 단백뇨 &lt; 0.8 g/day 에서만'],
+ ['CNI 신독성 (조직 확인)','CNI 감량 + MMF 증량, 또는 mTORi 전환','DSA 음성 + 단백뇨 &lt; 800 mg/g (0.8 g/day) 에서만'],
  ['악성종양','mTORi 전환 (특히 피부암, Kaposi)','창상 치유 지연 — 수술 예정 시 시기 조정'],
  ['BK viremia','<b>MMF 먼저</b> → CNI 나중','거부반응 동반 감시'],
  ['재발 감염 / 백혈구감소','MMF 감량 우선','CNI를 먼저 낮추지 않는다'],
@@ -433,7 +561,7 @@ rej: { g:'면역억제 · 거부', t:'거부반응 — 진단과 치료', s:'조
 <h3>조직검사 적응증</h3>
 ${T(['적응증','역치'],[
  ['원인 미상 Cr 상승','baseline 대비 ≥ 20–25%, 2주 이상 지속'],
- ['단백뇨','UPCR &gt; 1.0 g/g 신규 또는 증가'],
+ ['단백뇨','UPCR &gt; <b>1,000 mg/g</b> 신규 또는 증가'],
  ['de novo DSA 출현','MFI 상승 + 신기능 변화 (또는 MFI 단독 고도 상승)'],
  ['dd-cfDNA','&gt; 1.0%'],
  ['DGF 지속','이식 후 1주 이상 핍뇨 지속'],
@@ -487,7 +615,7 @@ ${BOX('ok','접근 방법',UL([
 ]))}` },
 
 /* ================= 감염 ================= */
-bk: { g:'감염', t:'BK viremia · BKVN', s:'예방이 유일한 치료 — 항바이러스제 없음', kw:'BK BKV polyomavirus 바이러스 BKVN decoy 신병증',
+bk: { g:'감염', t:'BK viremia · BKVN', s:'예방이 유일한 치료 — 항바이러스제 없음', kw:'BK BKV polyomavirus 바이러스 BKVN decoy 신병증 leflunomide 아라바 arava 레플루노마이드 cidofovir IVIG teriflunomide',
  rel:['cr','fk','rej'], h:`
 <h3>스크리닝</h3>
 ${T(['시기','간격'],[
@@ -503,8 +631,45 @@ ${L([
  {n:'1단계',c:'s3',t:'<b>≥ 1,000 (≥ 3 log)가 3주 이상 지속</b> = <b>probable PyVAN</b> → <b>MMF 25–50% 감량</b> (750→500, 500→250 bid) · 재검 <b>2–4주</b>'},
  {n:'2단계',c:'s4',t:'<b>≥ 10,000 (≥ 4 log)</b> = <b>presumptive PyVAN</b> → MMF 추가 감량 또는 중단 + <b>CNI 감량 (FK trough 목표 4–6 ng/mL)</b> · 재검 <b>2주</b>'},
  {n:'3단계',c:'s5',t:'감량에도 지속 상승 또는 Cr 상승 동반 → <b>조직검사</b> (BKVN vs 거부 감별) + CNI 추가 감량 또는 mTORi 전환 고려'},
- {n:'4단계',c:'s5',t:'BKVN 확진 → 면역억제 최소화 유지. 보조요법(IVIG, leflunomide, cidofovir, fluoroquinolone)은 근거 약함 — 선택적'}
+ {n:'4단계',c:'s5',t:'BKVN 확진 → 면역억제 최소화 유지 + <b>보조요법 검토(아래 표)</b>. 어느 것도 무작위연구 근거는 없다'}
 ])}
+
+<h3>보조요법 — Leflunomide (Arava) 를 언제, 어떻게</h3>
+${BOX('note','언제 고려하나',UL([
+ '<b>1차는 언제나 면역억제 감량</b>이다. Leflunomide는 <b>감량만으로 실패했을 때</b> 쓰는 보조 수단이다.',
+ '구체적으로 — <b>MMF 중단 + CNI 감량(FK 4–6)을 8–12주 시행했는데도</b> ① 혈장 BKV가 <b>1 log 이상 떨어지지 않거나</b> ② 오히려 상승하거나 ③ <b>신기능이 계속 나빠질 때</b>',
+ '또는 <b>거부반응 위험이 높아 더 이상 감량하기 어려울 때</b> — 감량 대신 항바이러스 효과를 얻으려는 목적',
+ '<b>MMF를 대체</b>하는 개념으로 쓴다 (leflunomide 자체가 항대사·면역억제 작용을 가지므로 MMF와 병용하지 않는다)',
+]))}
+${T(['항목','내용'],[
+ ['<b>용법 — 부하</b>','<b>Leflunomide 100 mg qd × 3–5일</b> 경구 (부하 없이 바로 유지용량으로 가는 방식도 있다 — 간독성·혈구감소가 걱정되면 부하를 생략)'],
+ ['<b>용법 — 유지</b>','<b>20–40 mg qd</b> 경구, 1일 1회. 대개 <b>20 mg qd</b>로 시작해 반응과 내약성을 보며 조정'],
+ ['<b>목표 혈중농도</b>','활성대사물 <b>teriflunomide 40–100 μg/mL</b> (측정 가능한 경우). <b>&gt; 100 μg/mL에서 독성 급증</b> — 측정이 어려우면 용량을 40 mg 이상 올리지 않는다'],
+ ['<b>반응 판정</b>','<b>4주 간격 혈장 BKV PCR</b>. 반감기가 매우 길어(약 2주) 정상상태 도달까지 <b>7–8주</b>가 걸린다 — 조급하게 증량하지 않는다'],
+ ['<b>치료 기간</b>','BKV 음전 또는 목표 수준 도달 후 <b>추가 4–8주</b> 유지 후 중단을 검토'],
+ ['<b>병용</b>','CNI(저용량) + 스테로이드 + leflunomide 조합이 일반적. <b>MMF는 중단</b>'],
+])}
+${T(['부작용 · 모니터링','내용'],[
+ ['<b>간독성</b>','가장 흔한 중단 사유. <b>AST/ALT를 시작 후 4주간 매주, 이후 월 1회</b>. 정상 상한 <b>2배 초과 시 감량, 3배 초과 시 중단</b>'],
+ ['<b>골수억제</b>','빈혈·백혈구감소·혈소판감소 → <b>CBC를 간기능과 같은 주기로</b>'],
+ ['용혈성 빈혈 · TMA','드물지만 보고됨 — 도말·LDH 확인'],
+ ['설사 · 오심 · 탈모 · 고혈압','대개 견딜 만하나 지속되면 감량'],
+ ['<b>매우 긴 반감기</b>','활성대사물이 <b>수개월~2년</b> 체내 잔류. 중단만으로 빨리 빠지지 않는다'],
+ ['<b>세척(washout)</b>','독성이 심하거나 임신 계획 시 — <b>Cholestyramine 8 g tid × 11일</b> (또는 활성탄 50 g qid × 11일)'],
+ ['<b>임신</b>','<b>절대 금기(최기형성).</b> 가임 여성은 확실한 피임 필수, 임신 계획 시 세척 후 혈중농도 확인'],
+])}
+${T(['그 밖의 보조요법','내용'],[
+ ['<b>Cidofovir</b>','<b>0.25–1 mg/kg 격주 IV</b>, probenecid 없이 저용량으로. <b>신독성이 커서</b> 이식신에 쓰기 부담스럽다 — 최후 수단'],
+ ['<b>IVIG</b>','<b>0.5–2 g/kg</b> 분할 투여. 저감마글로불린혈증 동반 시 또는 불응례에서'],
+ ['<b>Fluoroquinolone</b>','예방·치료 목적 <b>모두 효과 없음이 무작위연구에서 확인</b>되어 <b>권장하지 않는다</b>'],
+ ['<b>mTOR 억제제 전환</b>','Everolimus로 전환하는 전략 — CNI를 낮추면서 면역억제를 유지. 단백뇨·창상 조건 확인'],
+])}
+${BOX('warn','Leflunomide를 쓸 때 반드시',UL([
+ '<b>MMF는 중단</b>한다 — 두 가지를 겹쳐 쓰면 골수억제가 심해진다',
+ '<b>간기능·CBC를 처음 4주는 매주</b> 확인한다',
+ '<b>가임 여성에게는 피임을 확인</b>하고 시작한다',
+ '효과가 느리다는 점을 미리 환자에게 설명한다 — <b>7–8주는 지켜봐야</b> 판단이 선다',
+]))}
 ${BOX('warn','감량 시 반드시 지킬 것',UL([
  '<b>MMF를 먼저, CNI를 나중에</b> 낮춘다 (역순은 거부 위험을 키운다)',
  '감량 후 <b>2–4주 간격으로 BKV PCR + Cr을 동시에</b> 추적 — 바이러스만 보고 거부를 놓치지 않는다',
@@ -625,7 +790,7 @@ ${T(['항목','내용'],[
 <h3>기타 감염</h3>
 ${T(['감염','핵심'],[
  ['<i>Clostridioides difficile</i>','설사 + 최근 항생제. <b>MMF 부작용 설사와 감별</b>. 재발 잦음'],
- ['대상포진 재활성화','즉시 <b>valacyclovir 1 g tid 7–10일</b>. 파종성·안구 침범 → 입원 IV acyclovir'],
+ ['대상포진 재활성화','즉시 <b>Valacyclovir 1 g 1일 3회, 7–10일</b> (신기능별 감량 — eGFR 30–49: 1 g 1일 2회, 10–29: 1 g 1일 1회, &lt;10: 0.5 g 1일 1회) · 파종성·안구·신경 침범 → <b>입원 후 Acyclovir 10 mg/kg IV 8시간마다</b>'],
  ['<b>EBV / PTLD</b>','D+/R− 고위험. 원인 미상 발열·림프절종대·체중감소 → <b>EBV PCR + CT</b>. <b>1차 치료는 면역억제 감량</b>'],
  ['B형/C형 간염','HBsAg(+) 또는 anti-HBc(+) → <b>재활성화 위험, 항바이러스 예방 + HBV DNA 추적</b>. HCV는 DAA'],
  ['진균 (Aspergillus, Cryptococcus, Candida)','초기 3–6개월 및 강한 면역억제 후. 발열 + 폐침윤 → CT + 감염내과. <b>Azole은 CNI 농도를 급등시킨다</b>'],
@@ -670,24 +835,48 @@ ${BOX('note','시기별 접근',UL([
  '<b>1년 이후</b>: 일반 2형 당뇨에 준함 — SGLT2i·GLP-1 RA 적극 도입, 안저·발·UACR 연 1회'
 ]))}` },
 
-lipid: { g:'대사 · 심혈관', t:'이상지질혈증 (LDL / TG 상승)', s:'이식 환자는 심혈관 고위험군', kw:'콜레스테롤 지질 LDL TG statin 스타틴 고지혈증 ezetimibe fibrate',
+lipid: { g:'대사 · 심혈관', t:'이상지질혈증 (LDL · HDL · TG)', s:'어느 수치에서 약을 시작하나', kw:'콜레스테롤 지질 LDL HDL TG 중성지방 total cholesterol non-HDL statin 스타틴 고지혈증 이상지질혈증 ezetimibe fibrate 페노피브레이트 오메가3 PCSK9 언제 시작',
  rel:['dm','htn','fk','ddi'], h:`
-<h3>목표</h3>
-${T(['위험군','목표'],[
- ['모든 이식 수여자 (기본)','<b>LDL &lt; 100 mg/dL</b>'],
- ['당뇨 동반, 심혈관질환 병력, 다중 위험인자','<b>LDL &lt; 70</b> (또는 기저치 대비 50%↓)'],
- ['초고위험 (최근 ACS, 다혈관)','LDL &lt; 55 고려'],
- ['중성지방','<b>TG &lt; 150</b>'],
- ['검사 간격','이식 후 1–3개월, 초기 1년은 3개월마다, 안정기 연 1회. 약제 변경 후 6–8주']
+<h3>목표치 — 위험군별</h3>
+${T(['위험군','LDL 목표','비고'],[
+ ['<b>모든 이식 수여자 (기본)</b>','<b>&lt; 100 mg/dL</b>','이식 자체가 심혈관 고위험'],
+ ['<b>당뇨 동반 · CVD 병력 · 다중 위험인자</b>','<b>&lt; 70 mg/dL</b>','또는 기저치 대비 50% 이상 감소'],
+ ['<b>초고위험</b> (최근 ACS, 다혈관질환, 재발성 사건)','<b>&lt; 55 mg/dL</b>','전문의 협진'],
+])}
+
+<h3>어느 수치에서 약을 시작하나</h3>
+${T(['항목','정상','시작 기준','1차 약'],[
+ ['<b>LDL-C</b>','&lt; 100','<b>≥ 100 mg/dL</b> (기본군)<br><b>≥ 70 mg/dL</b> (당뇨·CVD 동반)<br><b>≥ 190 mg/dL</b> 이면 위험군과 무관하게 즉시','<b>스타틴</b>'],
+ ['<b>Total cholesterol</b>','&lt; 200','<b>≥ 240 mg/dL</b> 이면 LDL과 무관하게 평가·치료<br>200–239는 LDL·위험군으로 판단','스타틴'],
+ ['<b>TG</b>','&lt; 150','<b>150–199</b> — 생활습관(체중·술·단순당) 교정만<br><b>200–499</b> — 생활습관 + <b>스타틴 먼저</b>(LDL 목표 달성이 우선)<br><b>≥ 500</b> — <b>췌장염 예방을 위해 즉시 fibrate/omega-3</b>','스타틴 → fibrate'],
+ ['<b>HDL-C</b>','남 &gt; 40<br>여 &gt; 50','<b>낮은 HDL만으로는 약을 시작하지 않는다.</b> 목표로 삼는 약제도 없다.<br>낮으면 <b>다른 지질 목표를 더 엄격히</b> 적용하고 생활습관 교정','약물 치료 대상 아님'],
+])}
+${BOX('note','HDL을 어떻게 다룰 것인가',UL([
+ '<b>HDL을 올리는 약(niacin, fibrate, CETP 억제제)이 심혈관 사건을 줄인다는 근거는 없다.</b> 낮은 HDL 자체를 치료 목표로 삼지 않는다.',
+ '낮은 HDL은 <b>위험 표지자</b>로만 쓴다 — 대사증후군·비만·흡연·운동부족을 시사하므로, 그쪽을 교정한다.',
+ '실제로 HDL을 올리는 것은 <b>금연 · 체중 감량 · 유산소 운동</b>이다.',
+ 'HDL이 낮으면 <b>non-HDL 콜레스테롤</b>(총콜레스테롤 − HDL)을 함께 본다. 목표는 <b>LDL 목표 + 30 mg/dL</b> (LDL &lt; 100이면 non-HDL &lt; 130).',
+]))}
+${BOX('warn','TG가 높을 때의 순서',UL([
+ '<b>TG ≥ 500 mg/dL은 급성 췌장염 위험</b>이므로 LDL보다 <b>TG를 먼저</b> 낮춘다.',
+ 'TG 200–499에서는 <b>LDL 목표 달성이 우선</b>이다 — 스타틴부터 쓰고, 그래도 TG가 높으면 추가한다.',
+ '이차 원인을 반드시 확인 — <b>조절 안 되는 당뇨, 음주, 갑상선기능저하, 신증후군, mTOR 억제제, 스테로이드</b>.',
+]))}
+${T(['검사 간격','시점'],[
+ ['이식 후 초기','<b>1–3개월</b>에 첫 측정'],
+ ['첫 1년','<b>3개월마다</b>'],
+ ['안정기','<b>연 1회</b>'],
+ ['약제 시작·증량 후','<b>6–8주</b>에 지질 + AST/ALT'],
+ ['면역억제제 변경 후','<b>6–8주</b> (특히 mTORi 전환 시)'],
 ])}
 
 <h3>약물 사다리</h3>
 ${L([
- {n:'1단계',c:'s2',t:'<b>Pitavastatin 2 mg qd</b> 또는 <b>Fluvastatin 40–80 mg qd</b> 또는 <b>Rosuvastatin 5–10 mg qd</b><br><span class="mut">CNI 상호작용이 가장 적은 순. Pitavastatin은 CYP3A4 대사가 거의 없어 이식 환자에서 선호. <b>CSA 병용 시 rosuvastatin은 최대 5 mg</b></span>'},
- {n:'2단계',c:'s2',t:'증량 — Pitavastatin 4 mg, Rosuvastatin 10–20 mg, <b>Atorvastatin은 20 mg를 넘기지 않는다</b>'},
- {n:'3단계',c:'s3',t:'<b>+ Ezetimibe 10 mg qd</b> — LDL 15–20% 추가 감소. 스타틴 증량보다 안전, 이식 환자에서 매우 유용'},
- {n:'4단계',c:'s3',t:'<b>PCSK9 억제제</b> (evolocumab, alirocumab) — CNI 상호작용 없음. 급여 기준 확인'},
- {n:'TG↑',c:'s4',t:'TG 200–500 → 생활습관 + 스타틴 최적화 · <b>TG &gt; 500 → Fenofibrate 145–160 mg qd</b> 또는 omega-3 2–4 g/day<br><span class="mut">Fenofibrate는 Cr을 0.1–0.3 mg/dL 올릴 수 있다(가성)</span>'},
+ {n:'1단계',c:'s2',t:'<b>Pitavastatin 2 mg</b> 1일 1회 저녁 · 또는 <b>Fluvastatin 40 mg</b> 1일 1회 저녁(서방형 80 mg 가능) · 또는 <b>Rosuvastatin 5 mg</b> 1일 1회 (시간 무관)<br><span class="mut">CNI 상호작용이 적은 순. Pitavastatin은 CYP3A4 대사가 거의 없어 이식 환자 1순위. <b>CSA 병용 시 rosuvastatin 최대 5 mg, pitavastatin은 병용 금기</b> — 이때는 fluvastatin으로</span>'},
+ {n:'2단계',c:'s2',t:'<b>4–6주 뒤 목표 미달이면 증량</b> — Pitavastatin 2 → <b>4 mg qd</b> · Rosuvastatin 5 → <b>10 → 20 mg qd</b> · Atorvastatin 10 → <b>20 mg qd</b><br><span class="mut"><b>Atorvastatin은 20 mg를 넘기지 않는다</b>(FK 병용 시 근병증). 스타틴은 용량을 2배로 올려도 LDL이 6%만 더 떨어진다 — 증량보다 병용이 효율적</span>'},
+ {n:'3단계',c:'s3',t:'<b>+ Ezetimibe 10 mg</b> 1일 1회 (시간 무관, 식사 무관)<br><span class="mut">LDL을 추가로 15–20% 낮춘다. <b>스타틴을 두 배 올리는 것보다 효과가 크고 안전</b>하므로 이식 환자에서는 증량보다 병용을 먼저 고려한다. 담즙산수지와는 4시간 간격</span>'},
+ {n:'4단계',c:'s3',t:'<b>PCSK9 억제제</b> — Evolocumab <b>140 mg 2주마다</b> 또는 <b>420 mg 월 1회</b> 피하주사 · Alirocumab <b>75–150 mg 2주마다</b> 피하주사<br><span class="mut">CNI 상호작용 없음. 스타틴 불내성이거나 최대 용량으로도 목표 미달일 때. 급여 기준 확인 필요</span>'},
+ {n:'TG↑',c:'s4',t:'<b>TG 200–499</b> → 스타틴으로 LDL 목표부터 달성 · <b>TG ≥ 500</b> → <b>Fenofibrate 160 mg</b> 1일 1회 (미분화형은 식후 복용, 미세분말형은 식사 무관) 또는 <b>Omega-3 2–4 g/day</b> 분복<br><span class="mut">신기능별 fenofibrate 감량 — eGFR 30–59는 <b>54 mg qd</b>, <b>eGFR &lt; 30은 금기</b>. Cr을 0.1–0.3 mg/dL 올릴 수 있다(가성 상승, 실제 GFR 변화 아님)</span>'},
  {n:'금기',c:'s5',t:'<b>Simvastatin·Lovastatin + CNI = 회피</b> (근병증/횡문근융해) · <b>Gemfibrozil + statin = 병용 금기</b> · <b>CSA는 FK보다 statin 농도를 훨씬 크게 올린다</b>'}
 ])}
 
@@ -748,8 +937,8 @@ k: { g:'검사실 이상', t:'고칼륨 · 저칼륨', s:'CNI는 원위세뇨관
 ${T(['K (mEq/L)','조치'],[
  ['3.5–5.0','정상 유지'],
  ['<b>&gt; 5.0–5.5</b>','원인 검토: <b>CNI, ACEi/ARB, spironolactone, TMP-SMX, β차단제, NSAID, 대사성 산증, 신기능 저하.</b> 식이 교육(과일·채소즙·저염소금 주의)'],
- ['<b>&gt; 5.5–6.0</b>','원인 약물 감량/중단 · <b>NaHCO₃로 산증 교정</b> · K-binder (patiromer, SZC, calcium polystyrene sulfonate) · <b>3–7일 내 재검</b>'],
- ['<b>&gt; 6.0 또는 ECG 변화</b>','<span class="pill pr">응급</span> Ca gluconate → insulin + glucose → β2 흡입 → K-binder → 필요 시 투석. 응급실'],
+ ['<b>&gt; 5.5–6.0</b>','원인 약물 감량/중단 · <b>Sodium bicarbonate 500 mg 1–2정 1일 2–3회</b>로 산증 교정 · K-binder — <b>Patiromer 8.4 g 1일 1회</b>(식사와 함께, 다른 약과 3시간 간격) / <b>Sodium zirconium cyclosilicate 10 g 1일 3회 48시간 → 5–10 g 1일 1회</b> / <b>Calcium polystyrene sulfonate 15 g 1일 2–3회</b> · <b>3–7일 내 재검</b>'],
+ ['<b>&gt; 6.0 또는 ECG 변화</b>','<span class="pill pr">응급</span> <b>10% Ca gluconate 10 mL IV 2–3분</b>(막안정화) → <b>RI 10단위 + 50% 포도당 50 mL IV</b> → <b>Salbutamol 10–20 mg 네뷸라이저</b> → K-binder → 필요 시 투석. 응급실'],
  ['<b>&lt; 3.5</b>','원인: 이뇨제, 설사, <b>저마그네슘혈증</b>, 세뇨관 손상. <b>Mg를 먼저 교정</b>한 뒤 K 보충']
 ],['','' ])}
 ${BOX('note','저칼륨의 함정','<b>저마그네슘혈증을 교정하지 않으면 K는 오르지 않는다.</b> 이식 환자는 CNI로 인한 저Mg가 매우 흔하므로 K 보충 전 Mg를 반드시 확인한다.')}` },
@@ -776,7 +965,7 @@ mg: { g:'검사실 이상', t:'저마그네슘 · Ca · P 이상', s:'CNI는 요
 <h3>마그네슘</h3>
 ${T(['Mg (mg/dL)','조치'],[
  ['≥ 1.7','정상'],
- ['<b>&lt; 1.7</b>','<b>경구 보충 — magnesium oxide 400–800 mg/day 분복</b> (설사가 용량 제한 요인)'],
+ ['<b>&lt; 1.7</b>','<b>Magnesium oxide 400–800 mg/day를 1일 2–3회 분복</b> (설사가 용량 제한 요인). 흡수가 나쁘면 magnesium lactate·citrate로 전환'],
  ['<b>&lt; 1.2 또는 증상</b>','경련·부정맥·저K/저Ca 불응 → <b>정맥 보충</b> 고려'],
  ['심한 저Mg 지속','<b>CNI 감량 검토.</b> 저Mg는 PTDM 발생 위험과도 연관']
 ])}
@@ -795,8 +984,8 @@ anemia: { g:'검사실 이상', t:'빈혈 · 적혈구증가증', s:'목표 Hb 1
 ${T(['Hb (g/dL)','조치'],[
  ['<b>목표 10–12</b>','유지. <b>Hb &gt; 13은 ESA 사용 시 심혈관 위험 증가</b> — 넘기지 않는다'],
  ['<b>&lt; 10</b>','원인 평가: <b>ferritin, TSAT, B12, folate, 망상적혈구, 대변잠혈, 신기능, 약물(MMF·valganciclovir·TMP-SMX·ACEi/ARB)</b>'],
- ['<b>철결핍: ferritin &lt; 100–200 ng/mL 또는 TSAT &lt; 20%</b>','경구 철분 (ferrous sulfate 200 mg 1–2회/day, <b>격일 투여가 흡수에 유리</b>) → 불응·흡수불량 시 <b>정맥 철분</b>'],
- ['철 교정 후에도 Hb &lt; 10 + eGFR 저하','<b>ESA 시작</b> — Darbepoetin 0.45 μg/kg 격주 또는 <b>Mircera 50–75 μg 월 1회 SC</b>'],
+ ['<b>철결핍: ferritin &lt; 100–200 ng/mL 또는 TSAT &lt; 20%</b>','<b>Ferrous sulfate 200 mg(원소철 약 65 mg)을 1일 1회 공복에</b> — <b>격일 투여가 흡수에 더 유리</b>. 비타민C 병용 시 흡수↑, 제산제·칼슘·철분과는 2시간 간격 → 불응·흡수불량·위장장애 시 <b>정맥 철분</b>(ferric carboxymaltose 500–1,000 mg)'],
+ ['철 교정 후에도 Hb &lt; 10 + eGFR 저하','<b>ESA 시작</b> — <b>Darbepoetin alfa 0.45 μg/kg 2주마다 SC</b> 또는 <b>Mircera(PEG-epoetin beta) 50–75 μg 4주마다 SC</b> · 이후 <b>4주 간격으로 Hb를 보며 25%씩 증감</b>'],
  ['ESA 중 Hb 상승','<b>월 1 g/dL 이상 상승 → 25% 감량</b> · Hb &gt; 12 감량 · Hb &gt; 13 중단'],
  ['ESA 저반응','철 상태 재확인, 염증(CRP), 출혈, 부갑상선기능항진증, 골수질환, <b>PRCA</b> 감별']
 ])}
@@ -808,7 +997,7 @@ ${BOX('warn','주의',UL([
 <h3>이식 후 적혈구증가증</h3>
 ${T(['소견','조치'],[
  ['<b>Hct &gt; 51–52% 또는 Hb &gt; 17–18</b>','진단. 이식 후 8–24개월에 흔하며 <b>혈전 위험 증가</b>'],
- ['1차 치료','<b>ACE 억제제 또는 ARB</b> (enalapril 5 mg, losartan 50 mg) — 대개 2–6주 내 반응'],
+ ['1차 치료','<b>ACE 억제제 또는 ARB</b> — <b>Enalapril 5 mg 1일 1회</b> 또는 <b>Losartan 50 mg 1일 1회</b>로 시작. 대개 <b>2–6주 내</b> Hct 감소. 시작 2–4주 후 <b>Cr·K 확인</b>'],
  ['Hct &gt; 55–57% 또는 증상','<b>사혈(phlebotomy) 병행</b>']
 ])}` },
 
@@ -819,7 +1008,7 @@ ${T(['WBC / ANC','조치'],[
  ['WBC 3,000–4,000','관찰 + 원인 약물 검토, 2주 내 재검'],
  ['<b>WBC &lt; 3,000 또는 ANC 1,000–1,500</b>','<b>MMF 50% 감량</b>, valganciclovir·TMP-SMX가 <b>신기능 대비 과량</b>인지 확인'],
  ['<b>ANC &lt; 1,000</b>','<b>MMF 중단</b>, valganciclovir 감량/중단 검토, 2–3일 내 재검'],
- ['<b>ANC &lt; 500 또는 발열 동반</b>','<span class="pill pr">입원</span> 호중구감소성 발열에 준하여 처치, <b>G-CSF (filgrastim 300 μg SC)</b> 고려']
+ ['<b>ANC &lt; 500 또는 발열 동반</b>','<span class="pill pr">입원</span> 호중구감소성 발열에 준하여 광범위 항생제 시작 · <b>G-CSF — Filgrastim 5 μg/kg(통상 300 μg) 1일 1회 SC</b>, ANC 1,000–1,500 회복까지']
 ],['','' ])}
 ${BOX('note','약물 유발 백혈구감소의 흔한 순서','<b>MMF &gt; valganciclovir &gt; TMP-SMX &gt; ACEi/ARB &gt; azathioprine</b><br>감별: CMV, parvovirus B19, EBV 감염도 확인. <b>G-CSF보다 원인 약물 조정이 먼저</b>다.')}
 
@@ -834,12 +1023,12 @@ uric: { g:'검사실 이상', t:'고요산혈증 · 통풍', s:'CNI와 이뇨제
  rel:['fk','htn','k'], h:`
 ${T(['상황','조치'],[
  ['<b>무증상 고요산혈증</b>','<span class="pill pg">일률적으로 치료하지 않는다</span> 생활습관, 이뇨제 조정, 수분 섭취'],
- ['<b>급성 통풍 발작</b>','<b>Colchicine 0.6 mg 1–2정 → 이후 0.6 mg qd–bid</b><br><span class="mut">신기능 저하 시 대폭 감량 — eGFR &lt; 30이면 0.3 mg qd 또는 회피. <b>CNI 병용 시 근독성·신경독성</b> — 단기간만</span>'],
+ ['<b>급성 통풍 발작</b>','<b>Colchicine 1.2 mg 1회 복용 → 1시간 뒤 0.6 mg</b>, 이후 <b>0.6 mg 1일 1–2회</b>를 증상 소실까지<br><span class="mut">eGFR 30–60은 감량, <b>eGFR &lt; 30이면 0.3 mg 1일 1회 또는 회피</b>. <b>CNI 병용 시 근독성·신경독성</b> — 단기간만. 대안: <b>Prednisolone 0.5 mg/kg 1일 1회 5–7일</b> 또는 관절강내 스테로이드 주사</span>'],
  ['급성 발작 대안','<b>경구 스테로이드 (prednisolone 0.5 mg/kg, 5–7일)</b> 또는 관절강 내 주사<br><span class="mut"><b>NSAID는 신독성 때문에 가급적 피한다</b></span>'],
  ['<b>요산저하 치료 시작 기준</b>','연 2회 이상 발작, 통풍결절, 요산결석, 만성 통풍성 관절염'],
- ['<b>Allopurinol</b>','50–100 mg qd 시작, 신기능 고려하며 서서히 증량'],
- ['<b>Febuxostat</b>','20–40 mg qd. 신기능 저하에서 상대적으로 편리. 심혈관 위험 논란 인지'],
- ['목표 요산','<b>&lt; 6 mg/dL</b> (통풍결절 있으면 &lt; 5)'],
+ ['<b>Allopurinol</b>','<b>50–100 mg 1일 1회</b>로 시작 → <b>2–4주마다 50–100 mg씩 증량</b>, 목표 요산 도달까지. 신기능 저하 시 시작 용량을 낮춘다. <b>AZA 병용 절대 금기</b>'],
+ ['<b>Febuxostat</b>','<b>20–40 mg 1일 1회</b>로 시작 → 4주 뒤 목표 미달이면 <b>80 mg 1일 1회</b>까지. 신기능 저하에서 조정이 간편. 심혈관 위험 논란 인지. <b>AZA 병용 절대 금기</b>'],
+ ['목표 요산','<b>&lt; 6 mg/dL</b> (통풍결절 있으면 &lt; 5) · 요산저하제 시작 시 <b>colchicine 0.6 mg 1일 1회를 3–6개월 병용</b>하여 초기 발작을 예방'],
  ['피할 약제','Probenecid(신기능 저하 시 무효), 고용량 aspirin, 이뇨제(가능하면 대체)']
 ])}
 ${BOX('warn','절대 금기 두 가지',UL([
@@ -1216,7 +1405,7 @@ DB.mtori = { g:'면역억제 · 거부', t:'mTOR 억제제 관리', s:'Everolimu
 ${T(['항목','내용'],[
  ['적응증','<b>악성종양</b>(특히 피부암·Kaposi) · CNI 신독성 확인 시 CNI 최소화 · <b>CMV/BKV 재발</b>(바이러스 억제 효과) · CNI 불내성'],
  ['목표 농도','Everolimus <b>3–8 ng/mL</b>(저용량 CNI 병용) · Sirolimus <b>4–12 ng/mL</b>'],
- ['<b>전환 조건</b>','<b>단백뇨 &lt; 0.8 g/day · eGFR &gt; 40 · DSA 음성 · 최근 거부 없음</b>에서만. 조건이 안 맞으면 전환이 해가 된다'],
+ ['<b>전환 조건</b>','<b>단백뇨 &lt; 800 mg/g (0.8 g/day) · eGFR &gt; 40 · DSA 음성 · 최근 거부 없음</b>에서만. 조건이 안 맞으면 전환이 해가 된다'],
  ['전환 시기','<b>이식 3–6개월 이후</b> (초기 전환은 창상·림프낭종·거부 위험 증가)'],
 ]) }
 <h3>부작용과 중단 기준</h3>
@@ -1558,8 +1747,8 @@ ${QA('"이 병에 좋다"고 주변에서 권하는데 먹어도 되나요?',
 '마음은 이해하지만, <b>이식 환자에게는 "좋다"는 것이 위험할 때가 많습니다.</b> 면역억제제는 농도가 조금만 흔들려도 콩팥에 영향을 주기 때문입니다.<br><br>가장 안전한 방법은 <b>드시기 전에 물어보시는 것</b>입니다. 이미 드셨더라도 숨기지 말고 알려주세요. 야단치지 않습니다.',
 '')}` };
 
-DB.qa_med = { g:'환자 Q&A', t:'약 복용', s:'"약을 깜빡했어요" / "평생 먹나요"', kw:'약 복용 깜빡 놓침 시간 감기약 진통제 타이레놀 소염제 항생제 약값 부작용 손떨림 털 잇몸 평생 중단 감량',
- rel:['fk','nonadh','ddi','pain'], h:`
+DB.qa_med = { g:'환자 Q&A', t:'약 복용', s:'"약을 깜빡했어요" / "평생 먹나요"', kw:'약 복용 깜빡 놓침 시간 감기약 진통제 타이레놀 소염제 항생제 약값 부작용 손떨림 털 잇몸 평생 중단 감량 식전 식후 공복',
+ rel:['fk','nonadh','ddi','pain','cold'], h:`
 ${QA('약을 깜빡 잊고 안 먹었어요. 어떻게 하죠?',
 '<b>생각난 시점</b>에 따라 다릅니다.<br>· 다음 복용 시간까지 <b>많이 남았으면</b> → 지금 바로 드세요<br>· 다음 복용 시간이 <b>가까우면</b> → 건너뛰고 다음 것만 드세요<br>· <b>절대 두 배로 드시지 마세요</b><br><br><b>이틀 이상 못 드셨다면 반드시 연락</b>주세요. 그리고 다음 진료 때 솔직히 말씀해 주세요 — 농도가 왜 낮은지 알아야 용량을 제대로 맞출 수 있습니다.',
 '진료 팁 — FK 변동성(CV) > 30%는 비순응의 최강 예측인자. 비난 말고 정상화 질문으로 접근.')}
@@ -1649,7 +1838,7 @@ ${QA('제가 나중에 헌혈을 할 수 있나요?',
 '')}` };
 
 DB.qa_misc = { g:'환자 Q&A', t:'검진 · 예방접종 · 여행 · 기타', s:'"건강검진 받아도 되나요" / "여행 가도 되나요"', kw:'건강검진 내시경 대장내시경 위내시경 CT 조영제 치과 스케일링 예방접종 독감 코로나 대상포진 여행 비행기 해외 보험 장애 등록 산정특례 코로나',
- rel:['pjp','ca','surg','tb'], h:`
+ rel:['pjp','ca','surg','tb','dental','cold'], h:`
 ${QA('건강검진을 받아도 되나요?',
 '<b>오히려 꼭 받으셔야 합니다.</b> 이식 후에는 암 발생 위험이 일반인보다 높아서, 검진을 <b>더 자주</b> 하시는 게 좋습니다.<br>· <b>위내시경</b> — 1–2년마다<br>· <b>대장내시경</b> — 50세부터 5년마다<br>· <b>피부 진찰</b> — 연 1회 (피부암이 가장 흔합니다)<br>· 여성은 <b>자궁경부·유방</b> 검사 연 1회<br><br>검진 예약하시면 알려주세요. 결과도 가져오시면 같이 보겠습니다.',
 '')}
@@ -1684,7 +1873,7 @@ ${T(['항목','내용'],[
  ['<b>프로그램명</b>','신장이식 외래 프로토콜 도구 (Kidney Transplant Outpatient Protocol Tool)'],
  ['<b>제작</b>','<b>Jin-Myung Kim, MD, PhD</b> (김진명)'],
  ['<b>소속</b>','Division of Kidney and Pancreas Transplantation, Department of Surgery<br>Asan Medical Center, University of Ulsan College of Medicine, Seoul, Korea<br>서울아산병원 외과 신장·췌장이식분과'],
- ['<b>버전</b>','<b>Version 2.0</b> · 2026년 8월'],
+ ['<b>버전</b>','<b>Version 2.3</b> · 2026년 8월'],
  ['<b>용도</b>','신장이식 수여자의 외래 진료 · 환자 상담을 위한 <b>진료 참고 도구</b>'],
  ['<b>근거</b>','KDIGO · AST-IDCOP · BK 제2차 국제합의(2024) · CMV 제3차 국제합의(2018) · PTDM 국제합의(2024) · Banff 2022 — 자세한 목록은 "근거 문헌" 항목 참조'],
 ]) }
@@ -1714,8 +1903,26 @@ ${T(['단계','내용'],[
  ['⑤','이 HTML 파일을 동료·전공의에게 배포한다. <b>이후로는 파일을 다시 보낼 필요가 없다.</b>'],
 ])}
 
-<h3>내용을 수정했을 때 — 매번 하는 일</h3>
-${BOX('ok','가장 쉬운 방법 — 이 버튼 하나',
+<h3>내용을 수정하는 방법 — 코드를 만지지 않습니다</h3>
+${BOX('ok','편집 모드',
+ '<p style="margin-bottom:8px">왼쪽 아래 <b>"편집 모드"</b> 버튼을 누르면 화면에서 바로 고칠 수 있습니다. HTML도 JSON도 열 필요가 없습니다.</p>'
+ + '<ul style="margin:0 0 8px 18px"><li><b>이 항목 편집</b> — 지금 보고 있는 항목을 고칩니다</li>'
+ + '<li><b>새 항목</b> — 항목을 새로 만듭니다</li>'
+ + '<li><b>항목 삭제</b> — 편집창 왼쪽 아래</li></ul>'
+ + '<p>왼쪽에 글을 쓰면 <b>오른쪽에 결과가 바로</b> 보입니다. 고친 내용은 자동으로 보관되므로 창을 닫아도 남아 있습니다.</p>')}
+
+${T(['쓰는 법','입력','결과'],[
+ ['소제목','<code>## 소제목</code>','굵은 파란 제목'],
+ ['목록','<code>- 항목</code>','● 목록'],
+ ['굵게','<code>**중요**</code>','<b>중요</b>'],
+ ['작은 설명','<code>&gt; 덧붙이는 말</code>','흐린 작은 글씨'],
+ ['<b>표</b>','<code>| 항목 | 내용 |</code><br>줄마다 이렇게. <b>첫 줄이 표의 제목 줄</b>','표'],
+ ['<b>색깔 상자</b>','<code>:::주의 제목</code> 으로 시작<br><code>:::</code> 으로 닫기','빨간 상자 (주의 / 참고 / 권장)'],
+])}
+${BOX('note','더 쉬운 방법','편집창 위쪽의 <b>소제목 · 목록 · 표 · 빨간 상자</b> 버튼을 누르면 틀이 자동으로 들어갑니다. 글자만 바꾸시면 됩니다. 문법을 외우실 필요가 없습니다.')}
+
+<h3>고친 내용을 배포하기 — 매번 하는 일</h3>
+${BOX('ok','내보내기',
  '<p style="margin-bottom:9px">내용을 고친 뒤 아래 버튼을 누르면 <b>content.json이 바로 다운로드</b>됩니다. 프로그램 설치도, 명령어 입력도 필요 없습니다.</p>'
  + '<button onclick="exportContent()" style="font-size:13px;padding:8px 18px;border:none;background:#2E5C8A;color:#fff;border-radius:7px;cursor:pointer;font-family:inherit;font-weight:700">content.json 내보내기</button>')}
 ${T(['단계','내용'],[
@@ -1745,6 +1952,178 @@ ${BOX('warn','배포 전 확인',UL([
  '환자 식별정보가 포함된 이미지나 메모가 파일에 남아 있지 않은지 확인한다.',
  '기관마다 다른 항목(CNI 목표 농도, protocol biopsy 시점 등)이 본인 기관 기준으로만 되어 있음을 <b>배포 시 명시</b>한다.',
  '<b>진료 참고 자료이며 임상 판단을 대체하지 않는다</b>는 문구를 유지한다.',
+]))}` };
+
+
+DB.access = { g:'참조', t:'편집 권한 관리 (Access control)', s:'누가 내용을 고칠 수 있게 할 것인가', kw:'권한 암호 비밀번호 잠금 편집 관리자 보안 access password',
+ rel:['deploy','about'], h:`
+${BOX('warn','먼저 알아두실 것 — 솔직한 설명',UL([
+ '이 프로그램은 <b>파일 하나로 동작하는 문서</b>이므로, 마음먹고 들여다보는 사람에게는 <b>어떤 잠금도 완전하지 않습니다.</b> 브라우저에서 소스를 열면 내용은 볼 수 있습니다.',
+ '따라서 여기서의 암호는 <b>"실수로 고치는 것을 막는 장치"</b>이지, 보안 장치가 아닙니다.',
+ '<b>진짜 통제는 GitHub에서 이루어집니다.</b> 누군가 자기 컴퓨터에서 내용을 고쳐도 그것은 <b>그 사람 브라우저에만</b> 남습니다. 실제로 배포본을 바꾸려면 <b>선생님 GitHub 저장소에 파일을 올릴 수 있어야</b> 하고, 그 권한은 선생님만 가지고 있습니다.',
+ '즉 <b>편집 권한 암호 = 실수 방지 + 화면 정리</b>, <b>GitHub 계정 = 실제 배포 권한</b> 입니다.',
+]))}
+
+<h3>어떻게 열리나</h3>
+${T(['방법','설명'],[
+ ['<b>버전 칩 3번 클릭</b>','왼쪽 아래 <b>"Version 2.3 · 2026.08"</b> 칩을 <b>1.2초 안에 세 번</b> 누르면 암호 입력창이 뜹니다.'],
+ ['<b>Ctrl + Shift + E</b>','키보드로도 열 수 있습니다.'],
+ ['암호 입력','맞으면 왼쪽 아래에 <b>"편집 모드"</b> 버튼과 <b>🔓 편집 권한 열림</b> 표시가 나타납니다.'],
+ ['유지 범위','<b>[확인]</b> 이 컴퓨터에서 계속 유지 / <b>[취소]</b> 브라우저를 닫으면 잠김.<br><b>공용 컴퓨터라면 반드시 [취소]</b>를 고르세요.'],
+ ['다시 잠그기','같은 방법으로 다시 열어 <b>"잠글까요?"</b> 에 확인을 누르면 잠깁니다.'],
+])}
+${BOX('note','일반 사용자에게는 보이지 않습니다','암호를 넣기 전에는 <b>편집 모드 버튼 자체가 화면에 없습니다.</b> 배포받은 동료·전공의는 평소처럼 읽기만 하게 됩니다.')}
+
+<h3>암호 바꾸기 — 배포 전에 꼭 하세요</h3>
+${BOX('warn','기본 암호는 <code>amckt2026</code> 입니다','이 파일을 그대로 배포하면 이 가이드를 읽은 누구나 편집 모드를 열 수 있습니다. <b>배포 전에 반드시 바꾸세요.</b>')}
+${T(['단계','내용'],[
+ ['①','아래 <b>새 암호 만들기</b> 버튼을 누르고 원하는 암호를 입력합니다.'],
+ ['②','두 줄짜리 코드가 만들어지고 <b>클립보드에 자동 복사</b>됩니다.'],
+ ['③','HTML 파일을 메모장으로 열어 <code>Ctrl+F</code> 로 <code>EDIT_SHA</code> 를 찾습니다.'],
+ ['④','거기 있는 <b>두 줄을 지우고</b> 복사한 두 줄을 붙여넣은 뒤 저장합니다.'],
+ ['⑤','파일을 다시 열어 새 암호로 들어가지는지 확인합니다.'],
+])}
+<p style="margin-top:10px"><button onclick="makePassHash()" style="font-size:13px;padding:8px 18px;border:none;background:#2E5C8A;color:#fff;border-radius:7px;cursor:pointer;font-family:inherit;font-weight:700">새 암호 만들기</button></p>
+<pre id="hashout" style="display:none;background:#0E2745;color:#8FD3F5;padding:12px 15px;border-radius:8px;margin-top:10px;font-size:12.5px;white-space:pre-wrap;word-break:break-all"></pre>
+${BOX('note','암호는 파일에 그대로 저장되지 않습니다','입력한 암호는 <b>해시(단방향 암호화)</b>로만 파일에 들어갑니다. 파일을 열어봐도 암호 자체는 보이지 않습니다. 다만 위에서 말씀드린 대로, 이는 실수 방지 수준의 보호입니다.')}
+
+<h3>여러 명에게 권한을 줄 때</h3>
+${UL([
+ '같은 암호를 알려주면 여러 명이 편집 모드를 쓸 수 있습니다.',
+ '다만 <b>각자 고친 내용은 각자 브라우저에만</b> 남습니다. 서로 합쳐지지 않습니다.',
+ '공동 작업을 하시려면 — 각자 <b>content.json 내보내기</b> 로 파일을 만들어 선생님께 보내고, <b>선생님이 최종본을 GitHub에 올리는</b> 방식이 가장 안전합니다.',
+ '본격적인 공동 편집이 필요해지면 GitHub 저장소에 <b>Collaborator</b> 로 초대하는 방법도 있습니다 (Settings → Collaborators).',
+])}
+${BOX('ok','권장 운영 방식',UL([
+ '<b>선생님</b> — 암호 보유 + GitHub 계정. 최종 검토와 배포를 담당',
+ '<b>같이 만드는 동료 1–2명</b> — 암호만 공유. 수정본을 파일로 보내줌',
+ '<b>일반 사용자(전공의·동료)</b> — 암호 없이 읽기만. 업데이트는 자동으로 받음',
+ '<b>내용에 대한 최종 책임은 배포자에게</b> 있으므로, 남이 보낸 수정은 반드시 검토 후 반영하세요',
+]))}` };
+
+
+DB.dental = { g:'시기 · 특수', t:'치과 치료 · 임플란트', s:'예방적 항생제 · 시술 시기 · 주의점', kw:'치과 임플란트 발치 스케일링 신경치료 근관 잇몸 치주 항생제 예방 amoxicillin 클린다마이신 마취 국소마취 발치후 진통제',
+ rel:['pjp','ddi','surg','pain'], h:`
+${BOX('ok','기본 원칙',UL([
+ '<b>치과 치료는 받아야 한다.</b> 방치된 충치·치주염은 균혈증과 전신 감염의 원인이 되고, 이식 환자에게는 더 위험하다.',
+ '<b>정기 검진·스케일링은 6개월마다</b> 권장한다.',
+ '<b>면역억제제는 절대 중단하지 않는다.</b> 치과에서 중단하라고 해도 따르지 않도록 미리 교육한다.',
+ '환자에게 <b>"신장이식 환자이고 면역억제제를 복용 중"</b>임을 치과에 반드시 말하도록 한다.',
+]))}
+
+<h3>시술 시기 — 언제 해도 되나</h3>
+${T(['시기','가능한 시술','비고'],[
+ ['<b>이식 전</b>','<b>모든 감염원 제거</b> — 충치·치주염·잔존 치근·매복치. 이식 대기 중 치과 평가는 필수','가장 이상적인 시점'],
+ ['<b>이식 후 ~3개월</b>','<b>응급 처치만</b> — 급성 감염, 심한 통증. 선택적 시술은 연기','면역억제가 최고조. 감염·창상 위험 최대'],
+ ['<b>3–6개월</b>','스케일링, 단순 충치 치료, 간단한 발치','면역억제제 용량이 안정된 뒤'],
+ ['<b>6개월 이후</b>','근관치료, 치주 수술, 복잡 발치, <b>임플란트</b>','신기능·면역억제제가 안정된 상태에서'],
+ ['<b>거부반응 치료 직후</b>','<b>선택적 시술 연기</b> (steroid pulse·ATG 후 최소 3개월)','면역억제 강도 최고'],
+])}
+
+<h3>임플란트</h3>
+${T(['항목','내용'],[
+ ['<b>가능한가</b>','<b>가능하다.</b> 이식 환자에서 임플란트 생존율은 일반인과 크게 다르지 않다는 보고가 다수다. 다만 조건이 맞아야 한다'],
+ ['<b>시기</b>','<b>이식 후 최소 6–12개월</b>, 면역억제제가 유지 용량으로 안정되고 신기능이 안정된 뒤'],
+ ['<b>피해야 할 상황</b>','조절되지 않는 <b>당뇨(HbA1c &gt; 8%)</b> · 흡연 지속 · 최근 거부반응 치료 · 활동성 감염 · <b>중증 골다공증에 비스포스포네이트/데노수맙 사용 중</b>(악골괴사 위험)'],
+ ['<b>MRONJ 위험</b>','<b>Zoledronate·denosumab 사용자는 반드시 사전 상의.</b> 정맥 비스포스포네이트나 denosumab 투여 중이면 임플란트·발치를 신중히 결정하고, 필요 시 투여 시점을 조율'],
+ ['<b>예방적 항생제</b>','임플란트 식립은 <b>침습적 시술</b>이므로 예방적 항생제를 시행. 술후 항생제 연장 여부는 치과와 상의'],
+ ['<b>골유합</b>','스테로이드·면역억제제가 골유합을 다소 늦출 수 있으므로 <b>보철 시기를 여유 있게</b>'],
+ ['<b>협진</b>','임플란트 계획 시 <b>이식팀에 미리 알리도록</b> 하고, 필요하면 치과에 소견서를 발급'],
+])}
+
+<h3>예방적 항생제 — 무엇을 얼마나</h3>
+${BOX('note','대상',UL([
+ '<b>출혈이 예상되는 침습적 시술</b> — 발치, 임플란트 식립, 치주 수술, 근관치료(치근단 조작), 치석제거(출혈 동반), 임플란트 주위 수술',
+ '<b>불필요한 경우</b> — 단순 충치 치료, 국소마취 주사, 보철물 인상, 교정 장치 조정, 방사선 촬영',
+ '이식 환자 자체에 대한 일률적 권고는 아직 근거가 제한적이므로, <b>면역억제 강도·시술 침습도·환자 상태를 함께 고려</b>해 개별 결정한다',
+]))}
+${T(['상황','약제 · 용량 (성인)','시점'],[
+ ['<b>1차 (경구 가능)</b>','<b>Amoxicillin 2 g</b> 경구 1회','<b>시술 30–60분 전</b>'],
+ ['경구 불가','<b>Ampicillin 2 g</b> IM/IV 1회 또는 <b>Cefazolin 1 g</b> IV 1회','시술 30–60분 전'],
+ ['<b>페니실린 알레르기 (경구)</b>','<b>Cephalexin 2 g</b> 경구 1회 (아나필락시스 병력 없을 때)<br>또는 <b>Azithromycin 500 mg</b> 경구 1회<br>또는 <b>Doxycycline 100 mg</b> 경구 1회','시술 30–60분 전'],
+ ['페니실린 알레르기 (경구 불가)','<b>Cefazolin 1 g</b> IV 또는 <b>Ceftriaxone 1 g</b> IV 1회','시술 30–60분 전'],
+ ['<b>Clindamycin</b>','<b>더 이상 1차로 권장되지 않는다</b> — <i>C. difficile</i> 대장염 위험. 다른 대안이 없을 때만 600 mg 1회','시술 30–60분 전'],
+ ['<b>술후 연장</b>','<b>일반적으로 불필요.</b> 광범위 수술·골이식·감염이 동반된 경우에만 3–5일 (예: Amoxicillin-clavulanate 625 mg tid)','치과와 상의'],
+])}
+${BOX('warn','항생제 선택 시 CNI 상호작용 반드시 확인',UL([
+ '<b>Clarithromycin·erythromycin은 FK 농도를 급등</b>시킨다 — 치과에서 처방하면 즉시 알리도록. <b>Azithromycin으로 대체</b>',
+ '<b>Metronidazole</b>도 FK 농도를 올릴 수 있다 — 사용 시 농도 확인',
+ 'Amoxicillin·cephalosporin·doxycycline은 <b>CNI와 유의한 상호작용이 없다</b> — 안전한 선택',
+ '항진균제(<b>fluconazole 함유 구강용</b> 포함)는 농도를 크게 올린다 — 구강 칸디다는 <b>nystatin 현탁액 국소</b>로',
+]))}
+
+<h3>진통제 · 국소마취</h3>
+${T(['항목','내용'],[
+ ['<b>1차 진통제</b>','<b>Acetaminophen 500–650 mg, 4–6시간마다, 1일 최대 3 g</b> (간질환 없으면 4 g까지 가능하나 3 g 이내 권장)'],
+ ['<b>부족할 때</b>','<b>Tramadol 50 mg, 6–8시간마다</b> (신기능 저하 시 1일 200 mg 이내) 또는 acetaminophen-tramadol 복합제'],
+ ['<b>NSAID</b>','<b>금기에 준한다</b> — ibuprofen·naproxen·diclofenac·ketorolac 모두 회피. 치과에서 처방하면 바꾸도록'],
+ ['<b>국소마취</b>','<b>리도카인 등 일반 국소마취제는 안전</b>. 에피네프린 함유 제제도 혈압이 조절되면 통상 용량은 무방'],
+ ['<b>스테로이드 커버</b>','일상적 치과 시술에는 <b>불필요</b>. 장기 고용량 스테로이드 복용자의 광범위 수술에서만 개별 고려'],
+])}
+
+<h3>이식 환자에서 흔한 구강 문제</h3>
+${T(['소견','원인 · 대처'],[
+ ['<b>잇몸 비대</b>','<b>Cyclosporine</b>(nifedipine 병용 시 악화) → tacrolimus 전환 시 호전. 철저한 구강위생 + 치주 치료, 심하면 치은절제'],
+ ['<b>구강 칸디다</b>','스테로이드·항생제 후 흔함 → <b>Nystatin 현탁액 100,000 U/mL, 4–6 mL 하루 4회 함수 후 삼킴, 7–14일</b>. <b>전신 fluconazole은 FK 농도를 급등시키므로 국소 제제 우선</b>'],
+ ['<b>구강 궤양</b>','<b>mTOR 억제제</b>(everolimus·sirolimus)의 대표 부작용 또는 HSV. 국소 스테로이드 연고, 심하면 감량<br><b>낫지 않는 궤양·종괴는 PTLD·구강암 감별을 위해 조직검사</b>'],
+ ['구강건조','약물·수분 부족 → 수분 섭취, 무설탕 껌, 인공타액. <b>충치 위험이 올라가므로 불소 도포</b>'],
+ ['치주염 악화','면역억제 + 구강위생 불량 → 3–6개월 간격 치주 관리'],
+])}` };
+
+DB.cold = { g:'시기 · 특수', t:'감기 · 상기도감염 처방', s:'무엇을 주고 무엇을 피하나', kw:'감기 상기도감염 URI 콧물 코막힘 기침 가래 인후통 해열제 항히스타민 진해거담 슈도에페드린 타이레놀 종합감기약 독감 타미플루',
+ rel:['pain','fever','ddi','pjp'], h:`
+${BOX('warn','먼저 판단할 것 — 그냥 감기가 맞는가',UL([
+ '<b>38℃ 이상 발열</b>이면 단순 감기로 넘기지 않는다. 면역억제 상태에서는 <b>폐렴·신우신염·CMV가 감기처럼 시작</b>한다.',
+ '<b>기침 + 호흡곤란 + 저산소증</b> → 흉부 영상. 이식 3–6개월 이내면 <b>PJP·CMV 폐렴</b>을 반드시 감별.',
+ '<b>증상이 1주 이상 지속</b>되거나 악화되면 단순 감기로 두지 않는다.',
+ '기본 검사 — <b>CBC, CRP, Cr, FK 농도</b>. 발열이 있으면 흉부 X선 + 소변검사 + 배양.',
+]))}
+
+<h3>증상별 처방 — 안전한 것</h3>
+${T(['증상','약제 · 용량','비고'],[
+ ['<b>발열 · 통증</b>','<b>Acetaminophen 500–650 mg, 4–6시간마다 필요시</b><br>1일 최대 3 g','<b>1차 선택.</b> 간질환 없으면 안전'],
+ ['<b>콧물 · 재채기</b>','<b>Loratadine 10 mg 1일 1회</b> 또는 <b>Cetirizine 5–10 mg 1일 1회</b> 또는 <b>Fexofenadine 120 mg 1일 1회</b>','<b>2세대 항히스타민 권장</b> — 졸음·구갈이 적다'],
+ ['','1세대(chlorpheniramine 등)는 <b>고령자에서 섬망·요저류·구강건조</b> 유발 — 가급적 회피',''],
+ ['<b>코막힘</b>','<b>비강 스테로이드</b> — Fluticasone 각 비공 1–2회 분무 1일 1회<br>또는 생리식염수 세척','전신 흡수가 적어 안전'],
+ ['','<b>Pseudoephedrine 30–60 mg</b> 필요시 — <b>혈압 상승 주의</b>, 조절되지 않는 고혈압에서는 회피. 3일 이내 단기만',''],
+ ['','국소 충혈제거제(옥시메타졸린) — <b>3일 이내</b>만. 그 이상은 반동성 비염',''],
+ ['<b>기침 (마른기침)</b>','<b>Dextromethorphan 15–30 mg, 6–8시간마다</b>','비교적 안전. 과량 시 중추 부작용'],
+ ['<b>가래 · 객담</b>','<b>Acetylcysteine 200 mg 1일 3회</b> 또는 <b>Ambroxol 30 mg 1일 3회</b> 또는 <b>Erdosteine 300 mg 1일 2회</b>','수분 섭취 병행'],
+ ['<b>인후통</b>','Acetaminophen + 함수액 · 따뜻한 수분','<b>벤지다민 등 국소 함수제</b> 가능'],
+ ['<b>수분·휴식</b>','충분한 수분 — 탈수는 <b>Cr 상승</b>의 흔한 원인','설사·구토 동반 시 특히'],
+])}
+
+${BOX('warn','피해야 할 것',UL([
+ '<b>NSAID 전체</b> — ibuprofen, naproxen, dexibuprofen, aceclofenac 등. <b>이식신 신독성·고칼륨·혈압 상승.</b> 시판 종합감기약에 섞인 경우가 많다',
+ '<b>시판 종합감기약</b> — 성분을 알 수 없고 NSAID·1세대 항히스타민·과량 아세트아미노펜이 섞여 있다. <b>단일 성분으로 나누어 처방</b>하는 것이 안전하다',
+ '<b>Clarithromycin·erythromycin</b> — FK 농도 급등. 세균 감염이 확인되어 macrolide가 필요하면 <b>azithromycin</b>',
+ '<b>불필요한 항생제</b> — 바이러스성 상기도감염에는 효과가 없고 내성과 <i>C. difficile</i> 위험만 올린다',
+ '<b>고용량 비타민C 정맥주사·"영양수액"</b> — 근거 없고 신부담. 권하지 않는다',
+ '<b>한약·도라지즙·기타 민간요법</b> — CNI 농도를 흔들 수 있다',
+]))}
+
+<h3>항생제를 쓸 때 — 세균 감염이 의심되면</h3>
+${T(['상황','약제 · 용량','기간'],[
+ ['<b>급성 세균성 부비동염</b>','<b>Amoxicillin-clavulanate 625 mg 1일 3회</b> (또는 1 g 1일 2회)','<b>5–7일</b>'],
+ ['페니실린 알레르기','<b>Doxycycline 100 mg 1일 2회</b> 또는 <b>Azithromycin 500 mg 1일 1회 3일</b>','5–7일'],
+ ['<b>세균성 인두염</b> (A군 연쇄구균 확인)','<b>Amoxicillin 500 mg 1일 2–3회</b>','<b>10일</b>'],
+ ['<b>지역사회획득 폐렴 (외래)</b>','<b>Amoxicillin-clavulanate + Azithromycin</b> 또는 호흡기 quinolone','<b>5–7일</b>, 중증도에 따라 입원 결정'],
+ ['<b>주의</b>','<b>신기능에 따른 용량 조정 필수</b> · quinolone은 건병증·QT 연장 · TMP-SMX 예방 중이면 중복 확인','—'],
+])}
+
+<h3>인플루엔자</h3>
+${T(['항목','내용'],[
+ ['<b>치료 역치가 낮다</b>','이식 환자는 합병증 위험이 높으므로 <b>의심되면 검사하고, 확인되면 치료</b>한다. 발병 48시간 이내가 이상적이나 <b>이후에도 투여를 고려</b>'],
+ ['<b>Oseltamivir</b>','<b>75 mg 1일 2회, 5일</b><br>신기능별 — eGFR 30–60: <b>30 mg 1일 2회</b> · eGFR 10–30: <b>30 mg 1일 1회</b>'],
+ ['<b>노출 후 예방</b>','고위험 노출 시 <b>oseltamivir 75 mg 1일 1회, 7–10일</b>'],
+ ['<b>CNI 상호작용</b>','oseltamivir는 <b>유의한 상호작용 없음</b>'],
+ ['<b>예방접종</b>','<b>매년 불활화 백신</b> — 가족·동거인도 함께'],
+])}
+${BOX('note','환자 교육 문장',UL([
+ '"약국에서 감기약 사실 때 <b>반드시 신장이식 환자라고 말씀</b>하시고, <b>소염진통제가 들었는지</b> 확인하세요."',
+ '"열이 <b>38도를 넘으면</b> 감기약 먹고 기다리지 마시고 <b>바로 연락</b>주세요."',
+ '"물을 충분히 드세요. 탈수만으로도 콩팥 수치가 오릅니다."',
+ '"다른 병원에서 <b>항생제를 받으시면 알려주세요.</b> 면역억제제 농도가 바뀌는 종류가 있습니다."',
 ]))}` };
 
 /* ============ RENDER ============ */
@@ -1820,7 +2199,13 @@ function show(k){
     s += '<div class="rel">관련 항목: ' + d.rel.filter(r=>DB[r]).map(r =>
       '<a data-k="'+r+'">'+DB[r].t+'</a>').join('') + '</div>';
   }
-  main.innerHTML = s;
+  const bar = '<div id="edbar"><b>편집 모드</b>'
+    + '<button class="edb pri" onclick="openEditor(\''+k+'\',false)">이 항목 편집</button>'
+    + '<button class="edb" onclick="openEditor(null,true)">새 항목</button>'
+    + '<button class="edb" onclick="exportContent()">content.json 내보내기</button>'
+    + '<button class="edb dan" onclick="clearDraft()">편집 내용 되돌리기</button>'
+    + '<span style="color:#8A6A28;font-size:11.5px">수정한 내용은 자동 보관됩니다. 배포하려면 내보내기를 누르세요.</span></div>';
+  main.innerHTML = bar + s;
   main.querySelectorAll('.rel a').forEach(a => a.onclick = () => show(a.dataset.k));
   main.scrollTop = 0;
   const el = document.querySelector('.itm[data-key="'+k+'"]');
@@ -1875,7 +2260,7 @@ document.addEventListener('keydown', e => {
    확인하여, 더 높은 버전이면 내용을 교체하고 브라우저에 캐시한다.
    인터넷이 없으면 캐시된(또는 파일에 내장된) 내용을 그대로 쓴다.
    ============================================================ */
-const APP_VERSION   = '2.0';
+const APP_VERSION   = '2.3';
 const APP_DATE      = '2026.08';
 const UPDATE_URL    = 'https://raw.githubusercontent.com/jin16gemini-sketch/kt-protocol/refs/heads/main/content.json';
 const CACHE_KEY     = 'ktprotocol_content_v1';
@@ -1946,6 +2331,313 @@ function checkUpdate(manual){
 }
 
 
+
+
+/* ============================================================
+   편집 권한 잠금
+   ------------------------------------------------------------
+   · 버전 칩을 3번 연속 클릭하거나 Ctrl+Shift+E → 암호 입력
+   · 암호는 파일에 평문으로 저장되지 않고 해시만 들어 있다
+   · 기본 암호: amckt2026  (반드시 바꿔서 배포할 것)
+   ============================================================ */
+const EDIT_SHA = '22945f666b21e55c0569cd120472ab6b0a2647ee46371204a6b0bad543465525';
+const EDIT_FNV = '9f2064e9';
+const UNLOCK_KEY = 'ktprotocol_unlock_v1';
+
+function fnv1a(str){
+  let h = 0x811c9dc5;
+  const b = new TextEncoder().encode(str);
+  for(let i = 0; i < b.length; i++){
+    h ^= b[i];
+    h = Math.imul(h, 0x01000193) >>> 0;
+  }
+  return ('0000000' + h.toString(16)).slice(-8);
+}
+async function sha256hex(str){
+  if(!(window.crypto && crypto.subtle && crypto.subtle.digest)) return null;
+  try {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+    return Array.from(new Uint8Array(buf)).map(b => ('0' + b.toString(16)).slice(-2)).join('');
+  } catch(e){ return null; }
+}
+async function verifyPass(pw){
+  const h = await sha256hex(pw);
+  if(h) return h === EDIT_SHA;
+  return fnv1a(pw) === EDIT_FNV;   // 구형 브라우저·오프라인 대비
+}
+function isUnlocked(){
+  try {
+    return sessionStorage.getItem(UNLOCK_KEY) === '1' || localStorage.getItem(UNLOCK_KEY) === '1';
+  } catch(e){ return window.__unlocked === true; }
+}
+function setUnlocked(on, remember){
+  window.__unlocked = on;
+  try {
+    if(on){
+      sessionStorage.setItem(UNLOCK_KEY, '1');
+      if(remember) localStorage.setItem(UNLOCK_KEY, '1');
+    } else {
+      sessionStorage.removeItem(UNLOCK_KEY);
+      localStorage.removeItem(UNLOCK_KEY);
+    }
+  } catch(e){}
+  if(document.body && document.body.classList) document.body.classList.toggle('unlocked', on);
+}
+async function askUnlock(){
+  if(isUnlocked()){
+    if(confirm('편집 권한이 열려 있습니다. 잠글까요?')){
+      if(EDITING) toggleEdit();
+      setUnlocked(false);
+      alert('편집 권한을 잠갔습니다.');
+    }
+    return;
+  }
+  const pw = prompt('편집 권한 암호를 입력하세요.\n(내용을 수정할 수 있는 담당자용입니다)');
+  if(pw === null) return;
+  if(await verifyPass(pw.trim())){
+    const keep = confirm('암호가 확인되었습니다.\n\n[확인] 이 컴퓨터에서 계속 열어두기\n[취소] 이번 세션만 (브라우저를 닫으면 잠김)\n\n※ 공용 컴퓨터라면 [취소]를 권합니다.');
+    setUnlocked(true, keep);
+    alert('편집 권한이 열렸습니다.\n왼쪽 아래 "편집 모드" 버튼을 사용하세요.');
+  } else {
+    alert('암호가 맞지 않습니다.');
+  }
+}
+/* 암호 변경 도우미 — 새 해시 두 줄을 만들어 준다 */
+async function makePassHash(){
+  const pw = prompt('새로 쓸 암호를 입력하세요.\n(영문·숫자 8자 이상 권장)');
+  if(!pw || pw.trim().length < 4){ if(pw !== null) alert('너무 짧습니다.'); return; }
+  const p = pw.trim();
+  const sha = await sha256hex(p);
+  const txt = "const EDIT_SHA = '" + (sha || '(이 브라우저에서 생성 불가)') + "';\n"
+            + "const EDIT_FNV = '" + fnv1a(p) + "';";
+  const box = document.getElementById('hashout');
+  if(box){
+    box.style.display = 'block';
+    box.textContent = txt;
+  }
+  try { await navigator.clipboard.writeText(txt); alert('아래 두 줄이 만들어졌고 클립보드에 복사되었습니다.\n\nHTML 파일에서 같은 이름의 두 줄을 찾아 바꿔치기하세요.'); }
+  catch(e){ alert('아래 두 줄을 복사해서 HTML 파일의 같은 두 줄과 바꿔치기하세요.'); }
+}
+
+/* ============================================================
+   편집 모드 — 코드를 몰라도 화면에서 바로 수정
+   ============================================================ */
+let EDITING = false, EDKEY = null;
+
+/* ---------- 간이 문법 → HTML ---------- */
+function srcToHtml(src){
+  const lines = String(src || '').replace(/\r/g, '').split('\n');
+  let out = [], i = 0;
+  const inline = t => String(t)
+    .replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>')
+    .replace(/__([^_]+)__/g, '<b>$1</b>');
+  while(i < lines.length){
+    let L = lines[i];
+    if(!L.trim()){ i++; continue; }
+    // 표
+    if(/^\s*\|/.test(L)){
+      const rows = [];
+      while(i < lines.length && /^\s*\|/.test(lines[i])){
+        const c = lines[i].trim().replace(/^\||\|$/g, '').split('|').map(x => x.trim());
+        if(!c.every(x => /^-{2,}$/.test(x))) rows.push(c);
+        i++;
+      }
+      if(rows.length){
+        let t = '<table><thead><tr>' + rows[0].map(c => '<th>' + inline(c) + '</th>').join('') + '</tr></thead><tbody>';
+        rows.slice(1).forEach(r => { t += '<tr>' + r.map(c => '<td>' + inline(c) + '</td>').join('') + '</tr>'; });
+        out.push(t + '</tbody></table>');
+      }
+      continue;
+    }
+    // 박스  :::주의 제목   …   :::
+    const bm = L.match(/^:::\s*(주의|참고|권장|warn|note|ok)\s*(.*)$/);
+    if(bm){
+      const kind = { '주의':'warn', 'warn':'warn', '참고':'note', 'note':'note', '권장':'ok', 'ok':'ok' }[bm[1]];
+      const title = bm[2].trim();
+      const buf = []; i++;
+      while(i < lines.length && !/^:::\s*$/.test(lines[i])){ buf.push(lines[i]); i++; }
+      i++;
+      const items = buf.filter(x => x.trim()).map(x => x.replace(/^\s*-\s*/, ''));
+      const isList = buf.some(x => /^\s*-\s/.test(x));
+      const inner = isList
+        ? '<ul>' + items.map(x => '<li>' + inline(x) + '</li>').join('') + '</ul>'
+        : items.map(x => '<p>' + inline(x) + '</p>').join('');
+      out.push('<div class="box ' + kind + '">' + (title ? '<div class="h">' + inline(title) + '</div>' : '') + inner + '</div>');
+      continue;
+    }
+    // 소제목
+    if(/^##\s+/.test(L)){ out.push('<h3>' + inline(L.replace(/^##\s+/, '')) + '</h3>'); i++; continue; }
+    // 목록
+    if(/^\s*-\s+/.test(L)){
+      const items = [];
+      while(i < lines.length && /^\s*-\s+/.test(lines[i])){ items.push(lines[i].replace(/^\s*-\s+/, '')); i++; }
+      out.push('<ul class="pl">' + items.map(x => '<li>' + inline(x) + '</li>').join('') + '</ul>');
+      continue;
+    }
+    // 흐린 주석
+    if(/^>\s*/.test(L)){ out.push('<p class="mut">' + inline(L.replace(/^>\s*/, '')) + '</p>'); i++; continue; }
+    // 문단
+    const buf = [];
+    while(i < lines.length && lines[i].trim() && !/^(##|\s*-\s|\s*\||:::|>)/.test(lines[i])){ buf.push(lines[i]); i++; }
+    out.push('<p>' + inline(buf.join(' ')) + '</p>');
+  }
+  return out.join('\n');
+}
+
+/* ---------- HTML → 간이 문법 (기존 항목 편집용) ---------- */
+function htmlToSrc(html){
+  const d = document.createElement('div');
+  d.innerHTML = html || '';
+  const inl = el => {
+    let s = '';
+    el.childNodes.forEach(n => {
+      if(n.nodeType === 3) s += n.nodeValue;
+      else if(n.tagName === 'B' || n.tagName === 'STRONG') s += '**' + inl(n) + '**';
+      else if(n.tagName === 'BR') s += ' ';
+      else s += inl(n);
+    });
+    return s.replace(/\s+/g, ' ').trim();
+  };
+  const out = [];
+  d.childNodes.forEach(n => {
+    if(n.nodeType !== 1) return;
+    const tag = n.tagName;
+    if(tag === 'H3'){ out.push('## ' + inl(n), ''); }
+    else if(tag === 'TABLE'){
+      const rows = [];
+      n.querySelectorAll('tr').forEach(tr => {
+        const cells = [];
+        tr.querySelectorAll('th,td').forEach(c => cells.push(inl(c)));
+        if(cells.length) rows.push('| ' + cells.join(' | ') + ' |');
+      });
+      if(rows.length){
+        out.push(rows[0]);
+        out.push('|' + rows[0].split('|').slice(1, -1).map(() => ' --- ').join('|') + '|');
+        rows.slice(1).forEach(r => out.push(r));
+        out.push('');
+      }
+    }
+    else if(tag === 'UL' || tag === 'OL'){
+      n.querySelectorAll('li').forEach(li => out.push('- ' + inl(li)));
+      out.push('');
+    }
+    else if(n.classList && n.classList.contains('box')){
+      const kind = n.classList.contains('warn') ? '주의' : n.classList.contains('ok') ? '권장' : '참고';
+      const h = n.querySelector('.h');
+      out.push(':::' + kind + (h ? ' ' + inl(h) : ''));
+      const ul = n.querySelector('ul');
+      if(ul) ul.querySelectorAll('li').forEach(li => out.push('- ' + inl(li)));
+      else n.querySelectorAll('p').forEach(p => { if(inl(p)) out.push(inl(p)); });
+      out.push(':::', '');
+    }
+    else if(tag === 'P'){
+      const t = inl(n);
+      if(t) out.push(n.classList.contains('mut') ? '> ' + t : t, '');
+    }
+    else {
+      const t = inl(n);
+      if(t) out.push(t, '');
+    }
+  });
+  return out.join('\n').replace(/\n{3,}/g, '\n\n').trim();
+}
+
+/* ---------- 편집 모드 토글 ---------- */
+function toggleEdit(){
+  if(!isUnlocked()){ askUnlock(); return; }
+  EDITING = !EDITING;
+  if(document.body && document.body.classList) document.body.classList.toggle('editing', EDITING);
+  const b = document.getElementById('edtoggle');
+  if(b){ b.classList.toggle('on', EDITING); b.textContent = EDITING ? '편집 모드 끄기' : '편집 모드'; }
+  buildNav();
+  cur ? show(cur) : home();
+}
+
+/* ---------- 편집창 ---------- */
+function openEditor(key, isNew){
+  EDKEY = key;
+  const d = isNew ? { g: GROUPS[0], t: '', s: '', kw: '', rel: [], h: '' } : DB[key];
+  document.getElementById('edtitle').textContent = isNew ? '새 항목 만들기' : '항목 편집';
+  document.getElementById('f_t').value = d.t || '';
+  document.getElementById('f_s').value = d.s || '';
+  document.getElementById('f_kw').value = d.kw || '';
+  const sel = document.getElementById('f_g');
+  sel.innerHTML = GROUPS.map(g => '<option' + (g === d.g ? ' selected' : '') + '>' + g + '</option>').join('');
+  document.getElementById('edsrc').value = d.src ? d.src : htmlToSrc(d.h);
+  document.getElementById('eddel').style.display = isNew ? 'none' : 'inline-block';
+  document.getElementById('edit').classList.add('on');
+  renderPreview();
+  document.getElementById('f_t').focus();
+}
+function renderPreview(){
+  const html = srcToHtml(document.getElementById('edsrc').value);
+  document.getElementById('edprevbody').innerHTML = html;
+}
+function saveEditor(){
+  const t = document.getElementById('f_t').value.trim();
+  if(!t){ alert('제목을 입력하세요.'); return; }
+  const src = document.getElementById('edsrc').value;
+  const key = EDKEY || ('t' + Date.now());
+  DB[key] = {
+    g: document.getElementById('f_g').value,
+    t: t,
+    s: document.getElementById('f_s').value.trim(),
+    kw: document.getElementById('f_kw').value.trim(),
+    rel: (DB[key] && DB[key].rel) || [],
+    src: src,
+    h: srcToHtml(src)
+  };
+  saveDraft();
+  closeEditor();
+  buildNav();
+  show(key);
+}
+function deleteTopic(){
+  if(!EDKEY || !DB[EDKEY]) return;
+  if(!confirm('"' + DB[EDKEY].t + '" 항목을 삭제할까요?\n(내보내기 전이면 되돌릴 수 없습니다)')) return;
+  delete DB[EDKEY];
+  saveDraft();
+  closeEditor();
+  buildNav();
+  home();
+}
+function closeEditor(){ document.getElementById('edit').classList.remove('on'); EDKEY = null; }
+
+/* ---------- 작업 중 내용 보관 ---------- */
+const DRAFT_KEY = 'ktprotocol_draft_v1';
+function saveDraft(){
+  try { localStorage.setItem(DRAFT_KEY, JSON.stringify({ groups: GMETA, topics: DB, at: Date.now() })); } catch(e){}
+}
+function loadDraft(){
+  try { const r = localStorage.getItem(DRAFT_KEY); return r ? JSON.parse(r) : null; } catch(e){ return null; }
+}
+function clearDraft(){
+  if(!confirm('편집한 내용을 모두 버리고 원래대로 되돌릴까요?')) return;
+  try { localStorage.removeItem(DRAFT_KEY); } catch(e){}
+  location.reload();
+}
+
+/* ---------- 툴바 삽입 ---------- */
+function insertSnippet(kind){
+  const ta = document.getElementById('edsrc');
+  const snips = {
+    h: '## 소제목\n',
+    ul: '- 첫 번째 항목\n- 두 번째 항목\n',
+    tbl: '| 항목 | 내용 |\n| --- | --- |\n| 첫 줄 | 설명 |\n| 둘째 줄 | 설명 |\n',
+    warn: ':::주의 꼭 확인할 것\n- 첫 번째\n- 두 번째\n:::\n',
+    note: ':::참고 알아둘 점\n내용을 여기에 씁니다.\n:::\n',
+    ok: ':::권장 이렇게 하세요\n- 첫 번째\n- 두 번째\n:::\n',
+    b: '**굵게**',
+    mut: '> 작은 글씨로 덧붙이는 설명\n'
+  };
+  const s = snips[kind] || '';
+  const p = ta.selectionStart;
+  ta.value = ta.value.slice(0, p) + s + ta.value.slice(ta.selectionEnd);
+  ta.focus();
+  ta.selectionStart = ta.selectionEnd = p + s.length;
+  renderPreview();
+}
+
 /* content.json 내보내기 — Node.js 없이 브라우저에서 바로 생성 */
 function exportContent(){
   const curV = (document.getElementById('cver') || {}).textContent || APP_VERSION;
@@ -1970,6 +2662,7 @@ function exportContent(){
   a.href = URL.createObjectURL(blob);
   a.download = 'content.json';
   document.body.appendChild(a); a.click(); a.remove();
+  saveDraft();
   setTimeout(() => alert('content.json 파일이 다운로드되었습니다. (v' + v + ')\n\n이 파일을 GitHub 저장소에 올려 기존 파일을 교체하면\n배포된 모든 파일이 자동으로 갱신됩니다.'), 300);
 }
 function bumpVer(v){
@@ -1979,14 +2672,34 @@ function bumpVer(v){
 }
 
 function init(){
+  const draft = loadDraft();
   const cached = loadCache();
-  if(cached){
+  if(draft && draft.topics){
+    applyContent({ version: (cached||{}).version || APP_VERSION,
+                   updated: (cached||{}).updated || APP_DATE,
+                   groups: draft.groups, topics: draft.topics });
+  } else if(cached){
     applyContent(cached);
   } else {
     setVerLabel(APP_VERSION, APP_DATE);
     buildNav();
     home();
   }
+  setUnlocked(isUnlocked());
+  const chip = document.getElementById('verchip');
+  if(chip){
+    let n = 0, timer = null;
+    chip.onclick = () => {
+      n++;
+      clearTimeout(timer);
+      timer = setTimeout(() => { n = 0; }, 1200);
+      if(n >= 3){ n = 0; askUnlock(); }
+    };
+    chip.title = '3번 연속 누르면 편집 권한 입력 (담당자용)';
+  }
+  document.addEventListener('keydown', e => {
+    if(e.ctrlKey && e.shiftKey && (e.key === 'E' || e.key === 'e')){ e.preventDefault(); askUnlock(); }
+  });
   const b = document.getElementById('upcheck');
   if(b) b.onclick = () => checkUpdate(true);
   setTimeout(() => checkUpdate(false), 1200);
