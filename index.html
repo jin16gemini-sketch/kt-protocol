@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>신장이식 외래 프로토콜 v2.3 — Jin-Myung Kim, MD, PhD (Asan Medical Center)</title>
+<title>신장이식 외래 프로토콜 v2.5 — Jin-Myung Kim, MD, PhD (Asan Medical Center)</title>
 <meta name="author" content="Jin-Myung Kim, MD, PhD — Division of Kidney and Pancreas Transplantation, Asan Medical Center">
-<meta name="version" content="2.3">
+<meta name="version" content="2.5">
 <style>
 :root{
   --navy:#17365D; --blue:#2E5C8A; --blue-l:#5B87BF;
@@ -146,6 +146,41 @@ body.unlocked #credit .edbtn{display:block}
 body.unlocked #lockmark{display:block}
 #verchip{cursor:pointer;user-select:none}
 
+
+/* ===== AI 질문창 ===== */
+#aifab{position:fixed;right:22px;bottom:22px;z-index:130;background:var(--navy);color:#fff;border:none;
+ border-radius:26px;padding:12px 20px;font-size:13.5px;font-weight:700;cursor:pointer;font-family:inherit;
+ box-shadow:0 5px 18px rgba(23,54,93,.4);display:flex;align-items:center;gap:8px}
+#aifab:hover{background:#0E2745;transform:translateY(-1px)}
+#aipanel{position:fixed;right:22px;bottom:80px;width:400px;max-width:calc(100vw - 44px);z-index:130;
+ background:#fff;border:1px solid var(--line);border-radius:13px;box-shadow:0 12px 40px rgba(0,0,0,.28);
+ display:none;overflow:hidden}
+#aipanel.on{display:block}
+#aihead{background:var(--navy);color:#fff;padding:12px 16px;display:flex;align-items:center;gap:10px}
+#aihead b{flex:1;font-size:14px}
+#aihead button{background:transparent;border:1px solid #5B87BF;color:#CFE6FA;border-radius:6px;
+ font-size:11.5px;padding:3px 9px;cursor:pointer;font-family:inherit}
+#aihead button:hover{background:#5B87BF;color:#fff}
+#aibody{padding:14px 16px}
+#aiq{width:100%;min-height:78px;padding:10px 12px;border:1px solid #CBD5E1;border-radius:8px;
+ font-size:13px;font-family:inherit;resize:vertical;line-height:1.6}
+#aiq:focus{outline:none;border-color:var(--blue)}
+.aichips{display:flex;flex-wrap:wrap;gap:6px;margin:9px 0 4px}
+.aichip{font-size:11.5px;padding:4px 10px;border:1px solid #C6D4E6;background:#F7FAFF;border-radius:14px;
+ cursor:pointer;color:var(--navy);font-family:inherit}
+.aichip:hover{background:var(--blue);color:#fff;border-color:var(--blue)}
+.aiopt{display:flex;align-items:center;gap:7px;margin:11px 0 3px;font-size:12px;color:var(--mut)}
+.aiopt select{flex:1;padding:6px 8px;border:1px solid #CBD5E1;border-radius:6px;font-size:12.5px;font-family:inherit}
+#aigo{width:100%;margin-top:11px;padding:11px;border:none;background:var(--blue);color:#fff;border-radius:8px;
+ font-size:13.5px;font-weight:700;cursor:pointer;font-family:inherit}
+#aigo:hover{background:var(--navy)}
+#ainote{margin-top:11px;padding:9px 11px;background:#FFF6E4;border-left:4px solid #B06A15;border-radius:0 6px 6px 0;
+ font-size:11px;color:#7A5A10;line-height:1.55}
+#aihist{margin-top:11px;font-size:11.5px;color:var(--mut);max-height:110px;overflow-y:auto}
+#aihist div{padding:5px 0;border-top:1px dashed var(--line);cursor:pointer}
+#aihist div:hover{color:var(--blue)}
+@media(max-width:700px){#aipanel{right:10px;left:10px;width:auto}}
+
 /* ---------- MAIN ---------- */
 #main{flex:1;overflow-y:auto;padding:22px 30px 70px;height:100%}
 #main::-webkit-scrollbar{width:11px}
@@ -246,7 +281,7 @@ h3.ghd .gdot2{width:11px;height:11px;border-radius:50%}
     <b>Jin-Myung Kim, MD, PhD</b><br>
     Division of Kidney &amp; Pancreas Transplantation<br>
     Asan Medical Center, Seoul
-    <span class="ver" id="verchip">Version 2.3 · 2026.08</span>
+    <span class="ver" id="verchip">Version 2.5 · 2026.09</span>
     <div id="verline">콘텐츠 <span id="cver">2.0</span> · <span id="cdate">2026.08</span></div>
     <button class="upbtn" id="upcheck">업데이트 확인</button>
     <button class="edbtn" id="edtoggle" onclick="toggleEdit()">편집 모드</button>
@@ -301,6 +336,31 @@ h3.ghd .gdot2{width:11px;height:11px;border-radius:50%}
     <button class="edb pri" onclick="saveEditor()">저장</button>
   </div>
 </div></div>
+
+
+<button id="aifab" onclick="toggleAI()">&#128172; AI에게 묻기</button>
+<div id="aipanel">
+  <div id="aihead"><b>&#128172; AI에게 묻기</b>
+    <button onclick="clearAIHist()">기록 지우기</button>
+    <button onclick="toggleAI()">닫기</button></div>
+  <div id="aibody">
+    <textarea id="aiq" placeholder="궁금한 것을 자유롭게 적으세요.&#10;예) 이식 후 3년 된 환자에서 Cr이 1.2에서 1.6으로 올랐는데 어떤 순서로 접근할까요?"></textarea>
+    <div class="aichips" id="aichips"></div>
+    <div class="aiopt"><span>보낼 곳</span>
+      <select id="aiengine">
+        <option value="perplexity">Perplexity — 로그인 불필요, 출처 표시</option>
+        <option value="chatgpt">ChatGPT</option>
+        <option value="gemini">Google Gemini</option>
+        <option value="claude">Claude</option>
+        <option value="google">Google 검색</option>
+        <option value="pubmed">PubMed 검색</option>
+      </select>
+    </div>
+    <button id="aigo" onclick="askAI()">새 창에서 질문하기</button>
+    <div id="ainote"><b>참고</b> — 이 창은 질문을 다듬어 외부 AI로 연결해 주는 도구입니다. 답변은 <b>참고용</b>이며 반드시 검증하십시오. <b>환자 이름·등록번호 등 식별정보는 입력하지 마세요.</b></div>
+    <div id="aihist"></div>
+  </div>
+</div>
 
 <div id="upbar"><span id="upmsg"></span><button id="upapply">적용</button><button id="updismiss">나중에</button></div>
 
@@ -557,7 +617,7 @@ ${T(['값','해석'],[
 <p class="mut">다발성 이식, 최근 조직검사, 감염 등에서 위양성 가능 — 단독으로 판단하지 않는다.</p>` },
 
 rej: { g:'면역억제 · 거부', t:'거부반응 — 진단과 치료', s:'조직검사 적응증 · Banff별 치료', kw:'거부반응 rejection ABMR TCMR Banff biopsy 조직검사 ATG 혈장교환 rituximab',
- rel:['banff','cr','dsa','abo','fk'], h:`
+ rel:['banff','biopsy','cr','dsa','abo','fk'], h:`
 <h3>조직검사 적응증</h3>
 ${T(['적응증','역치'],[
  ['원인 미상 Cr 상승','baseline 대비 ≥ 20–25%, 2주 이상 지속'],
@@ -683,7 +743,7 @@ ${BOX('note','흔한 실수',UL([
  '바이러스가 떨어지자마자 원래 용량으로 복귀 → 재발'
 ]))}` },
 
-cmv: { g:'감염', t:'CMV viremia · CMV 질환', s:'위험도 층화 · valganciclovir 용법', kw:'CMV 거대세포바이러스 ganciclovir valganciclovir 발간시클로버 D+/R-',
+cmv: { g:'감염', t:'CMV viremia · CMV 질환', s:'위험도 층화 · valganciclovir 용법', kw:'CMV 거대세포바이러스 ganciclovir valganciclovir 발간시클로버 D+/R- titer 역가 수치 추세 log 불응 내성 UL97 UL54 foscarnet maribavir 재발 종료기준',
  rel:['wbc','ddi','fever'], h:`
 <h3>위험도 층화</h3>
 ${T(['D/R 혈청형','위험','전략'],[
@@ -704,6 +764,53 @@ ${T(['상황','치료'],[
  ['불응 / 재발','내성(UL97, UL54) 검사 → foscarnet·cidofovir·maribavir, 감염내과 협진']
 ])}
 
+
+<h3>수치 변화에 따른 관리 — 무엇을 보고 무엇을 할 것인가</h3>
+${BOX('note','판독의 기본 규칙',UL([
+ '<b>단일 수치보다 추세(kinetics)가 중요하다.</b> 같은 값이라도 오르는 중인지 내리는 중인지에 따라 대응이 다르다.',
+ '<b>같은 검사실·같은 단위(IU/mL)로만 비교</b>한다. 기관이 바뀌면 절대값 비교가 무의미하다.',
+ '<b>1 log 변화 = 10배</b>다. 검사 간 0.5 log(약 3배) 이내의 변동은 검사 오차 범위로 볼 수 있다.',
+ '치료 중에는 <b>주 1회</b>, 예방·감시 중에는 <b>주 1회~2주 1회</b> 간격으로 측정해야 추세를 읽을 수 있다.',
+]))}
+${T(['혈장 CMV DNA','증상','조치'],[
+ ['<b>검출 안 됨</b>','—','예방 중이면 유지 · preemptive 중이면 <b>주 1회 감시 계속</b>'],
+ ['<b>검출되나 정량 하한 미만</b>','없음','<b>치료하지 않고 1주 뒤 재검.</b> 상당수는 자연 소실된다'],
+ ['<b>저역가 (기관 cut-off 미만)</b><br>대략 &lt; 1,000 IU/mL','없음','<b>1주 뒤 재검.</b> 고위험군(D+/R−, ATG 사용, 최근 거부치료)이면 역치를 낮춰 치료를 앞당긴다'],
+ ['<b>기관 cut-off 초과</b><br>또는 <b>연속 2회 상승</b>','없음','<b>선제치료 시작</b> — Valganciclovir 900 mg 1일 2회 · <b>MMF 25–50% 감량</b> · 주 1회 추적'],
+ ['<b>1주 만에 1 log 이상 상승</b>','없음/경미','<b>빠른 증식 — 즉시 치료 시작.</b> cut-off 미달이어도 치료한다'],
+ ['<b>어떤 수치든 + 증상</b>','발열·백혈구감소·혈소판감소·설사·시야이상','<b>CMV 증후군/조직침습성 질환으로 간주하고 즉시 치료.</b> 조직침습성이 의심되면 <b>수치가 낮거나 음성이어도</b> 치료(특히 위장관·망막은 혈중 음성 가능)'],
+])}
+
+<h3>치료 시작 후 — 반응을 어떻게 판정하나</h3>
+${T(['치료 후 경과','해석','조치'],[
+ ['<b>1–2주에 하강 시작</b>','정상적인 반응','현 용량 유지, <b>주 1회 추적</b>'],
+ ['<b>2주째에도 변화 없음(plateau)</b>','흔히 있는 경과','용량·복약·흡수 확인 · <b>MMF를 아직 안 줄였으면 지금 줄인다</b> · 1주 더 관찰'],
+ ['<b>2주 이상 정체 또는 재상승</b>','<span class="pill py">불응 의심</span>','① 용량이 신기능 대비 <b>과소</b>하지 않은지 ② 경구 흡수 문제(설사·구토) → <b>IV ganciclovir로 전환</b> ③ 면역억제를 더 줄일 수 있는지'],
+ ['<b>적정 치료 2주 후에도 1 log 이상 감소 실패</b>','<span class="pill pr">내성 의심</span>','<b>UL97 / UL54 유전자형 검사</b> · 감염내과 협진 · <b>foscarnet · cidofovir · maribavir</b> 전환 검토'],
+ ['<b>2주 간격 2회 연속 음성</b>','치료 종료 기준 충족','<b>최소 2주 이상 치료했다면 종료.</b> 증상도 소실되어야 한다'],
+ ['<b>종료 후 재상승</b>','재발 (특히 D+/R−, 조직침습성이었던 경우)','<b>재치료</b> + 종료 후 <b>유지요법(valganciclovir 900 mg 1일 1회) 1–3개월</b> 고려'],
+])}
+${BOX('warn','치료 종료를 서두르지 않는다',UL([
+ '<b>"2주 간격으로 2회 연속 음성"</b>이 표준 종료 기준이다. 한 번 음성이 나왔다고 끊으면 재발률이 높다.',
+ '<b>최소 치료 기간은 2주</b>다. 수치가 빨리 떨어져도 2주는 채운다.',
+ '조직침습성 질환(대장염·폐렴·망막염)은 <b>증상 소실 + 음전</b>을 모두 확인한다.',
+ '종료 후에도 <b>고위험군은 4–8주간 감시</b>를 이어간다.',
+]))}
+
+<h3>치료 중 면역억제제 조정</h3>
+${T(['상황','조정'],[
+ ['무증상 viremia','<b>MMF 25–50% 감량</b> (예: 750 → 500 또는 500 → 250 mg 1일 2회)'],
+ ['CMV 증후군 · 조직침습성 질환','<b>MMF 중단</b>'],
+ ['중증 · 불응','MMF 중단 + <b>CNI 감량</b> 고려 (거부 위험과 저울질)'],
+ ['백혈구감소 동반','<b>MMF 먼저 중단</b> → 그래도 ANC &lt; 1,000이면 valganciclovir 감량 또는 <b>G-CSF (filgrastim 300 μg 1일 1회 SC)</b>'],
+ ['회복 후','바이러스 음전 + 안정 확인 후 <b>MMF를 단계적으로 복귀</b>. 복귀 후 4주간 CMV 재검'],
+])}
+${BOX('note','흔한 함정',UL([
+ '<b>용량 부족이 불응의 가장 흔한 원인</b>이다 — 신기능이 좋아졌는데 감량된 용량을 그대로 쓰고 있지 않은지 확인한다.',
+ '<b>설사가 있으면 경구 흡수가 떨어진다</b> — 반응이 나쁘면 IV로 바꾼다.',
+ '<b>백혈구감소를 valganciclovir 탓으로만 돌리지 않는다</b> — MMF가 더 흔한 원인이다. MMF를 먼저 조정한다.',
+ '<b>망막염은 혈중 CMV가 음성일 수 있다</b> — 시야 이상·비문증을 호소하면 안과 의뢰를 미루지 않는다.',
+]))}
 <h3>Valganciclovir 신기능별 용량 (mg)</h3>
 ${T(['eGFR','예방','치료'],[
  ['≥ 60','900 qd','900 bid'],['30–59','450 qd','450 bid'],
@@ -1343,7 +1450,7 @@ ${BOX('note','절대 잊지 말 것 (7)',UL([
 
 /* ===== ADDED TOPICS v2 ===== */
 DB.dgf = { g:'이식신 기능', t:'DGF · 초기 핍뇨 / 무뇨', s:'이식 후 1주 이내 투석 필요 또는 Cr 감소 실패', kw:'DGF 지연이식신기능 핍뇨 무뇨 delayed graft function slow graft function',
- rel:['cr','obstr','rej','early'], h:`
+ rel:['cr','obstr','rej','early','oliguria','deceased'], h:`
 ${T(['정의','내용'],[
  ['DGF','이식 후 <b>첫 1주 이내 투석이 필요한 경우</b> (가장 널리 쓰이는 정의). 뇌사자 기증에서 20–40%, 생체 기증에서는 드묾'],
  ['Slow graft function','투석은 필요 없으나 POD 7에도 Cr &gt; 3 mg/dL 또는 감소가 느린 경우'],
@@ -1868,12 +1975,12 @@ ${QA('이식한 콩팥은 얼마나 오래 가나요?',
 '')}` };
 
 DB.about = { g:'참조', t:'프로그램 정보 (About)', s:'제작 · 버전 · 사용 조건', kw:'정보 about 버전 version 제작 김진명 라이선스',
- rel:['refs'], h:`
+ rel:['refs','changelog'], h:`
 ${T(['항목','내용'],[
  ['<b>프로그램명</b>','신장이식 외래 프로토콜 도구 (Kidney Transplant Outpatient Protocol Tool)'],
  ['<b>제작</b>','<b>Jin-Myung Kim, MD, PhD</b> (김진명)'],
  ['<b>소속</b>','Division of Kidney and Pancreas Transplantation, Department of Surgery<br>Asan Medical Center, University of Ulsan College of Medicine, Seoul, Korea<br>서울아산병원 외과 신장·췌장이식분과'],
- ['<b>버전</b>','<b>Version 2.3</b> · 2026년 8월'],
+ ['<b>버전</b>','<b>Version 2.5</b> · 2026년 9월'],
  ['<b>용도</b>','신장이식 수여자의 외래 진료 · 환자 상담을 위한 <b>진료 참고 도구</b>'],
  ['<b>근거</b>','KDIGO · AST-IDCOP · BK 제2차 국제합의(2024) · CMV 제3차 국제합의(2018) · PTDM 국제합의(2024) · Banff 2022 — 자세한 목록은 "근거 문헌" 항목 참조'],
 ]) }
@@ -1881,125 +1988,8 @@ ${BOX('warn','사용 시 유의',UL([
  '본 도구는 <b>진료 참고 자료</b>이며 임상 판단이나 기관 프로토콜을 대체하지 않는다.',
  '<b>CNI 목표 농도 · protocol biopsy 시점 · CMV 예방 전략 · BK 검사 단위</b> 등 기관마다 다른 항목은 자체 프로토콜과 대조하여 사용한다.',
  '약물 용량은 처방 전 최신 허가사항과 신기능을 반드시 재확인한다.',
- '<b>환자 Q&A</b> 항목은 환자에게 그대로 읽어드릴 수 있도록 쓰여 있으며, 회색 상자의 "진료 팁"은 의료진용이다.',
+ '<b>환자 Q&A</b> 항목은 환자에게 그대로 읽어드릴 수 있도록 쓰여 있으며, 옅은 노란 상자의 "진료 팁"은 의료진용이다.',
 ])) }` };
-
-
-DB.deploy = { g:'참조', t:'배포와 업데이트 (Deployment)', s:'배포한 파일을 자동으로 최신으로 유지하는 방법', kw:'배포 업데이트 자동 github 깃허브 pages content.json 버전 관리 공개 공유',
- rel:['about'], h:`
-${BOX('ok','작동 방식',UL([
- '배포된 HTML 파일은 열릴 때마다 <b>인터넷에 올려둔 content.json</b>을 확인한다.',
- '더 높은 버전이 올라와 있으면 화면 아래에 <b>"새 버전이 있습니다"</b> 안내가 뜨고, <b>적용</b>을 누르면 즉시 내용이 최신으로 바뀐다.',
- '한 번 받은 내용은 브라우저에 저장되므로, <b>인터넷이 없어도</b> 마지막으로 받은 최신 내용으로 계속 쓸 수 있다.',
- '즉 <b>파일을 다시 배포할 필요 없이</b>, content.json만 갈아 끼우면 모든 사용자에게 반영된다.',
-]))}
-
-<h3>1회 설정 — GitHub 저장소 만들기 (무료)</h3>
-${T(['단계','내용'],[
- ['①','<b>github.com</b> 가입 후 <b>New repository</b> → 이름 예: <code>kt-protocol</code> → <b>Public</b>으로 생성'],
- ['②','저장소에 <b>content.json</b>을 업로드 (Add file → Upload files)'],
- ['③','업로드된 content.json을 클릭 → 우측 <b>Raw</b> 버튼 → 주소창의 URL을 복사<br><span class="mut">형식: https://raw.githubusercontent.com/<b>사용자명</b>/<b>저장소명</b>/main/content.json</span>'],
- ['④','HTML 파일을 메모장·VS Code로 열어 <code>const UPDATE_URL = \'...\'</code> 줄을 찾아 <b>복사한 주소로 교체</b>하고 저장'],
- ['⑤','이 HTML 파일을 동료·전공의에게 배포한다. <b>이후로는 파일을 다시 보낼 필요가 없다.</b>'],
-])}
-
-<h3>내용을 수정하는 방법 — 코드를 만지지 않습니다</h3>
-${BOX('ok','편집 모드',
- '<p style="margin-bottom:8px">왼쪽 아래 <b>"편집 모드"</b> 버튼을 누르면 화면에서 바로 고칠 수 있습니다. HTML도 JSON도 열 필요가 없습니다.</p>'
- + '<ul style="margin:0 0 8px 18px"><li><b>이 항목 편집</b> — 지금 보고 있는 항목을 고칩니다</li>'
- + '<li><b>새 항목</b> — 항목을 새로 만듭니다</li>'
- + '<li><b>항목 삭제</b> — 편집창 왼쪽 아래</li></ul>'
- + '<p>왼쪽에 글을 쓰면 <b>오른쪽에 결과가 바로</b> 보입니다. 고친 내용은 자동으로 보관되므로 창을 닫아도 남아 있습니다.</p>')}
-
-${T(['쓰는 법','입력','결과'],[
- ['소제목','<code>## 소제목</code>','굵은 파란 제목'],
- ['목록','<code>- 항목</code>','● 목록'],
- ['굵게','<code>**중요**</code>','<b>중요</b>'],
- ['작은 설명','<code>&gt; 덧붙이는 말</code>','흐린 작은 글씨'],
- ['<b>표</b>','<code>| 항목 | 내용 |</code><br>줄마다 이렇게. <b>첫 줄이 표의 제목 줄</b>','표'],
- ['<b>색깔 상자</b>','<code>:::주의 제목</code> 으로 시작<br><code>:::</code> 으로 닫기','빨간 상자 (주의 / 참고 / 권장)'],
-])}
-${BOX('note','더 쉬운 방법','편집창 위쪽의 <b>소제목 · 목록 · 표 · 빨간 상자</b> 버튼을 누르면 틀이 자동으로 들어갑니다. 글자만 바꾸시면 됩니다. 문법을 외우실 필요가 없습니다.')}
-
-<h3>고친 내용을 배포하기 — 매번 하는 일</h3>
-${BOX('ok','내보내기',
- '<p style="margin-bottom:9px">내용을 고친 뒤 아래 버튼을 누르면 <b>content.json이 바로 다운로드</b>됩니다. 프로그램 설치도, 명령어 입력도 필요 없습니다.</p>'
- + '<button onclick="exportContent()" style="font-size:13px;padding:8px 18px;border:none;background:#2E5C8A;color:#fff;border-radius:7px;cursor:pointer;font-family:inherit;font-weight:700">content.json 내보내기</button>')}
-${T(['단계','내용'],[
- ['①','본인이 가진 <b>원본 HTML</b>을 수정한다 (항목 추가·수치 변경 등)'],
- ['②','같은 폴더에서 <code>node make_content.js 원본.html 2.1 "BK 감량 기준 갱신"</code> 실행<br><span class="mut">→ content.json이 새로 만들어진다. Node.js가 없으면 nodejs.org에서 설치</span>'],
- ['③','GitHub 저장소의 content.json을 <b>새 파일로 교체</b> (파일 클릭 → 연필 아이콘 → 내용 붙여넣기 → Commit)'],
- ['④','끝. <b>배포된 모든 파일이 다음에 열릴 때 자동으로 v2.1로 갱신된다.</b>'],
-])}
-${BOX('note','버전 번호 규칙','<b>반드시 이전보다 높은 숫자</b>여야 갱신된다 (2.0 → 2.1 → 2.2 …). 같거나 낮으면 무시된다. 세 번째 자리(2.1.3)까지 쓸 수 있다.')}
-
-<h3>더 간단한 방법 — 링크로 배포</h3>
-${BOX('ok','',UL([
- 'GitHub 저장소 설정에서 <b>Settings → Pages → Branch: main</b> 으로 켜면, HTML 자체가 웹주소로 열린다.<br><span class="mut">형식: https://<b>사용자명</b>.github.io/<b>저장소명</b>/</span>',
- '이 주소를 알려주면 <b>파일을 주고받을 필요 없이</b> 누구나 항상 최신본을 본다. 휴대폰·태블릿에서도 열린다.',
- '<b>파일 배포 + 링크 배포를 함께</b> 하는 것을 권한다 — 링크는 항상 최신, 파일은 인터넷이 없는 곳에서.',
-]))}
-
-<h3>알아둘 점</h3>
-${T(['항목','내용'],[
- ['오프라인','인터넷이 없으면 <b>마지막으로 받은 내용</b>으로 정상 작동한다. 조용히 실패하며 오류를 띄우지 않는다.'],
- ['수동 확인','사이드바 하단의 <b>"업데이트 확인"</b> 버튼으로 언제든 직접 확인할 수 있다.'],
- ['개인 메모','사용자가 붙인 이미지나 로고는 <b>업데이트해도 지워지지 않는다</b> (별도 저장).'],
- ['브라우저 제한','일부 환경(특히 인터넷 익스플로러, 일부 사내망)에서는 자동 확인이 막힐 수 있다. 이 경우에도 <b>내용은 정상적으로 표시</b>된다.'],
- ['<b>저작·책임</b>','공개 배포 시 <b>제작자 표시와 면책 문구를 지우지 말 것</b>을 함께 안내하는 것이 좋다.'],
-])}
-${BOX('warn','배포 전 확인',UL([
- '환자 식별정보가 포함된 이미지나 메모가 파일에 남아 있지 않은지 확인한다.',
- '기관마다 다른 항목(CNI 목표 농도, protocol biopsy 시점 등)이 본인 기관 기준으로만 되어 있음을 <b>배포 시 명시</b>한다.',
- '<b>진료 참고 자료이며 임상 판단을 대체하지 않는다</b>는 문구를 유지한다.',
-]))}` };
-
-
-DB.access = { g:'참조', t:'편집 권한 관리 (Access control)', s:'누가 내용을 고칠 수 있게 할 것인가', kw:'권한 암호 비밀번호 잠금 편집 관리자 보안 access password',
- rel:['deploy','about'], h:`
-${BOX('warn','먼저 알아두실 것 — 솔직한 설명',UL([
- '이 프로그램은 <b>파일 하나로 동작하는 문서</b>이므로, 마음먹고 들여다보는 사람에게는 <b>어떤 잠금도 완전하지 않습니다.</b> 브라우저에서 소스를 열면 내용은 볼 수 있습니다.',
- '따라서 여기서의 암호는 <b>"실수로 고치는 것을 막는 장치"</b>이지, 보안 장치가 아닙니다.',
- '<b>진짜 통제는 GitHub에서 이루어집니다.</b> 누군가 자기 컴퓨터에서 내용을 고쳐도 그것은 <b>그 사람 브라우저에만</b> 남습니다. 실제로 배포본을 바꾸려면 <b>선생님 GitHub 저장소에 파일을 올릴 수 있어야</b> 하고, 그 권한은 선생님만 가지고 있습니다.',
- '즉 <b>편집 권한 암호 = 실수 방지 + 화면 정리</b>, <b>GitHub 계정 = 실제 배포 권한</b> 입니다.',
-]))}
-
-<h3>어떻게 열리나</h3>
-${T(['방법','설명'],[
- ['<b>버전 칩 3번 클릭</b>','왼쪽 아래 <b>"Version 2.3 · 2026.08"</b> 칩을 <b>1.2초 안에 세 번</b> 누르면 암호 입력창이 뜹니다.'],
- ['<b>Ctrl + Shift + E</b>','키보드로도 열 수 있습니다.'],
- ['암호 입력','맞으면 왼쪽 아래에 <b>"편집 모드"</b> 버튼과 <b>🔓 편집 권한 열림</b> 표시가 나타납니다.'],
- ['유지 범위','<b>[확인]</b> 이 컴퓨터에서 계속 유지 / <b>[취소]</b> 브라우저를 닫으면 잠김.<br><b>공용 컴퓨터라면 반드시 [취소]</b>를 고르세요.'],
- ['다시 잠그기','같은 방법으로 다시 열어 <b>"잠글까요?"</b> 에 확인을 누르면 잠깁니다.'],
-])}
-${BOX('note','일반 사용자에게는 보이지 않습니다','암호를 넣기 전에는 <b>편집 모드 버튼 자체가 화면에 없습니다.</b> 배포받은 동료·전공의는 평소처럼 읽기만 하게 됩니다.')}
-
-<h3>암호 바꾸기 — 배포 전에 꼭 하세요</h3>
-${BOX('warn','기본 암호는 <code>amckt2026</code> 입니다','이 파일을 그대로 배포하면 이 가이드를 읽은 누구나 편집 모드를 열 수 있습니다. <b>배포 전에 반드시 바꾸세요.</b>')}
-${T(['단계','내용'],[
- ['①','아래 <b>새 암호 만들기</b> 버튼을 누르고 원하는 암호를 입력합니다.'],
- ['②','두 줄짜리 코드가 만들어지고 <b>클립보드에 자동 복사</b>됩니다.'],
- ['③','HTML 파일을 메모장으로 열어 <code>Ctrl+F</code> 로 <code>EDIT_SHA</code> 를 찾습니다.'],
- ['④','거기 있는 <b>두 줄을 지우고</b> 복사한 두 줄을 붙여넣은 뒤 저장합니다.'],
- ['⑤','파일을 다시 열어 새 암호로 들어가지는지 확인합니다.'],
-])}
-<p style="margin-top:10px"><button onclick="makePassHash()" style="font-size:13px;padding:8px 18px;border:none;background:#2E5C8A;color:#fff;border-radius:7px;cursor:pointer;font-family:inherit;font-weight:700">새 암호 만들기</button></p>
-<pre id="hashout" style="display:none;background:#0E2745;color:#8FD3F5;padding:12px 15px;border-radius:8px;margin-top:10px;font-size:12.5px;white-space:pre-wrap;word-break:break-all"></pre>
-${BOX('note','암호는 파일에 그대로 저장되지 않습니다','입력한 암호는 <b>해시(단방향 암호화)</b>로만 파일에 들어갑니다. 파일을 열어봐도 암호 자체는 보이지 않습니다. 다만 위에서 말씀드린 대로, 이는 실수 방지 수준의 보호입니다.')}
-
-<h3>여러 명에게 권한을 줄 때</h3>
-${UL([
- '같은 암호를 알려주면 여러 명이 편집 모드를 쓸 수 있습니다.',
- '다만 <b>각자 고친 내용은 각자 브라우저에만</b> 남습니다. 서로 합쳐지지 않습니다.',
- '공동 작업을 하시려면 — 각자 <b>content.json 내보내기</b> 로 파일을 만들어 선생님께 보내고, <b>선생님이 최종본을 GitHub에 올리는</b> 방식이 가장 안전합니다.',
- '본격적인 공동 편집이 필요해지면 GitHub 저장소에 <b>Collaborator</b> 로 초대하는 방법도 있습니다 (Settings → Collaborators).',
-])}
-${BOX('ok','권장 운영 방식',UL([
- '<b>선생님</b> — 암호 보유 + GitHub 계정. 최종 검토와 배포를 담당',
- '<b>같이 만드는 동료 1–2명</b> — 암호만 공유. 수정본을 파일로 보내줌',
- '<b>일반 사용자(전공의·동료)</b> — 암호 없이 읽기만. 업데이트는 자동으로 받음',
- '<b>내용에 대한 최종 책임은 배포자에게</b> 있으므로, 남이 보낸 수정은 반드시 검토 후 반영하세요',
-]))}` };
 
 
 DB.dental = { g:'시기 · 특수', t:'치과 치료 · 임플란트', s:'예방적 항생제 · 시술 시기 · 주의점', kw:'치과 임플란트 발치 스케일링 신경치료 근관 잇몸 치주 항생제 예방 amoxicillin 클린다마이신 마취 국소마취 발치후 진통제',
@@ -2125,6 +2115,307 @@ ${BOX('note','환자 교육 문장',UL([
  '"물을 충분히 드세요. 탈수만으로도 콩팥 수치가 오릅니다."',
  '"다른 병원에서 <b>항생제를 받으시면 알려주세요.</b> 면역억제제 농도가 바뀌는 종류가 있습니다."',
 ]))}` };
+
+
+DB.biopsy = { g:'면역억제 · 거부', t:'조직검사 — 언제 할 것인가', s:'적응증 · 준비 · 합병증 · 결과 해석까지', kw:'조직검사 biopsy 생검 적응증 언제 protocol indication 출혈 준비 항혈전제 동의서',
+ rel:['cr','prot','dsa','banff','rej'], h:`
+${BOX('warn','한 문장 원칙','<b>이식신 조직검사의 역치는 낮게 유지한다.</b> 원인 미상의 Cr 상승이 2주 이상 지속되면 미루지 않는다. 늦은 조직검사로 놓친 거부반응은 되돌리기 어렵다.')}
+
+<h3>적응증 (Indication biopsy)</h3>
+${T(['상황','역치','비고'],[
+ ['<b>원인 미상 Cr 상승</b>','baseline 대비 <b>≥ 20–25%</b>가 <b>2주 이상</b> 지속','prerenal·약물·폐색·감염을 먼저 배제한 뒤'],
+ ['<b>급격한 Cr 상승</b>','<b>≥ 50%</b> 또는 소변량 급감','<b>당일 초음파 후 즉시</b> 고려, 입원'],
+ ['<b>단백뇨</b>','UPCR <b>&gt; 1,000 mg/g</b> 신규 또는 증가','재발성 GN·만성 ABMR 감별'],
+ ['<b>de novo DSA 출현</b>','MFI 상승 + 신기능 변화<br>또는 MFI 단독 고도 상승','subclinical ABMR을 놓치지 않기 위해'],
+ ['<b>dd-cfDNA</b>','<b>&gt; 1.0%</b>','회색지대(0.5–1.0%)는 2–4주 후 재검'],
+ ['<b>DGF 지속</b>','이식 후 <b>1주 이상</b> 핍뇨/무뇨','DGF 상태에서는 임상적으로 거부를 알 수 없다'],
+ ['<b>BKV 지속 + 신기능 저하</b>','감량에도 상승/정체','<b>BKVN vs 거부</b> 감별 — 치료 방향이 정반대'],
+ ['거부반응 치료 후','치료 종료 <b>2–4주</b> 후','반응 판정이 필요할 때'],
+ ['이식신 기능 서서히 악화','eGFR slope &lt; <b>−2 mL/min/년</b>','만성 손상의 원인과 가역성 평가'],
+])}
+
+<h3>Protocol biopsy (계획된 조직검사)</h3>
+${T(['시점','대상','목적'],[
+ ['<b>Time-zero</b> (이식 시)','전 예','공여신 기저 병변 — 이후 판독의 기준선'],
+ ['<b>2주</b>','<b>ABO 부적합 · desensitization</b>','조기 항체매개거부 발견'],
+ ['<b>3–6개월</b>','고위험군 (DSA+, 재이식, 높은 PRA)','<b>subclinical rejection</b> 발견'],
+ ['<b>1년</b>','기관 정책에 따라','만성 변화 평가, 면역억제 감량의 근거'],
+])}
+${BOX('note','기관마다 다르다','Protocol biopsy의 시행 여부와 시점은 기관 정책의 영역이다. <b>본원 프로토콜과 대조</b>하여 사용한다. 다만 <b>indication biopsy의 역치를 낮게 유지</b>하는 것은 어디서나 원칙이다.')}
+
+<h3>검사 전 준비</h3>
+${T(['항목','내용'],[
+ ['<b>혈액</b>','CBC(<b>Hb·혈소판</b>), PT/aPTT, 혈액형·교차시험(출혈 대비)'],
+ ['<b>혈압</b>','<b>&lt; 160/90으로 조절</b>한 뒤 시행 — 조절되지 않은 고혈압은 출혈 위험'],
+ ['<b>항혈전제</b>','<b>Aspirin 5–7일 전 중단</b> · Clopidogrel <b>5–7일</b> · Warfarin <b>3–5일</b>(INR &lt; 1.5 확인) · DOAC <b>2–3일</b>(신기능 고려) · 필요 시 heparin bridging'],
+ ['<b>영상</b>','시행 직전 <b>초음파로 위치·깊이·혈관·수신증 확인</b>'],
+ ['<b>금식</b>','통상 4–6시간'],
+ ['<b>감염</b>','활동성 요로감염·피부감염이 있으면 치료 후로 연기'],
+ ['<b>동의서</b>','출혈(수혈·색전술·수술 가능성), 동정맥루, 감염, 인접 장기 손상, 검체 부적정으로 재검 가능성'],
+])}
+
+<h3>검체 적정성 — 결과지에서 반드시 확인</h3>
+${T(['기준','내용'],[
+ ['<b>적정</b>','사구체 <b>≥ 10개</b> + 동맥 <b>≥ 2개</b>'],
+ ['최소','사구체 7–9개 + 동맥 1개'],
+ ['<b>부적정</b>','사구체 <b>&lt; 7개</b> 또는 동맥 0개 — <b>음성 결과를 그대로 믿지 않는다</b>'],
+ ['<b>BKVN 의심 시</b>','병변이 국소적(수질 우세)이므로 <b>코어 2개 이상</b> 채취 — 1개면 위음성 가능'],
+ ['보내는 검체','광학현미경 + <b>면역형광</b> + 필요 시 전자현미경 · <b>C4d</b> · BKV 의심 시 <b>SV40</b>'],
+])}
+
+<h3>검사 후 관리와 합병증</h3>
+${T(['항목','내용'],[
+ ['관찰','<b>4–6시간 침상안정</b>, 활력징후·소변색 확인. 대부분의 출혈은 <b>4–8시간 이내</b> 발현'],
+ ['<b>육안적 혈뇨</b>','가장 흔한 합병증(약 3–5%). 대개 자연 소실 — 수분 공급, 관찰. 혈괴로 폐색되면 도뇨·방광세척'],
+ ['<b>주위 혈종</b>','통증·Hb 감소·혈압 저하 → <b>초음파/CT</b>, 필요 시 수혈·<b>혈관색전술</b>'],
+ ['<b>동정맥루</b>','대개 무증상·자연 소실. 지속적 혈뇨나 신기능 저하 시 색전술'],
+ ['<b>즉시 연락 기준</b>','심한 통증 · 육안적 혈뇨 지속 · 어지럼·혈압 저하 · 발열'],
+ ['퇴원 후','<b>1–2주간 무거운 것 들기·격한 운동 금지</b>, 항혈전제 재개 시점은 개별 결정'],
+])}
+${BOX('warn','조직검사 전 반드시 확인할 것',UL([
+ '<b>BK virus PCR 결과</b> — BKVN을 거부로 오인해 치료하면 이식신을 잃는다',
+ '<b>혈소판·응고 검사와 항혈전제 중단 여부</b>',
+ '<b>혈압이 조절되어 있는지</b>',
+ '<b>초음파로 폐색·액체저류가 없는지</b> — 폐색이면 조직검사가 아니라 감압이 답이다',
+]))}` };
+
+DB.oliguria = { g:'이식신 기능', t:'소변량 감소 · 무뇨', s:'가장 급한 신호 — 당일 처리', kw:'소변량 감소 핍뇨 무뇨 oliguria anuria 소변 안나옴 요폐 카테터 폐색',
+ rel:['cr','obstr','dgf','redflag'], h:`
+${BOX('warn','원칙','<b>소변량 감소는 당일 처리 대상이다.</b> "내일 외래 오세요"가 아니라 그날 초음파를 찍는다. 폐색과 혈관 사건은 시간이 지날수록 회복이 불완전해진다.')}
+
+<h3>정의</h3>
+${T(['용어','기준'],[
+ ['<b>핍뇨 (oliguria)</b>','<b>&lt; 400–500 mL/day</b> 또는 &lt; 0.5 mL/kg/hr'],
+ ['<b>무뇨 (anuria)</b>','<b>&lt; 100 mL/day</b> — <b>혈관 폐쇄·완전 요로폐색을 강하게 시사</b>'],
+ ['상대적 감소','평소 소변량의 <b>절반 이하</b>로 줄었다면 절대값이 정상 범위여도 조사 대상'],
+])}
+
+<h3>접근 순서 — 5분 안에</h3>
+${CH([
+ {n:'1. 방광',d:'도뇨/잔뇨 측정',k:'crit'},
+ {n:'2. 초음파',d:'수신증·혈류',k:'crit'},
+ {n:'3. 용적',d:'혈압·체중·탈수'},
+ {n:'4. 약물',d:'NSAID·ARB·조영제'},
+ {n:'5. 거부/혈관',d:'DSA·Doppler',k:'warn'},
+])}
+${T(['단계','확인','조치'],[
+ ['<b>① 방광 · 도뇨관</b>','도뇨관이 막히지 않았는가 · 잔뇨가 있는가 (방광스캔)','<b>가장 먼저, 가장 쉽게 해결된다.</b> 도뇨관 세척·교체, 잔뇨 많으면 도뇨'],
+ ['<b>② 이식신 초음파 (당일)</b>','<b>수신증</b> · 주위 액체저류(요종·혈종·림프낭종) · <b>Doppler 혈류·RI</b>','수신증 → <b>PCN 또는 요관 스텐트</b> · 혈류 없음 → <b>응급 수술 상담</b>'],
+ ['<b>③ 용적 상태</b>','혈압·기립성·체중 변화·설사/구토·이뇨제 증량','탈수면 <b>수액</b>, 이뇨제·ARB 일시 중단 후 재평가'],
+ ['<b>④ 약물</b>','<b>NSAID · ACEi/ARB · 조영제 · aminoglycoside · CNI 과다</b>','중단·감량, FK 농도 확인'],
+ ['<b>⑤ 거부반응·혈관</b>','DSA · 이식신 압통 · Doppler(동맥협착·정맥혈전)','<b>조직검사</b> 또는 혈관 중재'],
+])}
+${T(['시기','가장 먼저 의심할 것'],[
+ ['<b>POD 0–7일</b>','<b>혈관 혈전 · 요누출 · 요관 폐색 · DGF</b> — 응급'],
+ ['<b>스텐트 제거 직후</b>','<b>요관 부종·협착</b> — 흔한 시나리오다'],
+ ['<b>1주–3개월</b>','요관 협착 · 림프낭종 압박 · 급성 거부 · 탈수'],
+ ['<b>1년 이후</b>','탈수 · 약물 · 요로 폐색(결석·BPH) · 진행성 이식신 손상'],
+])}
+${BOX('warn','즉시 입원 · 응급 처치',UL([
+ '<b>무뇨 (&lt; 100 mL/day)</b>',
+ '<b>초음파에서 혈류가 보이지 않을 때</b> — 이식신 동맥/정맥 혈전, 즉시 수술 상담',
+ '<b>양측성 수신증 또는 단일 이식신의 폐색 + 급성 신부전</b> — 감압 우선',
+ '<b>고칼륨혈증(K &gt; 6.0)·산증·폐부종 동반</b> — 투석 준비',
+ '이식신 압통 + 발열 동반',
+]))}` };
+
+DB.donor = { g:'시기 · 특수', t:'이식 준비 — 수여자 평가', s:'등록부터 수술까지 무엇을 하나', kw:'이식준비 수여자 대기자 등록 KONOS 평가 검사 뇌사자 생체 crossmatch PRA HLA 심장평가 대기',
+ rel:['livingdonor','deceased','abo','preg'], h:`
+${BOX('note','목적','이식 전 평가의 목적은 두 가지다 — <b>① 이식으로 이득을 볼 수 있는가</b> ② <b>수술과 면역억제를 견딜 수 있는가</b>. 그리고 <b>이식 후 문제가 될 것을 미리 없애는 것</b>이다.')}
+
+<h3>기본 검사 — 전 예</h3>
+${T(['영역','항목'],[
+ ['<b>면역학</b>','<b>ABO 혈액형 · HLA 타이핑(A·B·C·DR·DQ) · PRA(class I·II) · DSA(SAB)</b> · 교차시험(CDC·flow)'],
+ ['혈액·생화학','CBC, 응고, 전해질, BUN/Cr, eGFR, LFT, 알부민, 지질, HbA1c, 요산'],
+ ['<b>감염</b>','<b>HBsAg·anti-HBs·anti-HBc · anti-HCV · HIV · VDRL/RPR · CMV IgG · EBV IgG · VZV IgG · 결핵(IGRA)</b> · 소변배양'],
+ ['<b>심장</b>','심전도 · <b>심초음파</b> · 고위험군(당뇨·장기 투석·고령·흡연)은 <b>부하검사 또는 관상동맥조영</b>'],
+ ['호흡기','흉부 X선 · 필요 시 폐기능·흉부 CT'],
+ ['<b>비뇨기</b>','방광 기능(잔뇨·요역동학) · 자가신 상태(ADPKD·결석·종양) · 반복 UTI 병력'],
+ ['<b>악성종양 선별</b>','위·대장내시경 · 흉부 CT(고위험) · 여성 자궁경부·유방 · 남성 PSA · 간초음파+AFP(간염 보유자)'],
+ ['치과','<b>감염원 제거</b> — 충치·치주염·잔존 치근'],
+ ['정신·사회','복약 순응 가능성, 우울, 사회적 지지, 경제적 준비'],
+ ['원인질환','재발 위험 평가 — FSGS·C3G·aHUS·항GBM·루푸스 등은 <b>재발 가능성과 대책</b>을 미리 논의'],
+])}
+
+<h3>이식을 미루거나 재고해야 할 상황</h3>
+${T(['상황','대응'],[
+ ['<b>활동성 감염</b>','치료 완료 후'],
+ ['<b>활동성 악성종양</b>','완치 후 <b>대기 기간</b> 필요 — 암종·병기에 따라 <b>2–5년</b>(일부는 대기 불필요). 종양내과와 협의'],
+ ['<b>중증 관상동맥질환</b>','혈관재개통 후 재평가'],
+ ['<b>조절되지 않는 정신질환·약물 중독</b>','안정화 후 — <b>비순응은 이식신 소실의 주된 원인</b>'],
+ ['<b>중증 비만</b>','기관 기준에 따라 체중 감량 후 — 창상·수술 위험'],
+ ['활동성 소화성 궤양·게실염','치료 후'],
+])}
+
+<h3>대기 중 관리</h3>
+${UL([
+ '<b>PRA·DSA를 정기적으로 재검</b> — 수혈·임신·감염 후에는 반드시 (감작 사건)',
+ '<b>수혈은 최소화</b>하고, 부득이하면 백혈구제거 혈액',
+ '<b>예방접종을 미리 완료</b> — <b>생백신은 이식 최소 4주 전까지</b>, B형간염 항체 확인',
+ '치과·대장내시경 등 <b>침습적 처치는 대기 중에</b> 끝낸다',
+ '심혈관 위험 관리와 투석 적정성 유지, 혈관통로 보존',
+ '<b>선제적 이식(preemptive)</b> — eGFR 15–20에서 생체 공여자가 있으면 투석 전 이식이 가장 좋은 결과를 낸다',
+])}
+
+<h3>수술 직전</h3>
+${T(['항목','내용'],[
+ ['<b>교차시험</b>','수술 직전 <b>최종 crossmatch</b> 확인'],
+ ['<b>감염 배제</b>','발열·상기도감염·설사·피부감염 → 연기 검토'],
+ ['<b>투석</b>','고칼륨·체액과다 시 수술 전 투석'],
+ ['도입요법','면역학적 위험도에 따라 <b>basiliximab 또는 ATG</b> — 기관 프로토콜'],
+ ['<b>예방</b>','수술부위 감염 예방 항생제 · 이후 <b>PJP(TMP-SMX)</b>, 위험도에 따라 <b>CMV 예방</b> 시작'],
+ ['ABOi·감작','<b>탈감작 프로토콜</b>(PP/IVIG·rituximab)과 titer 목표 확인'],
+])}` };
+
+DB.livingdonor = { g:'시기 · 특수', t:'생체 기증자 평가', s:'기증자의 안전이 최우선', kw:'생체 기증자 공여자 living donor 평가 검사 GFR CT angio 신장기능 안전 법적 절차 KONOS 승인',
+ rel:['donor','deceased'], h:`
+${BOX('warn','대전제','<b>기증자는 환자가 아니다.</b> 아무 이득 없이 위험을 감수하는 건강한 사람이므로, 평가의 목적은 <b>기증자의 장기적 안전</b>을 확인하는 데 있다. 조금이라도 의심스러우면 <b>기증하지 않는 쪽</b>이 원칙이다.')}
+
+<h3>1단계 — 선별 (외래 1–2회)</h3>
+${T(['항목','내용'],[
+ ['<b>혈액형·조직적합</b>','ABO · HLA · <b>교차시험</b> · 수여자 DSA 확인'],
+ ['<b>자발성 확인</b>','<b>강요·금전 거래가 없는지 독립적으로 면담.</b> 수여자와 분리된 자리에서'],
+ ['기본 검사','CBC, 생화학, 요검사, 소변 단백/알부민, 혈당·HbA1c, 지질, 감염 선별'],
+ ['<b>제외되는 명백한 조건</b>','<b>당뇨 · 조절되지 않는 고혈압 · 단백뇨 · eGFR 저하 · 활동성 악성종양 · HIV · 임신 · 중증 비만 · 정신적 부적합</b>'],
+])}
+
+<h3>2단계 — 신기능·해부 평가</h3>
+${T(['항목','기준 · 내용'],[
+ ['<b>측정 GFR</b>','<b>DTPA 등으로 측정.</b> 통상 <b>&gt; 80 mL/min/1.73m²</b>를 요구(연령 보정). 기증 후 잔여 신기능이 장기적으로 안전한 수준인지가 핵심'],
+ ['<b>분리신기능</b>','좌우 차이 확인 — <b>기능이 좋은 쪽을 기증자에게 남기고 나쁜 쪽을 준다</b>'],
+ ['<b>단백뇨</b>','24시간 소변 단백 <b>&lt; 300 mg/day</b> 또는 UACR 정상'],
+ ['<b>혈뇨</b>','지속되면 <b>사구체신염·결석·악성 배제</b> — 필요 시 신조직검사'],
+ ['<b>혈압</b>','<b>&lt; 140/90</b>이고 약제 1가지 이내로 조절되며 장기 손상이 없으면 기관에 따라 허용'],
+ ['<b>CT angiography</b>','<b>신동맥·신정맥의 수와 주행, 요관 해부, 결석·종양·낭종</b> 평가 → 수술 측 결정'],
+ ['<b>대사</b>','75g OGTT(가족력·비만 시), 요산, 결석 병력이면 24시간 소변 대사 검사'],
+ ['<b>유전</b>','원인질환이 <b>ADPKD·Alport·FSGS</b> 등 유전성이면 기증자 유전자·영상 평가 필수'],
+])}
+
+<h3>3단계 — 전신 평가와 상담</h3>
+${UL([
+ '심전도·흉부 X선, 연령에 따른 <b>심장 평가</b>',
+ '<b>연령별 악성종양 선별</b> — 위·대장내시경, 여성 자궁경부·유방',
+ '감염 선별 — HBV·HCV·HIV·결핵·CMV·EBV',
+ '<b>정신건강의학과 또는 사회사업 상담</b> — 자발성·이해도·기증 후 심리적 준비',
+ '여성은 <b>임신 계획</b> 상담 (기증 후 임신은 가능하나 임신성 고혈압·전자간증 위험이 다소 증가)',
+ '<b>기증 후 위험 설명</b> — 수술 합병증, 장기적으로 <b>말기신부전·고혈압 위험이 소폭 증가</b>, 평생 추적 필요',
+])}
+
+<h3>기증 후 — 평생 추적</h3>
+${T(['시점','내용'],[
+ ['<b>6개월 · 12개월</b>','혈압 · Cr/eGFR · 요단백'],
+ ['<b>이후 매년</b>','<b>혈압 · eGFR · 요알부민</b> — 평생'],
+ ['생활','<b>NSAID 회피</b> · 체중·혈압 관리 · 금연 · 충분한 수분'],
+ ['잔여 기능','기증 후 eGFR은 대개 <b>기증 전의 65–70%</b>로 회복'],
+])}
+${BOX('note','법적·행정 절차',UL([
+ '<b>장기이식법에 따른 절차</b> — 기증자 등록, <b>KONOS 승인</b>, 순수성 확인 절차(가족관계 서류 등)',
+ '비혈연 기증은 <b>추가 심의</b>가 필요하다',
+ '<b>기증자는 언제든 철회할 수 있으며</b>, 철회 사유는 비밀로 보호된다는 점을 반드시 설명한다',
+ '기증자 의료비·회복 기간 지원에 관한 제도를 안내한다',
+]))}` };
+
+DB.deceased = { g:'시기 · 특수', t:'뇌사자 이식 — 배정부터 수술까지', s:'연락받고 무엇을 확인하나', kw:'뇌사자 deceased donor KONOS 배정 콜 대기 KDPI 냉허혈 DCD 확장기준 마지널 이식 준비 절차',
+ rel:['donor','dgf','early'], h:`
+<h3>전체 흐름</h3>
+${CH([
+ {n:'1. 뇌사 판정',d:'법적 절차'},
+ {n:'2. KONOS 배정',d:'혈액형·HLA·대기'},
+ {n:'3. 수여자 연락',d:'금식·내원'},
+ {n:'4. 적합성 확인',d:'crossmatch·감염',k:'warn'},
+ {n:'5. 장기 이송',d:'냉허혈시간'},
+ {n:'6. 이식 수술',d:'도입요법',k:'crit'},
+])}
+
+<h3>연락을 받았을 때 — 수여자 확인 사항</h3>
+${T(['항목','확인'],[
+ ['<b>즉시 배제할 것</b>','<b>발열·활동성 감염 · 급성 심혈관 사건 · 최근 수혈(감작) · 임신</b>'],
+ ['<b>투석 상태</b>','고칼륨·체액과다 → <b>수술 전 투석</b> 필요 여부'],
+ ['<b>최종 교차시험</b>','반드시 확인. <b>양성이면 이식하지 않는다</b>(탈감작 프로토콜 예외)'],
+ ['<b>DSA</b>','최근 값 확인 — 감작 사건 이후 재검했는지'],
+ ['금식·동의','금식, 수술 동의, 항혈전제 복용 여부'],
+ ['기본 검사','CBC·전해질·응고·심전도·흉부 X선·혈액형 재확인'],
+])}
+
+<h3>공여신 정보 — 무엇을 보고 판단하나</h3>
+${T(['항목','의미'],[
+ ['<b>연령 · 사인</b>','고령·뇌혈관질환 사인은 신기능 예후가 나쁘다'],
+ ['<b>고혈압·당뇨 병력</b>','공여신의 기저 손상 가능성'],
+ ['<b>말기 Cr · 소변량</b>','급성 신손상 여부. 회복 가능한 AKI는 대개 이식 가능'],
+ ['<b>냉허혈시간(CIT)</b>','<b>길수록 DGF 위험 증가.</b> 24시간 이내 목표, 기계관류로 완화'],
+ ['<b>DCD</b>','순환정지 후 기증 — <b>DGF 위험이 높지만 장기 성적은 양호</b>'],
+ ['<b>확장기준 공여자</b>','고령·고혈압·높은 Cr 등 — <b>수여자 연령·대기 상황을 고려</b>해 수용 여부 결정'],
+ ['<b>감염</b>','공여자 <b>HBV·HCV·HIV·CMV·EBV</b> 상태 → 수여자와 조합해 <b>예방 전략 결정</b> (D+/R−는 CMV 6개월 예방)'],
+ ['<b>Time-zero 조직검사</b>','기저 병변 확인 — 이후 판독의 기준선'],
+])}
+
+<h3>수술 전후 준비</h3>
+${T(['시점','내용'],[
+ ['<b>수술 전</b>','도입요법 결정(<b>Basiliximab 20 mg</b> 수술일·POD 4 / 고위험은 <b>ATG</b>) · 스테로이드 · 예방 항생제 · 필요 시 투석'],
+ ['<b>수술 직후</b>','소변량 시간별 기록 · 수액 균형 · <b>중심정맥압·혈압 유지</b>(관류압이 이식신 기능을 좌우)'],
+ ['<b>면역억제 시작</b>','기관 프로토콜에 따라 CNI 시작 시점 결정 — <b>DGF 시에는 저용량 또는 지연 도입</b>'],
+ ['<b>예방 시작</b>','<b>TMP-SMX(PJP) 6–12개월</b> · <b>CMV 예방</b>(D+/R−는 valganciclovir 6개월) · 항진균 구강 예방'],
+ ['<b>초기 감시</b>','Cr 매일 · 소변량 · <b>FK 농도</b> · 도플러 초음파 · 스텐트 제거 계획(2–4주)'],
+])}
+${BOX('warn','DGF가 예상되거나 발생하면',UL([
+ '<b>먼저 혈관·폐색을 배제</b>한다 — Doppler와 초음파',
+ '<b>1주 이상 지속되면 조직검사</b>로 거부를 배제',
+ 'CNI를 낮게 유지하거나 지연 도입',
+ '회복 후 <b>새 baseline Cr을 설정</b>하고 기록',
+]))}` };
+
+
+DB.changelog = { g:'참조', t:'버전 기록 (What\u2019s new)', s:'버전별로 어떤 임상 내용이 추가·변경되었나', kw:'버전 기록 변경 업데이트 changelog history 이력 개정 무엇이 바뀌었나',
+ rel:['about'], h:`
+${BOX('note','읽는 법','최신 버전이 맨 위에 있다. 업데이트 후 <b>어떤 진료 내용이 바뀌었는지</b> 확인하실 때 보시면 된다. 현재 버전은 왼쪽 아래에 표시된다.')}
+
+<h3>v2.4</h3>
+${T(['항목','추가·변경된 내용'],[
+ ['<b>CMV — 수치 변화에 따른 관리</b>','역가별 조치표 신설: 검출 불가 / 하한 미만 / 저역가 / cut-off 초과 / <b>1주 만에 1 log 상승</b> / 증상 동반 — 각각의 대응.<br><b>치료 반응 판정</b> — 2주 정체는 흔한 경과(MMF 감량 확인), <b>적정 치료 2주 후 1 log 감소 실패 시 내성(UL97·UL54) 검사</b>, foscarnet·cidofovir·maribavir 전환.<br>종료 기준(2주 간격 2회 연속 음성, 최소 2주 치료), 재발 시 유지요법, 치료 중 MMF 조정 단계, 흔한 함정(용량 부족·설사로 인한 흡수 저하·<b>망막염은 혈중 음성 가능</b>)'],
+ ['<b>조직검사 — 언제 할 것인가</b> (신규)','적응증별 역치 표(Cr ≥20–25% 2주 지속, UPCR &gt;1,000 mg/g, de novo DSA, dd-cfDNA &gt;1.0%, DGF &gt;1주, BKV 지속+신기능 저하).<br>Protocol biopsy 시점 · <b>검사 전 준비</b>(혈압 &lt;160/90, 항혈전제 중단 기간 — aspirin·clopidogrel 5–7일, warfarin 3–5일, DOAC 2–3일).<br><b>검체 적정성</b>(사구체 ≥10·동맥 ≥2, BKVN 의심 시 코어 2개 이상) · 검사 후 합병증과 즉시 연락 기준'],
+ ['<b>소변량 감소 · 무뇨</b> (신규)','핍뇨(&lt;400–500 mL/day)·무뇨(&lt;100) 정의 · <b>5분 접근 순서</b>(방광/도뇨관 → 당일 초음파 → 용적 → 약물 → 거부/혈관) · 시기별 우선 감별(<b>스텐트 제거 직후 요관 부종</b> 포함) · 즉시 입원 기준'],
+ ['<b>이식 준비 — 수여자 평가</b> (신규)','면역학·감염·심장·비뇨기·악성종양 선별 전체 목록 · 이식을 미뤄야 할 상황(악성종양 대기 기간 등) · <b>대기 중 관리</b>(감작 사건 후 PRA 재검, 수혈 최소화, <b>생백신은 이식 4주 전까지</b>) · 수술 직전 확인(최종 crossmatch, 도입요법)'],
+ ['<b>생체 기증자 평가</b> (신규)','3단계 평가 — 선별(자발성 확인 포함) / 신기능·해부(<b>측정 GFR &gt;80</b>, 분리신기능, 단백뇨 &lt;300 mg/day, CT angiography) / 전신평가·상담 · <b>기증 후 평생 추적</b>(혈압·eGFR·요알부민, NSAID 회피) · 법적 절차와 철회 권리'],
+ ['<b>뇌사자 이식</b> (신규)','배정부터 수술까지 흐름 · <b>연락받았을 때 확인 사항</b>(감염·투석 필요성·최종 crossmatch) · 공여신 정보 판단(연령·사인·냉허혈시간·DCD·확장기준·감염 상태) · 수술 전후 준비와 DGF 대응'],
+])}
+
+<h3>v2.3</h3>
+${T(['항목','추가·변경된 내용'],[
+ ['<b>BK — Leflunomide (Arava)</b>','<b>언제 쓰는지</b> 명확화 — MMF 중단 + CNI 감량(FK 4–6) <b>8–12주에도 1 log 감소 실패·상승·신기능 악화</b> 시, 또는 더 감량하기 어려울 때.<br>부하 <b>100 mg 1일 1회 3–5일</b> → 유지 <b>20–40 mg 1일 1회</b>, 목표 teriflunomide 40–100 μg/mL, <b>정상상태까지 7–8주</b>.<br>간독성·골수억제 모니터링(4주간 매주), 세척(cholestyramine 8 g 1일 3회 11일), 임신 금기.<br>Cidofovir·IVIG 용량 · <b>fluoroquinolone은 효과 없음이 확인되어 권장하지 않음</b>'],
+ ['<b>치과 치료 · 임플란트</b> (신규)','시기별 가능 시술(3개월 내 응급만, 6개월 이후 임플란트) · <b>임플란트 조건</b>과 피해야 할 상황(HbA1c &gt;8%, 비스포스포네이트·데노수맙 사용 중 MRONJ).<br><b>예방적 항생제</b> — Amoxicillin 2 g 시술 30–60분 전, 알레르기 시 cephalexin 2 g / azithromycin 500 mg / doxycycline 100 mg. <b>Clindamycin은 더 이상 1차 아님</b>.<br>치과 처방 시 <b>clarithromycin·fluconazole의 FK 농도 급등</b> 경고 · 진통제·국소마취 · 잇몸비대·구강칸디다·구강궤양 대처'],
+ ['<b>감기 · 상기도감염 처방</b> (신규)','증상별 안전한 약과 용량(acetaminophen, 2세대 항히스타민, 비강 스테로이드, dextromethorphan, 거담제) · <b>시판 종합감기약 회피 — 단일 성분으로 분리 처방</b> · 세균 감염 시 항생제와 기간 · <b>인플루엔자 oseltamivir 신기능별 용량</b> · 단순 감기로 넘기면 안 되는 신호'],
+ ['<b>이상지질혈증</b>','<b>어느 수치에서 약을 시작하나</b> 표 신설 — LDL ≥100(기본)·≥70(당뇨·CVD)·≥190(무조건), TC ≥240, TG 150–199 생활습관/200–499 스타틴 우선/<b>≥500 즉시 fibrate</b>.<br><b>HDL은 낮아도 그것만으로 약을 시작하지 않는다</b> + non-HDL 목표(LDL 목표 +30).<br>스타틴·ezetimibe·PCSK9i·fenofibrate 용법과 신기능별 조정'],
+ ['<b>면역억제제 복용 시점</b>','<b>Tacrolimus는 공복</b>(식사 1시간 전 또는 식후 2–3시간) — 지방식과 함께면 흡수 30–40% 감소. <b>"매일 같은 시각, 같은 조건"</b>이 절대 원칙.<br>MMF·스테로이드·mTORi 각각의 복용 시점 · 복용 후 <b>1시간 이내 구토 시 재복용</b> · 누락 시 대처'],
+ ['<b>UPCR 단위</b>','본원 기준 <b>mg/g로 통일</b> — 150 / 500 / 1,000 / 3,500. 환산법(g/g × 1,000) 안내'],
+ ['<b>약물 용법 상세화</b>','K-binder 3종(patiromer·SZC·CPS) 용량, 고칼륨 응급처치 순서와 용량, 마그네슘·철분(<b>격일 공복 투여</b>), ESA, G-CSF, <b>colchicine 1.2 mg → 1시간 뒤 0.6 mg</b>, 요산저하제 증량법, valacyclovir 신기능별 감량'],
+])}
+
+<h3>v2.2 · v2.1 · v2.0</h3>
+${T(['항목','추가된 내용'],[
+ ['<b>환자 Q&A</b> (신규, 7개 항목 38개 질문)','외래에서 실제로 나오는 질문을 <b>환자에게 그대로 읽어드릴 수 있는 말투</b>로 정리.<br>체중·식욕·영양 / 운동·일상생활 / 커피·기호식품·민간요법 / 약 복용 / 증상 변화 / 성생활·임신·가족 / 검진·예방접종·여행.<br>일부 답변 아래에 <b>의료진용 진료 팁</b> 병기'],
+])}
+
+<h3>v1.2</h3>
+${T(['항목','추가된 내용'],[
+ ['<b>PTLD · EBV</b> (신규)','이중 정점(조기형 EBV+ / <b>후기형은 EBV 음성이 많아 PCR 음성으로 배제 불가</b>) · <b>의심 소견 전체 목록</b>(원인미상 발열, 무통성 림프절, <b>한쪽 편도 비대</b>, 낫지 않는 구강 궤양, 장폐색·소화관 출혈, 원인미상 이식신 기능 저하, LDH↑) · 진단(절제 생검·EBER) · <b>1차 치료는 면역억제 감량</b>'],
+ ['<b>Banff 분류 읽는 법</b> (신규)','점수 항목(i·t·v·g·ptc·C4d·cg·ci/ct·ah)의 의미와 임상 함의 · 진단 범주별 치료 · <b>Banff 2022 — MVI 도입, C4d·DSA 모두 음성이면 ABMR로 분류하지 않음</b> · 검체 적정성'],
+ ['<b>TMA</b> (신규)','원인미상 Cr↑ + 혈소판 감소에서 의심 · 필수 검사(도말·LDH·haptoglobin) · 원인별(CNI·ABMR·감염·aHUS 재발) 대응 순서 · <b>보체 매개 시 eculizumab</b>'],
+ ['<b>mTOR 억제제 · DGF</b> (신규)','전환 조건(단백뇨·eGFR·DSA·시기)과 중단 기준(단백뇨 &gt;1,000 mg/g, 창상, 간질성 폐렴) / DGF 감별 순서와 <b>1주 이상 지속 시 조직검사</b>'],
+ ['<b>설사 · 간질환 · 피부 · 정신건강 · 성기능 · 자가신 · 고령</b> (신규)','<b>설사는 FK 농도를 올린다</b> · HBV 재활성화 예방 · <b>SCC가 가장 흔한 암(65–100배)</b> · 우울과 비순응의 연관 · 기증 후 가임력 회복과 피임 · ACKD의 신세포암 감시 · 고령에서 IS를 낮게'],
+ ['<b>피해야 할 약</b> (신규)','NSAID·simvastatin·gemfibrozil+statin·<b>AZA+allopurinol</b>·생백신·자몽·성요한초·clarithromycin 등과 <b>안전한 대체약</b>'],
+ ['<b>최신 가이드라인 반영</b>','BK 제2차 국제합의(2024) — <b>probable/presumptive PyVAN</b> 정의 · Banff 2022 · PTDM 국제합의(2024) — <b>OGTT 중심 진단</b> · FK 변동성 <b>CV &gt;30%</b>의 근거 · 피부암 첫 검진 시점'],
+])}
+
+<h3>v1.0 — 초판</h3>
+${T(['영역','포함된 내용'],[
+ ['<b>이식신 기능</b>','Cr 상승 <b>7단계 감별 알고리즘</b>과 개입 기준(Δ≥0.3 또는 ≥20–25%), 시기별 우선 감별, 가성 상승 · 단백뇨 · 혈뇨/농뇨 · 수신증'],
+ ['<b>면역억제 · 거부</b>','시기별·위험군별 <b>FK 목표 농도</b> · <b>CNI 상호작용</b>(azole·macrolide·rifampin 등) · DSA MFI 해석 · Banff 유형별 거부 치료 · ABOi 관리 · <b>비순응 감지</b>'],
+ ['<b>감염</b>','BK <b>단계별 감량 사다리</b>(MMF 먼저, CNI 나중) · CMV 위험도별 예방·치료 · UTI(무증상 세균뇨 비치료) · <b>발열 6단계 접근</b> · PJP 예방과 예방접종(생백신 금기, Shingrix 가능) · 결핵'],
+ ['<b>대사 · 심혈관</b>','<b>PTDM 약물 사다리</b>(metformin → linagliptin → SGLT2i → GLP-1 → 인슐린) · 이상지질혈증 · <b>고혈압 사다리</b>(DHP CCB → ARB, ARB 후 Cr 30%↑ 또는 K &gt;5.5면 중단) · 체중'],
+ ['<b>검사실 이상</b>','고칼륨 · 대사성 산증(T-CO₂ &lt;22) · 저마그네슘 · 빈혈과 적혈구증가증 · 백혈구/혈소판 감소 · 통풍(<b>AZA+allopurinol 절대금기</b>) · 골질환'],
+ ['<b>시기 · 특수</b>','수술 직후~3개월 · 장기 추적 · 악성종양 스크리닝(국내 실정) · 임신 · 수술·조영제 전 · 재발성 사구체신염'],
+ ['<b>참조</b>','방문 스케줄·검사 패널 · <b>Flow Sheet 판독과 Plan 작성법</b> · 신기능별 약물 용량 · <b>RED FLAGS</b>'],
+])}` };
 
 /* ============ RENDER ============ */
 const GMETA = {
@@ -2260,9 +2551,9 @@ document.addEventListener('keydown', e => {
    확인하여, 더 높은 버전이면 내용을 교체하고 브라우저에 캐시한다.
    인터넷이 없으면 캐시된(또는 파일에 내장된) 내용을 그대로 쓴다.
    ============================================================ */
-const APP_VERSION   = '2.3';
-const APP_DATE      = '2026.08';
-const UPDATE_URL    = 'https://raw.githubusercontent.com/jin16gemini-sketch/kt-protocol/refs/heads/main/content.json';
+const APP_VERSION   = '2.5';
+const APP_DATE      = '2026.09';
+const UPDATE_URL    = 'https://jin16gemini-sketch.github.io/kt-protocol/content.json';
 const CACHE_KEY     = 'ktprotocol_content_v1';
 const DISMISS_KEY   = 'ktprotocol_dismissed_v1';
 
@@ -2332,6 +2623,93 @@ function checkUpdate(manual){
 
 
 
+
+
+/* ============================================================
+   AI 질문 도우미 — 질문을 다듬어 외부 AI로 연결
+   ============================================================ */
+const AIHIST_KEY = 'ktprotocol_aihist_v1';
+const AI_CHIPS = [
+  '이 수치에서 다음 단계는?',
+  '감별진단을 정리해줘',
+  '약 용량과 신기능별 조정',
+  '이 약과 tacrolimus 상호작용',
+  '환자에게 쉽게 설명하려면',
+  '최신 가이드라인 권고는?'
+];
+function aiPrompt(q){
+  const ctx = cur && DB[cur] ? DB[cur].t : null;
+  return '당신은 신장이식 전문의입니다. 아래 질문에 근거 중심으로 답해 주세요.\n\n'
+    + (ctx ? '[진료 맥락] 신장이식 외래에서 "' + ctx + '" 항목을 보던 중입니다.\n\n' : '')
+    + '[질문]\n' + q + '\n\n'
+    + '[답변 요건]\n'
+    + '- 성인 신장이식 수여자 기준으로 답할 것\n'
+    + '- 약을 언급하면 반드시 용량·투여 횟수·기간·신기능별 조정을 함께 쓸 것\n'
+    + '- 면역억제제(특히 tacrolimus)와의 상호작용이 있으면 명시할 것\n'
+    + '- 근거가 되는 가이드라인이나 문헌을 밝힐 것 (KDIGO, AST, Banff 등)\n'
+    + '- 불확실하거나 근거가 약한 부분은 그렇다고 말할 것\n'
+    + '- 한국어로, 표나 단계로 정리해 줄 것';
+}
+function askAI(){
+  const q = document.getElementById('aiq').value.trim();
+  if(!q){ alert('질문을 입력하세요.'); return; }
+  const eng = document.getElementById('aiengine').value;
+  const p = aiPrompt(q);
+  const urls = {
+    perplexity: 'https://www.perplexity.ai/search?q=' + encodeURIComponent(p),
+    chatgpt:    'https://chatgpt.com/?q=' + encodeURIComponent(p),
+    gemini:     'https://gemini.google.com/app',
+    claude:     'https://claude.ai/new?q=' + encodeURIComponent(p),
+    google:     'https://www.google.com/search?q=' + encodeURIComponent(q + ' 신장이식'),
+    pubmed:     'https://pubmed.ncbi.nlm.nih.gov/?term=' + encodeURIComponent(q + ' kidney transplant')
+  };
+  if(eng === 'gemini'){
+    try { navigator.clipboard.writeText(p); } catch(e){}
+    alert('질문이 클립보드에 복사되었습니다.\nGemini 창이 열리면 붙여넣기(Ctrl+V) 하세요.');
+  }
+  saveAIHist(q);
+  window.open(urls[eng], '_blank', 'noopener');
+}
+function saveAIHist(q){
+  let h = [];
+  try { h = JSON.parse(localStorage.getItem(AIHIST_KEY) || '[]'); } catch(e){}
+  h = [q].concat(h.filter(x => x !== q)).slice(0, 8);
+  try { localStorage.setItem(AIHIST_KEY, JSON.stringify(h)); } catch(e){}
+  paintAIHist();
+}
+function paintAIHist(){
+  let h = [];
+  try { h = JSON.parse(localStorage.getItem(AIHIST_KEY) || '[]'); } catch(e){}
+  const box = document.getElementById('aihist');
+  if(!box) return;
+  box.innerHTML = h.length ? '<div style="border:none;color:#9AA5B1;cursor:default">최근 질문</div>'
+    + h.map((x, i) => '<div data-i="' + i + '">' + x.replace(/</g, '&lt;').slice(0, 60) + '</div>').join('') : '';
+  box.querySelectorAll('div[data-i]').forEach(d => d.onclick = () => {
+    document.getElementById('aiq').value = h[+d.dataset.i];
+    document.getElementById('aiq').focus();
+  });
+}
+function clearAIHist(){
+  try { localStorage.removeItem(AIHIST_KEY); } catch(e){}
+  paintAIHist();
+}
+function toggleAI(){
+  const p = document.getElementById('aipanel');
+  p.classList.toggle('on');
+  if(p.classList.contains('on')){
+    const c = document.getElementById('aichips');
+    if(c && !c.innerHTML){
+      c.innerHTML = AI_CHIPS.map(x => '<span class="aichip">' + x + '</span>').join('');
+      c.querySelectorAll('.aichip').forEach(ch => ch.onclick = () => {
+        const t = document.getElementById('aiq');
+        t.value = (t.value ? t.value.trim() + '\n' : '') + ch.textContent;
+        t.focus();
+      });
+    }
+    paintAIHist();
+    document.getElementById('aiq').focus();
+  }
+}
 
 /* ============================================================
    편집 권한 잠금
