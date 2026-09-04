@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>신장이식 외래 프로토콜 v2.5 — Jin-Myung Kim, MD, PhD (Asan Medical Center)</title>
+<title>신장이식 외래 프로토콜 v2.8 — Jin-Myung Kim, MD, PhD (Asan Medical Center)</title>
 <meta name="author" content="Jin-Myung Kim, MD, PhD — Division of Kidney and Pancreas Transplantation, Asan Medical Center">
-<meta name="version" content="2.5">
+<meta name="version" content="2.8">
 <style>
 :root{
   --navy:#17365D; --blue:#2E5C8A; --blue-l:#5B87BF;
@@ -147,39 +147,62 @@ body.unlocked #lockmark{display:block}
 #verchip{cursor:pointer;user-select:none}
 
 
-/* ===== AI 질문창 ===== */
+/* ===== 질문창 ===== */
 #aifab{position:fixed;right:22px;bottom:22px;z-index:130;background:var(--navy);color:#fff;border:none;
  border-radius:26px;padding:12px 20px;font-size:13.5px;font-weight:700;cursor:pointer;font-family:inherit;
- box-shadow:0 5px 18px rgba(23,54,93,.4);display:flex;align-items:center;gap:8px}
-#aifab:hover{background:#0E2745;transform:translateY(-1px)}
-#aipanel{position:fixed;right:22px;bottom:80px;width:400px;max-width:calc(100vw - 44px);z-index:130;
- background:#fff;border:1px solid var(--line);border-radius:13px;box-shadow:0 12px 40px rgba(0,0,0,.28);
- display:none;overflow:hidden}
-#aipanel.on{display:block}
-#aihead{background:var(--navy);color:#fff;padding:12px 16px;display:flex;align-items:center;gap:10px}
+ box-shadow:0 5px 18px rgba(23,54,93,.4)}
+#aifab:hover{background:#0E2745}
+#aipanel{position:fixed;right:22px;bottom:80px;width:440px;max-width:calc(100vw - 44px);height:min(660px,78vh);
+ z-index:130;background:#fff;border:1px solid var(--line);border-radius:13px;box-shadow:0 12px 40px rgba(0,0,0,.28);
+ display:none;flex-direction:column;overflow:hidden}
+#aipanel.on{display:flex}
+#aihead{background:var(--navy);color:#fff;padding:11px 15px;display:flex;align-items:center;gap:9px;flex-shrink:0}
 #aihead b{flex:1;font-size:14px}
 #aihead button{background:transparent;border:1px solid #5B87BF;color:#CFE6FA;border-radius:6px;
  font-size:11.5px;padding:3px 9px;cursor:pointer;font-family:inherit}
 #aihead button:hover{background:#5B87BF;color:#fff}
-#aibody{padding:14px 16px}
-#aiq{width:100%;min-height:78px;padding:10px 12px;border:1px solid #CBD5E1;border-radius:8px;
- font-size:13px;font-family:inherit;resize:vertical;line-height:1.6}
-#aiq:focus{outline:none;border-color:var(--blue)}
-.aichips{display:flex;flex-wrap:wrap;gap:6px;margin:9px 0 4px}
-.aichip{font-size:11.5px;padding:4px 10px;border:1px solid #C6D4E6;background:#F7FAFF;border-radius:14px;
+#aichat{flex:1;overflow-y:auto;padding:14px 14px 6px;background:#F7FAFD}
+.msg{margin-bottom:13px;display:flex}
+.msg.u{justify-content:flex-end}
+.bub{max-width:88%;padding:10px 13px;border-radius:13px;font-size:13px;line-height:1.65}
+.msg.u .bub{background:var(--navy);color:#fff;border-bottom-right-radius:4px}
+.msg.a .bub{background:#fff;border:1px solid var(--line);border-bottom-left-radius:4px;width:100%;max-width:100%}
+.bub h3{font-size:13px;color:var(--blue);margin:11px 0 5px;padding-left:7px;border-left:3px solid var(--blue)}
+.bub h3:first-child{margin-top:2px}
+.bub table{width:100%;border-collapse:collapse;margin:7px 0;font-size:11.5px}
+.bub th{background:#E9EFF8;color:var(--navy);padding:5px 7px;border:1px solid #C6D4E6;text-align:left;font-size:11px}
+.bub td{padding:5px 7px;border:1px solid #DCE4EF;vertical-align:top;line-height:1.45;word-break:keep-all}
+.bub table{table-layout:auto}
+.bub td:first-child,.bub th:first-child{white-space:nowrap}
+.bub ul,.bub ul.pl{margin:5px 0 5px 17px;padding:0}
+.bub li{margin:3px 0}
+.bub .box{border-left:4px solid;border-radius:0 6px 6px 0;padding:8px 11px;margin:8px 0;font-size:12px}
+.bub .box .h{font-weight:700;margin-bottom:3px}
+.bub .box.warn{border-color:var(--red);background:#FCEBEB}.bub .box.warn .h{color:var(--red)}
+.bub .box.note{border-color:var(--amber);background:#FFF6E4}.bub .box.note .h{color:var(--amber)}
+.bub .box.ok{border-color:var(--green);background:#EDF5E8}.bub .box.ok .h{color:var(--green)}
+.bub .lead{font-size:12.5px;color:#334;margin-bottom:6px}
+.bub .chain,.bub .lad{display:none}
+.srcbar{margin-top:9px;padding-top:8px;border-top:1px dashed var(--line);font-size:11px;color:var(--mut)}
+.srcbar a{display:inline-block;background:#EEF3FA;border:1px solid #C6D4E6;color:var(--navy);border-radius:12px;
+ padding:2px 9px;margin:3px 4px 0 0;cursor:pointer;font-size:11px}
+.srcbar a:hover{background:var(--blue);color:#fff}
+#aifoot{border-top:1px solid var(--line);padding:9px 12px 11px;background:#fff;flex-shrink:0}
+.aichips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px}
+.aichip{font-size:11px;padding:3px 9px;border:1px solid #C6D4E6;background:#F7FAFF;border-radius:13px;
  cursor:pointer;color:var(--navy);font-family:inherit}
 .aichip:hover{background:var(--blue);color:#fff;border-color:var(--blue)}
-.aiopt{display:flex;align-items:center;gap:7px;margin:11px 0 3px;font-size:12px;color:var(--mut)}
-.aiopt select{flex:1;padding:6px 8px;border:1px solid #CBD5E1;border-radius:6px;font-size:12.5px;font-family:inherit}
-#aigo{width:100%;margin-top:11px;padding:11px;border:none;background:var(--blue);color:#fff;border-radius:8px;
- font-size:13.5px;font-weight:700;cursor:pointer;font-family:inherit}
+.airow{display:flex;gap:7px;align-items:flex-end}
+#aiq{flex:1;padding:9px 11px;border:1px solid #CBD5E1;border-radius:9px;font-size:13px;font-family:inherit;
+ resize:none;max-height:96px;line-height:1.5}
+#aiq:focus{outline:none;border-color:var(--blue)}
+#aigo{width:40px;height:38px;border:none;background:var(--blue);color:#fff;border-radius:9px;font-size:15px;
+ cursor:pointer;flex-shrink:0}
 #aigo:hover{background:var(--navy)}
-#ainote{margin-top:11px;padding:9px 11px;background:#FFF6E4;border-left:4px solid #B06A15;border-radius:0 6px 6px 0;
- font-size:11px;color:#7A5A10;line-height:1.55}
-#aihist{margin-top:11px;font-size:11.5px;color:var(--mut);max-height:110px;overflow-y:auto}
-#aihist div{padding:5px 0;border-top:1px dashed var(--line);cursor:pointer}
-#aihist div:hover{color:var(--blue)}
-@media(max-width:700px){#aipanel{right:10px;left:10px;width:auto}}
+#aigpt{width:100%;margin-top:8px;padding:7px;border:1px solid #C6D4E6;background:#fff;color:var(--mut);
+ border-radius:7px;font-size:11.5px;cursor:pointer;font-family:inherit}
+#aigpt:hover{background:#F0F5FB;color:var(--navy)}
+@media(max-width:700px){#aipanel{right:8px;left:8px;width:auto;bottom:74px;height:72vh}}
 
 /* ---------- MAIN ---------- */
 #main{flex:1;overflow-y:auto;padding:22px 30px 70px;height:100%}
@@ -281,7 +304,7 @@ h3.ghd .gdot2{width:11px;height:11px;border-radius:50%}
     <b>Jin-Myung Kim, MD, PhD</b><br>
     Division of Kidney &amp; Pancreas Transplantation<br>
     Asan Medical Center, Seoul
-    <span class="ver" id="verchip">Version 2.5 · 2026.09</span>
+    <span class="ver" id="verchip">Version 2.8 · 2026.09</span>
     <div id="verline">콘텐츠 <span id="cver">2.0</span> · <span id="cdate">2026.08</span></div>
     <button class="upbtn" id="upcheck">업데이트 확인</button>
     <button class="edbtn" id="edtoggle" onclick="toggleEdit()">편집 모드</button>
@@ -338,30 +361,21 @@ h3.ghd .gdot2{width:11px;height:11px;border-radius:50%}
 </div></div>
 
 
-<button id="aifab" onclick="toggleAI()">&#128172; AI에게 묻기</button>
+<button id="aifab" onclick="toggleAI()">&#128172; 질문하기</button>
 <div id="aipanel">
-  <div id="aihead"><b>&#128172; AI에게 묻기</b>
-    <button onclick="clearAIHist()">기록 지우기</button>
+  <div id="aihead"><b>&#128172; 가이드라인에 물어보기</b>
+    <button onclick="newChat()">새 대화</button>
     <button onclick="toggleAI()">닫기</button></div>
-  <div id="aibody">
-    <textarea id="aiq" placeholder="궁금한 것을 자유롭게 적으세요.&#10;예) 이식 후 3년 된 환자에서 Cr이 1.2에서 1.6으로 올랐는데 어떤 순서로 접근할까요?"></textarea>
+  <div id="aichat"></div>
+  <div id="aifoot">
     <div class="aichips" id="aichips"></div>
-    <div class="aiopt"><span>보낼 곳</span>
-      <select id="aiengine">
-        <option value="perplexity">Perplexity — 로그인 불필요, 출처 표시</option>
-        <option value="chatgpt">ChatGPT</option>
-        <option value="gemini">Google Gemini</option>
-        <option value="claude">Claude</option>
-        <option value="google">Google 검색</option>
-        <option value="pubmed">PubMed 검색</option>
-      </select>
+    <div class="airow">
+      <textarea id="aiq" rows="1" placeholder="궁금한 것을 물어보세요"></textarea>
+      <button id="aigo" onclick="aiSend()">&#10148;</button>
     </div>
-    <button id="aigo" onclick="askAI()">새 창에서 질문하기</button>
-    <div id="ainote"><b>참고</b> — 이 창은 질문을 다듬어 외부 AI로 연결해 주는 도구입니다. 답변은 <b>참고용</b>이며 반드시 검증하십시오. <b>환자 이름·등록번호 등 식별정보는 입력하지 마세요.</b></div>
-    <div id="aihist"></div>
+    <button id="aigpt" onclick="askChatGPT()">ChatGPT에서 물어보기 (새 창)</button>
   </div>
 </div>
-
 <div id="upbar"><span id="upmsg"></span><button id="upapply">적용</button><button id="updismiss">나중에</button></div>
 
 <script>
@@ -1780,7 +1794,7 @@ ${BOX('warn','핵심',UL([
 const QA = (q, a, note) => '<div class="qa"><div class="qq">Q. ' + q + '</div><div class="qaans">' + a + '</div>'
   + (note ? '<div class="qanote">' + note + '</div>' : '') + '</div>';
 
-DB.qa_weight = { g:'환자 Q&A', t:'체중 · 식욕 · 영양', s:'"살이 쪄요" / "입맛이 없어요"', kw:'체중 살 몸무게 식욕 입맛 밥맛 영양 단백질 다이어트 식단 저염 소금 물 수분 살빠짐 야식 간식',
+DB.qa_weight = { g:'환자 Q&A', t:'체중 · 식욕 · 영양', s:'"살이 쪄요" / "입맛이 없어요"', kw:'체중 살 몸무게 식욕 입맛 밥맛 영양 단백질 다이어트 식단 저염 소금 물 수분 살빠짐 야식 간식 회 날것 생선회 육회 음식 식사 프로틴 보충제',
  rel:['wt','dm','htn'], h:`
 ${QA('살이 자꾸 쪄요. 괜찮은 건가요?',
 '이식 후 첫 1년에 <b>5–10 kg 정도 느는 분이 많습니다.</b> 스테로이드 때문에 식욕이 늘고, 투석 때 하던 식사 제한이 풀리면서 생기는 자연스러운 변화입니다. 다만 그대로 두면 <b>당뇨·고지혈증·혈압이 같이 나빠지고, 이식한 콩팥에도 부담</b>이 됩니다.<br><br>몸무게를 <b>매일 아침 같은 조건</b>에서 재서 기록해 오세요. 3개월에 3 kg 이상 늘면 식사와 운동을 같이 점검합니다.',
@@ -1806,7 +1820,7 @@ ${QA('단백질 보충제(프로틴)를 먹어도 되나요?',
 '일반적인 유청 단백 보충제는 대체로 괜찮지만, <b>제품에 따라 칼륨·인이 많거나 한약재·허브가 섞인 것</b>이 있어 문제가 됩니다. 드시기 전에 <b>성분표를 사진 찍어 가져오세요.</b> 같이 확인해 드리겠습니다.',
 '')}` };
 
-DB.qa_life = { g:'환자 Q&A', t:'운동 · 일상생활', s:'"운동해도 되나요" / "언제부터 일할 수 있나요"', kw:'운동 헬스 등산 수영 골프 자전거 일 직장 복직 운전 목욕 사우나 찜질방 반려동물 강아지 고양이 화분 청소 무거운거 노동',
+DB.qa_life = { g:'환자 Q&A', t:'운동 · 일상생활', s:'"운동해도 되나요" / "언제부터 일할 수 있나요"', kw:'운동 헬스 등산 수영 골프 자전거 일 직장 복직 운전 목욕 사우나 찜질방 반려동물 강아지 고양이 화분 청소 무거운거 노동 술 음주 소주 맥주 담배 흡연 금연 금주 마스크 여행',
  rel:['wt','htn','early'], h:`
 ${QA('운동은 언제부터, 얼마나 해도 되나요?',
 '<b>걷기는 퇴원 직후부터</b> 바로 시작하시는 게 좋습니다.<br>· <b>수술 후 3개월까지</b> — 걷기 위주. <b>무거운 것 들기, 윗몸일으키기, 골프 스윙은 금지</b>(수술 부위 탈장 위험)<br>· <b>3개월 이후</b> — 자전거, 수영, 가벼운 근력운동 가능<br>· <b>목표</b> — 주 150분 정도의 유산소 + 주 2회 근력운동<br><br>피해야 할 것은 <b>배에 강한 충격이 오는 운동</b>입니다. 축구·격투기·스키처럼 이식한 콩팥에 부딪힐 수 있는 운동은 상의 후에 결정하세요.',
@@ -1855,7 +1869,7 @@ ${QA('"이 병에 좋다"고 주변에서 권하는데 먹어도 되나요?',
 '')}` };
 
 DB.qa_med = { g:'환자 Q&A', t:'약 복용', s:'"약을 깜빡했어요" / "평생 먹나요"', kw:'약 복용 깜빡 놓침 시간 감기약 진통제 타이레놀 소염제 항생제 약값 부작용 손떨림 털 잇몸 평생 중단 감량 식전 식후 공복',
- rel:['fk','nonadh','ddi','pain','cold'], h:`
+ rel:['fk','nonadh','ddi','pain','cold','dosing'], h:`
 ${QA('약을 깜빡 잊고 안 먹었어요. 어떻게 하죠?',
 '<b>생각난 시점</b>에 따라 다릅니다.<br>· 다음 복용 시간까지 <b>많이 남았으면</b> → 지금 바로 드세요<br>· 다음 복용 시간이 <b>가까우면</b> → 건너뛰고 다음 것만 드세요<br>· <b>절대 두 배로 드시지 마세요</b><br><br><b>이틀 이상 못 드셨다면 반드시 연락</b>주세요. 그리고 다음 진료 때 솔직히 말씀해 주세요 — 농도가 왜 낮은지 알아야 용량을 제대로 맞출 수 있습니다.',
 '진료 팁 — FK 변동성(CV) > 30%는 비순응의 최강 예측인자. 비난 말고 정상화 질문으로 접근.')}
@@ -1884,7 +1898,7 @@ ${QA('손이 떨리고 털이 많아졌어요. 약 때문인가요?',
 '네, <b>약의 부작용</b>일 수 있습니다.<br>· <b>손떨림·두통</b> — 타크로리무스 농도가 높을 때. 농도를 확인해서 조절합니다<br>· <b>털이 많아지고 잇몸이 붓는 것</b> — 사이클로스포린<br>· <b>얼굴이 붓고 여드름</b> — 스테로이드. 용량이 줄면서 좋아집니다<br><br>참지 마시고 말씀해 주세요. <b>대부분 용량 조절이나 약 변경으로 좋아집니다.</b>',
 '')}` };
 
-DB.qa_symptom = { g:'환자 Q&A', t:'증상 · 몸의 변화', s:'"소변이 이상해요" / "다리가 부어요"', kw:'소변 거품 색 피 붓기 부종 다리 얼굴 열 발열 피곤 기운 없다 상처 탈모 어지럼 두통 잠 불면 변비 설사 성기능',
+DB.qa_symptom = { g:'환자 Q&A', t:'증상 · 몸의 변화', s:'"소변이 이상해요" / "다리가 부어요"', kw:'소변 거품 색 피 붓기 부종 다리 얼굴 열 발열 피곤 기운 없다 상처 탈모 어지럼 두통 잠 불면 변비 설사 성기능 배 복통 배아파 아파요 통증 메스꺼움 구역 구토',
  rel:['redflag','cr','prot','anemia'], h:`
 ${QA('소변에 거품이 많이 나요.',
 '거품 자체가 늘 문제는 아닙니다. 물을 적게 마셨거나 소변이 세게 나올 때도 생깁니다.<br><br>다만 <b>맥주 거품처럼 곱고 잘 안 꺼지는 거품이 계속</b>된다면 <b>단백뇨</b>일 수 있으니 검사를 해봐야 합니다. 다음 진료 때 꼭 말씀해 주세요.',
@@ -1913,6 +1927,10 @@ ${QA('너무 피곤하고 기운이 없어요.',
 ${QA('머리가 빠져요.',
 '<b>약(타크로리무스, 마이코페놀레이트) 때문일 수 있고, 대개 시간이 지나면서 회복</b>됩니다. 수술이라는 큰 스트레스 후에도 일시적으로 빠집니다.<br><br>심하거나 오래가면 갑상선·빈혈·철분 상태를 확인해 봅니다.',
 '')}
+
+${QA('배가 아파요.',
+'<b>어디가, 어떻게 아픈지가 중요합니다.</b><br>· <b>이식한 콩팥 부위(아랫배 한쪽)가 아프면</b> — 거부반응이나 신우신염일 수 있으니 <b>바로 연락</b>주세요. 특히 열이 같이 나면 더 그렇습니다<br>· <b>수술 부위가 아프고 불룩</b>하면 — 탈장일 수 있습니다<br>· <b>배 전체가 아프고 설사·구토</b>가 있으면 — 장염일 수 있는데, <b>약을 못 드실 정도면 바로 연락</b>주세요<br>· <b>먹은 뒤 명치가 쓰리면</b> — 스테로이드로 인한 위염일 수 있습니다<br><br><b>진통제는 타이레놀만</b> 드시고, 소염진통제는 드시지 마세요.',
+'진료 팁 — 이식신 압통 + 발열은 신우신염/급성 거부. 심한 복통은 게실염·천공·CMV 대장염·PTLD(장폐색)도 감별.')}
 
 ${QA('상처 부위가 아프고 뭔가 불룩해요.',
 '<b>빨개지거나 진물이 나면 바로 연락</b>주세요. 감염일 수 있습니다.<br><br>수술 부위가 볼록하게 튀어나온다면 <b>탈장</b>일 수 있습니다. 응급은 아니지만 진료 때 꼭 보여주세요. 그래서 3개월간 무거운 것을 들지 말라고 하는 것입니다.',
@@ -1980,7 +1998,7 @@ ${T(['항목','내용'],[
  ['<b>프로그램명</b>','신장이식 외래 프로토콜 도구 (Kidney Transplant Outpatient Protocol Tool)'],
  ['<b>제작</b>','<b>Jin-Myung Kim, MD, PhD</b> (김진명)'],
  ['<b>소속</b>','Division of Kidney and Pancreas Transplantation, Department of Surgery<br>Asan Medical Center, University of Ulsan College of Medicine, Seoul, Korea<br>서울아산병원 외과 신장·췌장이식분과'],
- ['<b>버전</b>','<b>Version 2.5</b> · 2026년 9월'],
+ ['<b>버전</b>','<b>Version 2.8</b> · 2026년 9월'],
  ['<b>용도</b>','신장이식 수여자의 외래 진료 · 환자 상담을 위한 <b>진료 참고 도구</b>'],
  ['<b>근거</b>','KDIGO · AST-IDCOP · BK 제2차 국제합의(2024) · CMV 제3차 국제합의(2018) · PTDM 국제합의(2024) · Banff 2022 — 자세한 목록은 "근거 문헌" 항목 참조'],
 ]) }
@@ -2369,6 +2387,17 @@ DB.changelog = { g:'참조', t:'버전 기록 (What\u2019s new)', s:'버전별�
  rel:['about'], h:`
 ${BOX('note','읽는 법','최신 버전이 맨 위에 있다. 업데이트 후 <b>어떤 진료 내용이 바뀌었는지</b> 확인하실 때 보시면 된다. 현재 버전은 왼쪽 아래에 표시된다.')}
 
+<h3>v2.8</h3>
+${T(['항목','추가·변경된 내용'],[
+ ['<b>환자 Q&A — 증상</b>','<b>"배가 아파요"</b> 문항 추가 — 부위별 감별(이식신 부위 통증+발열, 수술부위 탈장, 장염, 스테로이드 위염)과 진통제 안내. 진료 팁에 게실염·천공·CMV 대장염·PTLD 감별 병기'],
+ ['<b>검색어 보강</b>','술·음주·담배·금연, 회·날것 등 음식, 복통·구역·구토 등 실제 환자 표현을 검색어에 추가'],
+])}
+
+<h3>v2.5</h3>
+${T(['항목','추가·변경된 내용'],[
+ ['<b>면역억제제 복용법 — 식전·식후</b> (신규)','약제별 복용 시점 — <b>Tacrolimus는 공복</b>(식사 1시간 전 또는 식후 2–3시간), 지방식과 함께면 <b>흡수 30–40% 감소</b>. MMF·스테로이드·mTORi·AZA 각각의 시점과 근거.<br><b>생활 패턴별 맞추는 법</b>(아침을 거르는 경우, 교대 근무, 1일 1회 제형) · 함께 먹으면 안 되는 것(자몽·제산제·철분·콜레스티라민).<br><b>상황별 대처</b> — 채혈일 아침, 복용 후 구토(1시간 기준), 누락, 심한 설사(<b>농도가 오히려 상승</b>), 금식·수술, 제형 변경.<br><b>환자에게 그대로 읽어드릴 문장</b> 6가지'],
+])}
+
 <h3>v2.4</h3>
 ${T(['항목','추가·변경된 내용'],[
  ['<b>CMV — 수치 변화에 따른 관리</b>','역가별 조치표 신설: 검출 불가 / 하한 미만 / 저역가 / cut-off 초과 / <b>1주 만에 1 log 상승</b> / 증상 동반 — 각각의 대응.<br><b>치료 반응 판정</b> — 2주 정체는 흔한 경과(MMF 감량 확인), <b>적정 치료 2주 후 1 log 감소 실패 시 내성(UL97·UL54) 검사</b>, foscarnet·cidofovir·maribavir 전환.<br>종료 기준(2주 간격 2회 연속 음성, 최소 2주 치료), 재발 시 유지요법, 치료 중 MMF 조정 단계, 흔한 함정(용량 부족·설사로 인한 흡수 저하·<b>망막염은 혈중 음성 가능</b>)'],
@@ -2416,6 +2445,64 @@ ${T(['영역','포함된 내용'],[
  ['<b>시기 · 특수</b>','수술 직후~3개월 · 장기 추적 · 악성종양 스크리닝(국내 실정) · 임신 · 수술·조영제 전 · 재발성 사구체신염'],
  ['<b>참조</b>','방문 스케줄·검사 패널 · <b>Flow Sheet 판독과 Plan 작성법</b> · 신기능별 약물 용량 · <b>RED FLAGS</b>'],
 ])}` };
+
+
+DB.dosing = { g:'면역억제 · 거부', t:'면역억제제 복용법 — 식전·식후', s:'언제, 어떻게 먹어야 농도가 흔들리지 않나', kw:'복용법 복용시간 식전 식후 공복 언제먹나 아침 저녁 12시간 간격 채혈 구토 누락 깜빡 우유 자몽 물 프로그랍 아드바그랍 셀셉트 마이폴틱 스테로이드 복약',
+ rel:['fk','nonadh','ddi','qa_med'], h:`
+${BOX('warn','가장 중요한 원칙 한 가지','<b>"매일 같은 시각, 같은 조건."</b><br>오늘은 공복, 내일은 식후로 바뀌면 혈중 농도가 흔들린다. <b>공복이든 식후든 일관되게</b> 유지하는 것이 어느 쪽을 택하느냐보다 중요하다.')}
+
+<h3>약제별 복용 시점</h3>
+${T(['약제','복용 시점','근거 · 실무'],[
+ ['<b>Tacrolimus</b><br>(프로그랍 · 아드바그랍)','<b>공복</b><br>식사 <b>1시간 전</b> 또는 <b>식후 2–3시간</b>','음식, 특히 <b>지방식과 함께 먹으면 흡수가 30–40% 감소</b>하고 최고농도 도달이 늦어진다. 아침 식사 전에 먹기 어려우면 <b>매일 식후 2시간으로 고정</b>해도 된다 — 일관성이 핵심'],
+ ['<b>Cyclosporine</b><br>(산디문 뉴오랄)','<b>식사와의 관계를 매일 일정하게</b>','미세유화 제형이라 음식의 영향이 tacrolimus보다 적으나, 일관성 원칙은 동일'],
+ ['<b>Mycophenolate mofetil</b><br>(셀셉트)','<b>공복이 원칙</b><br>식사 1시간 전 또는 식후 2시간','음식과 함께면 최고농도가 낮아진다(총 노출량은 비슷). <b>위장장애가 심하면 식후 복용을 허용</b> — 못 먹는 것보다 낫다'],
+ ['<b>Mycophenolate sodium</b><br>(마이폴틱)','공복 권장, 장용정','장에서 녹도록 만들어져 위장장애가 덜하다. <b>씹거나 쪼개지 않는다</b>'],
+ ['<b>Prednisolone</b>','<b>아침 식후</b>','위장장애를 줄이고 생체 리듬에 맞춘다. <b>저녁 복용은 불면</b>을 유발'],
+ ['<b>Everolimus / Sirolimus</b>','<b>식사와의 관계를 일정하게</b>','tacrolimus와 동일한 원칙'],
+ ['<b>Azathioprine</b>','식후 무방','위장장애 시 식후'],
+])}
+
+<h3>하루 일과에 맞추는 법</h3>
+${T(['생활 패턴','권하는 방법'],[
+ ['<b>규칙적인 식사</b>','아침 식사 <b>1시간 전</b> + 저녁 식사 <b>1시간 전</b> — 가장 이상적'],
+ ['<b>아침을 거르거나 불규칙</b>','<b>시각을 먼저 고정</b>한다 (예: 오전 7시 · 오후 7시). 그 시각 기준으로 <b>앞뒤 2시간은 식사를 피하게</b> 한다'],
+ ['<b>교대 근무</b>','근무표와 무관하게 <b>시계 시각을 고정</b>. 12시간 간격 유지'],
+ ['<b>1일 1회 제형</b>(아드바그랍 등)','<b>아침 공복 1회</b>로 고정. 복용 횟수가 줄어 순응도가 좋아진다 — 자꾸 놓치는 환자에게 전환을 고려'],
+])}
+${BOX('note','12시간 간격',UL([
+ '1–2시간 정도 어긋나는 것은 큰 문제가 아니다. 다만 <b>습관적으로 흔들리면</b> 농도 변동성(CV)이 커지고, 이는 de novo DSA·거부반응의 강력한 예측인자다.',
+ '알람·요일별 약통·가족의 확인이 실제로 효과가 있다.',
+]))}
+
+<h3>함께 먹으면 안 되는 것</h3>
+${T(['항목','내용'],[
+ ['<b>자몽 · 자몽주스 · 석류주스</b>','<b>절대 금지.</b> CYP3A4를 억제해 농도를 위험하게 올린다. 혼합주스에 섞인 경우도 주의'],
+ ['<b>제산제 · 칼슘 · 철분</b>','MMF 흡수를 방해 — <b>2시간 이상 간격</b>'],
+ ['<b>콜레스티라민</b>','MMF 장간순환을 차단 — 함께 쓰지 않는다'],
+ ['우유 · 유제품','tacrolimus는 큰 문제 없으나, 일관성을 위해 <b>물과 함께</b> 복용을 권한다'],
+ ['<b>한약 · 건강기능식품</b>','성분을 알 수 없으면 복용 전 상의'],
+])}
+
+<h3>이럴 때는 어떻게</h3>
+${T(['상황','대처'],[
+ ['<b>채혈하는 날 아침</b>','<b>복용하지 않고</b> 병원에서 채혈한 뒤 복용. 약과 물을 챙겨 오게 한다.<br>먹고 오면 농도가 실제보다 높게 나와 <b>용량을 잘못 줄이게 된다</b>'],
+ ['<b>복용 후 1시간 이내 구토</b>','<b>같은 용량을 다시 복용</b>'],
+ ['<b>복용 후 1시간 이후 구토</b>','추가 복용하지 않고 다음 정규 시간에'],
+ ['<b>복용을 잊음</b>','다음 복용까지 여유가 있으면 <b>즉시 복용</b> · 임박했으면 <b>건너뛰고 다음 것만</b><br><b>절대 두 배로 복용하지 않는다</b>'],
+ ['<b>48시간 이상 복용 못함</b>','<b>즉시 연락</b> — 거부반응 위험'],
+ ['<b>심한 설사</b>','<b>FK 농도가 오히려 올라간다</b>(장 P-gp·CYP3A 감소로 흡수 증가) — 농도 확인'],
+ ['<b>경구 섭취 불가</b>(구토·설사)','<b>입원</b> 고려 — 면역억제제 중단 위험'],
+ ['금식 · 수술 · 내시경','<b>당일 아침에도 소량의 물과 함께 복용</b>하거나 정맥 제형으로 전환. <b>절대 거르지 않는다</b>'],
+ ['<b>제형 변경</b>(즉시방출 ↔ 서방형, 제네릭)','농도가 이동하므로 <b>1–2주 내 재확인</b>'],
+])}
+${BOX('ok','환자에게 그대로 읽어드릴 문장',UL([
+ '"면역억제제는 <b>매일 같은 시각</b>에, <b>물과 함께</b> 드세요. 하루 두 번이면 <b>12시간 간격</b>입니다."',
+ '"<b>식사 1시간 전 빈속</b>에 드시는 것이 가장 좋습니다. 어렵다면 <b>매일 식후 2시간</b>으로 정하셔도 됩니다 — 중요한 건 <b>매일 같은 조건</b>입니다."',
+ '"<b>자몽과 석류주스는 절대 안 됩니다.</b>"',
+ '"<b>피 뽑는 날 아침에는 드시지 말고</b>, 약을 가져오셔서 채혈 후에 드세요."',
+ '"드시고 <b>1시간 안에 토하셨으면 다시</b> 드시고, 1시간이 지났으면 다음 시간에 드세요."',
+ '"<b>절대 두 배로 드시지 마시고</b>, 이틀 이상 못 드셨으면 연락 주세요."',
+]))}` };
 
 /* ============ RENDER ============ */
 const GMETA = {
@@ -2551,7 +2638,7 @@ document.addEventListener('keydown', e => {
    확인하여, 더 높은 버전이면 내용을 교체하고 브라우저에 캐시한다.
    인터넷이 없으면 캐시된(또는 파일에 내장된) 내용을 그대로 쓴다.
    ============================================================ */
-const APP_VERSION   = '2.5';
+const APP_VERSION   = '2.8';
 const APP_DATE      = '2026.09';
 const UPDATE_URL    = 'https://jin16gemini-sketch.github.io/kt-protocol/content.json';
 const CACHE_KEY     = 'ktprotocol_content_v1';
@@ -2567,6 +2654,7 @@ function setVerLabel(v, d){
   if(b) b.textContent = d || '';
 }
 function applyContent(pkg){
+  _DF = null; LASTTOPIC = null;
   if(!pkg || !pkg.topics) return false;
   Object.keys(DB).forEach(k => { delete DB[k]; });
   Object.keys(pkg.topics).forEach(k => { DB[k] = pkg.topics[k]; });
@@ -2626,72 +2714,221 @@ function checkUpdate(manual){
 
 
 /* ============================================================
-   AI 질문 도우미 — 질문을 다듬어 외부 AI로 연결
+   가이드라인 대화 — 질문하면 가이드라인 내용으로 답한다
    ============================================================ */
-const AIHIST_KEY = 'ktprotocol_aihist_v1';
-const AI_CHIPS = [
-  '이 수치에서 다음 단계는?',
-  '감별진단을 정리해줘',
-  '약 용량과 신기능별 조정',
-  '이 약과 tacrolimus 상호작용',
-  '환자에게 쉽게 설명하려면',
-  '최신 가이드라인 권고는?'
-];
-function aiPrompt(q){
-  const ctx = cur && DB[cur] ? DB[cur].t : null;
-  return '당신은 신장이식 전문의입니다. 아래 질문에 근거 중심으로 답해 주세요.\n\n'
-    + (ctx ? '[진료 맥락] 신장이식 외래에서 "' + ctx + '" 항목을 보던 중입니다.\n\n' : '')
-    + '[질문]\n' + q + '\n\n'
-    + '[답변 요건]\n'
-    + '- 성인 신장이식 수여자 기준으로 답할 것\n'
-    + '- 약을 언급하면 반드시 용량·투여 횟수·기간·신기능별 조정을 함께 쓸 것\n'
-    + '- 면역억제제(특히 tacrolimus)와의 상호작용이 있으면 명시할 것\n'
-    + '- 근거가 되는 가이드라인이나 문헌을 밝힐 것 (KDIGO, AST, Banff 등)\n'
-    + '- 불확실하거나 근거가 약한 부분은 그렇다고 말할 것\n'
-    + '- 한국어로, 표나 단계로 정리해 줄 것';
-}
-function askAI(){
-  const q = document.getElementById('aiq').value.trim();
-  if(!q){ alert('질문을 입력하세요.'); return; }
-  const eng = document.getElementById('aiengine').value;
-  const p = aiPrompt(q);
-  const urls = {
-    perplexity: 'https://www.perplexity.ai/search?q=' + encodeURIComponent(p),
-    chatgpt:    'https://chatgpt.com/?q=' + encodeURIComponent(p),
-    gemini:     'https://gemini.google.com/app',
-    claude:     'https://claude.ai/new?q=' + encodeURIComponent(p),
-    google:     'https://www.google.com/search?q=' + encodeURIComponent(q + ' 신장이식'),
-    pubmed:     'https://pubmed.ncbi.nlm.nih.gov/?term=' + encodeURIComponent(q + ' kidney transplant')
-  };
-  if(eng === 'gemini'){
-    try { navigator.clipboard.writeText(p); } catch(e){}
-    alert('질문이 클립보드에 복사되었습니다.\nGemini 창이 열리면 붙여넣기(Ctrl+V) 하세요.');
+const AI_CHIPS = ['다음 단계는?','용량은?','왜 그런가요?','환자에게 설명하려면'];
+let CHAT = [];          // {role:'u'|'a', q, topicKey}
+let LASTTOPIC = null;
+
+/* ---------- 검색 유틸 ---------- */
+function stripTags(h){ return String(h).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim(); }
+const KO_SUFFIX = ['입니까','인가요','하나요','되나요','있나요','습니까','에서는','으로','에서','에게','까지','부터','이랑','하고','라도','한테','에요','예요','인데','한데','나요','까요','을까','는데','이나','거나','에는','에도','만큼','처럼','보다','같이','대해','대한','관해','관한','은','는','이','가','을','를','에','의','도','만','와','과','로','랑','요','좀'];
+function stripJosa(w){
+  for(const suf of KO_SUFFIX){
+    if(w.length > suf.length + 1 && w.endsWith(suf)) return w.slice(0, w.length - suf.length);
   }
-  saveAIHist(q);
-  window.open(urls[eng], '_blank', 'noopener');
+  return w;
 }
-function saveAIHist(q){
-  let h = [];
-  try { h = JSON.parse(localStorage.getItem(AIHIST_KEY) || '[]'); } catch(e){}
-  h = [q].concat(h.filter(x => x !== q)).slice(0, 8);
-  try { localStorage.setItem(AIHIST_KEY, JSON.stringify(h)); } catch(e){}
-  paintAIHist();
+const GENERIC = new Set(['언제','치료','관리','검사','수술','환자','약물','사용','방법','경우','기준','이식','시술','상태','문제','내용','정도','효과','시간','필요','확인','평가','조치','발생','증상']);
+const STOP = new Set(['이','가','은','는','을','를','에','의','도','만','와','과','로','좀','더','또','잘','안','못','수','것','때','중','후','전','내','저','제','그','저희','우리','해도','되나요','되요','돼요','하나요','인가요','있나요','어떻게','어떤','무엇','뭐','왜','좋아요','괜찮','괜찮아요','괜찮나요','알려줘','알려주세요','싶어요','합니다','입니다','해요','해도되나요','있어요','없어요','같아요','건가요','건지','거예요','때문','경우','정도','관련','대해','대한','문의','질문']);
+function tokenize(q){
+  const raw = String(q).toLowerCase().replace(/[^\uAC00-\uD7A3a-z0-9 ]/g, ' ')
+    .split(/\s+/).filter(w => w.length >= 1);
+  const out = [];
+  raw.forEach(w => {
+    const b = stripJosa(w);
+    [w, b].forEach(x => {
+      if(!x || STOP.has(x)) return;
+      if(/^[a-z0-9]+$/.test(x) && x.length < 2) return;
+      out.push(x);
+    });
+  });
+  return Array.from(new Set(out));
 }
-function paintAIHist(){
-  let h = [];
-  try { h = JSON.parse(localStorage.getItem(AIHIST_KEY) || '[]'); } catch(e){}
-  const box = document.getElementById('aihist');
-  if(!box) return;
-  box.innerHTML = h.length ? '<div style="border:none;color:#9AA5B1;cursor:default">최근 질문</div>'
-    + h.map((x, i) => '<div data-i="' + i + '">' + x.replace(/</g, '&lt;').slice(0, 60) + '</div>').join('') : '';
-  box.querySelectorAll('div[data-i]').forEach(d => d.onclick = () => {
-    document.getElementById('aiq').value = h[+d.dataset.i];
-    document.getElementById('aiq').focus();
+let _DF = null, _DFn = 0;
+function buildDF(){
+  _DF = {}; _DFn = 0;
+  Object.keys(DB).forEach(k => {
+    _DFn++;
+    const hay = (DB[k].t + ' ' + DB[k].s + ' ' + (DB[k].kw || '') + ' ' + stripTags(DB[k].h)).toLowerCase();
+    const seen = {};
+    hay.replace(/[^\uAC00-\uD7A3a-z0-9 ]/g, ' ').split(/\s+/).forEach(w => {
+      if(w.length >= 2 && !seen[w]){ seen[w] = 1; _DF[w] = (_DF[w] || 0) + 1; }
+    });
   });
 }
-function clearAIHist(){
-  try { localStorage.removeItem(AIHIST_KEY); } catch(e){}
-  paintAIHist();
+function idf(w){ if(!_DF) buildDF(); return Math.log((_DFn + 1) / ((_DF[w] || 0) + 1)) + 0.2; }
+function bestForm(w, hay){
+  for(let L = w.length; L >= 2; L--){
+    const c = w.slice(0, L);
+    if(hay.includes(c)) return { form: c, decay: Math.pow(0.72, w.length - L) };
+  }
+  return null;
+}
+function searchGuideline(q, n){
+  const toks = tokenize(q);
+  if(!toks.length) return [];
+  const res = [];
+  Object.keys(DB).forEach(k => {
+    const d = DB[k];
+    const text = stripTags(d.h);
+    const hay = (d.t + ' ' + d.s + ' ' + (d.kw || '') + ' ' + text).toLowerCase();
+    let score = 0, anchor = false, matched = 0;
+    const norm = 1 + Math.log(1 + text.length / 2500);
+    toks.forEach(w => {
+      const bf = bestForm(w, hay);
+      if(!bf) return;
+      matched++;
+      const fi = idf(bf.form), f0 = bf.form;
+      const headWords = (d.t + ' ' + (d.kw || '')).toLowerCase().split(/[\s·—()·,\/]+/).filter(Boolean);
+      const isHeadWord = headWords.some(x => x === f0);
+      if(!GENERIC.has(f0) && fi >= 1.0 && isHeadWord &&
+         (bf.decay >= 0.9 || (f0.length >= 3 && bf.decay >= 0.35))) anchor = true;
+      if(!anchor && !GENERIC.has(f0) && bf.decay >= 0.9 && fi >= 2.2 && isHeadWord) anchor = true;
+      const wt = idf(w) * bf.decay, f = bf.form;
+      const tl = d.t.toLowerCase(), kl = (d.kw || '').toLowerCase();
+      if(tl.split(/[\s·—()·,]+/).some(x => x === f)) score += 42 * wt;
+      else if(tl.includes(f)) score += 26 * wt;
+      if(kl.split(/\s+/).some(x => x === f)) score += 20 * wt;
+      else if(kl.includes(f)) score += 12 * wt;
+      if(d.s.toLowerCase().includes(f)) score += 6 * wt;
+      score += Math.min(text.toLowerCase().split(f).length - 1, 3) * wt / norm;
+    });
+    if(score > 0) res.push({ k: k, d: d, score: score, text: text, anchor: anchor, cover: matched / Math.max(1, toks.length) });
+  });
+  res.sort((a, b) => b.score - a.score);
+  return res.slice(0, n || 3);
+}
+
+/* ---------- 항목을 섹션으로 쪼개기 ---------- */
+function splitSections(html){
+  const wrap = document.createElement('div');
+  wrap.innerHTML = html;
+  const secs = [];
+  let curSec = { h: null, nodes: [] };
+  Array.from(wrap.childNodes).forEach(n => {
+    if(n.nodeType === 1 && n.tagName === 'H3'){
+      if(curSec.nodes.length || curSec.h) secs.push(curSec);
+      curSec = { h: n.textContent.trim(), nodes: [] };
+    } else if(n.nodeType === 1){
+      curSec.nodes.push(n);
+    }
+  });
+  if(curSec.nodes.length || curSec.h) secs.push(curSec);
+  return secs.map(sc => {
+    const box = document.createElement('div');
+    sc.nodes.forEach(n => box.appendChild(n.cloneNode(true)));
+    return { h: sc.h, html: box.innerHTML, text: (sc.h || '') + ' ' + stripTags(box.innerHTML) };
+  }).filter(x => x.html.trim());
+}
+function pickSections(topic, q, max){
+  const secs = splitSections(topic.h);
+  if(!secs.length) return [];
+  const toks = tokenize(q);
+  const wantNum = /용량|얼마|몇|기준|수치|목표|단계|언제|간격|며칠|횟수|투여/.test(q);
+  const scored = secs.map((sc, i) => {
+    const hay = sc.text.toLowerCase();
+    let s = 0;
+    toks.forEach(w => { const bf = bestForm(w, hay); if(bf) s += idf(w) * bf.decay * (sc.h && sc.h.toLowerCase().includes(bf.form) ? 6 : 1.2); });
+    if(wantNum && /<table/.test(sc.html)) s += 3;
+    if(i === 0) s += 1.2;
+    return { sc: sc, s: s };
+  }).sort((a, b) => b.s - a.s);
+  const out = scored.filter(x => x.s > 0).slice(0, max || 2).map(x => x.sc);
+  return out.length ? out : [secs[0]];
+}
+
+/* ---------- 답변 만들기 ---------- */
+function isFollowUp(q){
+  return q.length <= 22 && !/[A-Za-z]{4,}/.test(q) &&
+    /(다음|그럼|그러면|왜|어떻게|용량|얼마|더|추가|자세히|이유|근거|설명|언제|기준|무엇|뭐)/.test(q);
+}
+function answerFor(q){
+  const merged = (isFollowUp(q) && LASTTOPIC && DB[LASTTOPIC])
+    ? (DB[LASTTOPIC].t + ' ' + (DB[LASTTOPIC].kw || '') + ' ' + q) : q;
+  let hits = searchGuideline(merged, 8);
+  if(isFollowUp(q) && LASTTOPIC && DB[LASTTOPIC] && !hits.some(h => h.k === LASTTOPIC)){
+    hits = [{ k: LASTTOPIC, d: DB[LASTTOPIC], score: 99 }].concat(hits).slice(0, 3);
+  }
+  const anchored = hits.filter(h => h.anchor && h.score >= 18 && h.cover >= 0.2);
+  if(anchored.length){
+    const best = anchored[0];
+    hits = [best].concat(hits.filter(h => h.k !== best.k));
+  }
+  const top0 = hits[0];
+  const confident = top0 && top0.anchor && top0.score >= 20 && top0.cover >= 0.25;
+  if(!confident){
+    LASTTOPIC = null;
+    return { html: '<div class="box warn"><div class="h">가이드라인에 해당 내용이 없습니다</div>'
+      + '이 도구에 담긴 내용 중에서는 확실히 답할 수 있는 항목을 찾지 못했습니다. '
+      + '억지로 비슷한 항목을 보여드리면 오히려 혼란스러울 수 있어 답변하지 않았습니다.</div>'
+      + '<div class="lead" style="margin-top:8px">아래 <b>ChatGPT에서 물어보기</b>를 누르시면 같은 질문을 외부 AI로 보내 드립니다.'
+      + (top0 ? '<br><span style="font-size:11.5px;color:#6B7280">혹시 찾으시던 게 이것인가요 — <a class="maybe" data-k="' + top0.k + '" style="color:#2E5C8A;cursor:pointer;text-decoration:underline">' + top0.d.t + '</a></span>' : '')
+      + '</div>', srcs: [], none: true };
+  }
+  const top = hits[0];
+  LASTTOPIC = top.k;
+  const secs = pickSections(top.d, q, 2);
+  let body = '<div class="lead"><b>' + top.d.t + '</b> 항목의 내용입니다.</div>';
+  secs.forEach(sc => { body += (sc.h ? '<h3>' + sc.h + '</h3>' : '') + sc.html; });
+  const others = hits.slice(1).filter(h => h.score > top.score * 0.35);
+  return { html: body, srcs: [top].concat(others) };
+}
+
+/* ---------- 화면 ---------- */
+function pushMsg(role, html){
+  const box = document.getElementById('aichat');
+  const d = document.createElement('div');
+  d.className = 'msg ' + role;
+  d.innerHTML = '<div class="bub">' + html + '</div>';
+  box.appendChild(d);
+  box.scrollTop = box.scrollHeight;
+  return d;
+}
+function aiSend(){
+  const ta = document.getElementById('aiq');
+  const q = ta.value.trim();
+  if(!q) return;
+  pushMsg('u', q.replace(/</g, '&lt;'));
+  ta.value = ''; ta.style.height = 'auto';
+  CHAT.push({ role: 'u', q: q });
+  setTimeout(() => {
+    const a = answerFor(q);
+    let h = a.html;
+    if(a.srcs.length){
+      h += '<div class="srcbar">가이드라인 항목 열기 '
+        + a.srcs.map(x => '<a data-k="' + x.k + '">' + x.d.t + '</a>').join('') + '</div>';
+    }
+    const el = pushMsg('a', h);
+    el.querySelectorAll('.srcbar a, a.maybe').forEach(x => x.onclick = () => { show(x.dataset.k); toggleAI(); });
+    CHAT.push({ role: 'a', q: q, topicKey: LASTTOPIC });
+  }, 120);
+}
+function newChat(){
+  CHAT = []; LASTTOPIC = null;
+  document.getElementById('aichat').innerHTML = '';
+  greet();
+}
+function greet(){
+  pushMsg('a', '<div class="lead">가이드라인 내용으로 답해 드립니다. 궁금한 것을 물어보세요.</div>'
+    + '<div style="font-size:12px;color:#6B7280;line-height:1.7">'
+    + '· BK 수치가 올랐는데 어떻게 하나요<br>'
+    + '· 타크로리무스는 식전에 먹나요<br>'
+    + '· 임플란트 해도 되나요<br>'
+    + '· 고칼륨혈증 치료<br></div>'
+    + '<div style="font-size:11px;color:#8A6A28;margin-top:8px">답변 뒤에 <b>"용량은?"</b>처럼 짧게 이어서 물으시면 같은 주제로 계속 대화합니다.</div>');
+}
+function askChatGPT(){
+  const last = CHAT.filter(m => m.role === 'u').slice(-3).map(m => m.q).join('\n');
+  const q = document.getElementById('aiq').value.trim() || last;
+  if(!q){ alert('질문을 입력하세요.'); return; }
+  const ctx = LASTTOPIC && DB[LASTTOPIC] ? stripTags(DB[LASTTOPIC].h).slice(0, 2000) : '';
+  const p = '당신은 신장이식 전문의입니다. 아래 원내 가이드라인을 우선 근거로 답해 주세요.\n\n'
+    + (ctx ? '[원내 가이드라인 — ' + DB[LASTTOPIC].t + ']\n' + ctx + '\n\n' : '')
+    + '[질문]\n' + q + '\n\n'
+    + '[요건] 성인 신장이식 수여자 기준 · 약은 용량·횟수·기간·신기능별 조정까지 · '
+    + 'tacrolimus 상호작용 명시 · 근거(KDIGO·AST 등) 표시 · 한국어로 간결하게';
+  window.open('https://chatgpt.com/?q=' + encodeURIComponent(p), '_blank', 'noopener');
 }
 function toggleAI(){
   const p = document.getElementById('aipanel');
@@ -2701,15 +2938,22 @@ function toggleAI(){
     if(c && !c.innerHTML){
       c.innerHTML = AI_CHIPS.map(x => '<span class="aichip">' + x + '</span>').join('');
       c.querySelectorAll('.aichip').forEach(ch => ch.onclick = () => {
-        const t = document.getElementById('aiq');
-        t.value = (t.value ? t.value.trim() + '\n' : '') + ch.textContent;
-        t.focus();
+        document.getElementById('aiq').value = ch.textContent;
+        aiSend();
       });
     }
-    paintAIHist();
+    if(!document.getElementById('aichat').innerHTML) greet();
     document.getElementById('aiq').focus();
   }
 }
+document.addEventListener('DOMContentLoaded', () => {
+  const t = document.getElementById('aiq');
+  if(!t) return;
+  t.addEventListener('input', () => { t.style.height = 'auto'; t.style.height = Math.min(t.scrollHeight, 96) + 'px'; });
+  t.addEventListener('keydown', e => {
+    if(e.key === 'Enter' && !e.shiftKey){ e.preventDefault(); aiSend(); }
+  });
+});
 
 /* ============================================================
    편집 권한 잠금
