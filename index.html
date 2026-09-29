@@ -6,9 +6,9 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#17365D">
-<title>신장이식 외래 프로토콜 v3.0 — Jin-Myung Kim, MD, PhD (Asan Medical Center)</title>
+<title>신장이식 외래 프로토콜 v3.1 — Jin-Myung Kim, MD, PhD (Asan Medical Center)</title>
 <meta name="author" content="Jin-Myung Kim, MD, PhD — Division of Kidney and Pancreas Transplantation, Asan Medical Center">
-<meta name="version" content="3.0">
+<meta name="version" content="3.1">
 <style>
 :root{
   --navy:#17365D; --blue:#2E5C8A; --blue-l:#5B87BF;
@@ -223,6 +223,8 @@ th{background:#E4ECF7;color:var(--navy);font-weight:700;padding:7px 9px;text-ali
 td{padding:7px 9px;border:1px solid #DCE4EF;vertical-align:top;line-height:1.45}
 tr:nth-child(even) td{background:#FAFBFD}
 td.c{text-align:center}
+.tw table.ddit{min-width:780px}
+.ddit td{vertical-align:middle}.ddit td:nth-child(n){line-height:1.5}
 .g{background:var(--greenbg)!important}
 .y{background:var(--amberbg)!important}
 .r{background:var(--redbg)!important}
@@ -377,7 +379,7 @@ h3.ghd .gdot2{width:11px;height:11px;border-radius:50%}
     <b>Jin-Myung Kim, MD, PhD</b><br>
     Division of Kidney &amp; Pancreas Transplantation<br>
     Asan Medical Center, Seoul
-    <span class="ver" id="verchip">Version 3.0 · 2026.09</span>
+    <span class="ver" id="verchip">Version 3.1 · 2026.09</span>
     <div id="verline">콘텐츠 <span id="cver">2.0</span> · <span id="cdate">2026.08</span></div>
     <button class="upbtn" id="upcheck">업데이트 확인</button>
     <button class="edbtn" id="edtoggle" onclick="toggleEdit()">편집 모드</button>
@@ -587,7 +589,7 @@ ${BOX('warn','원칙','<b>초음파는 늦추지 않는다.</b> 폐색은 되돌
 
 /* ================= 면역 ================= */
 fk: { g:'면역억제 · 거부', t:'Tacrolimus 농도 이상 · 용량 조정', s:'목표 범위 · 변동성 · 상호작용', kw:'FK tacrolimus 타크로리무스 trough 농도 프로그랍 아드바그랍 CNI 면역억제 변동성 식전 식후 공복 복용시간 복용법 언제먹나 구토 셀셉트',
- rel:['ddi','rej','dsa','nonadh'], h:`
+ rel:['ddilist','ddi','rej','dsa','nonadh'], h:`
 <h3>목표 trough (ng/mL, 즉시방출형)</h3>
 ${T(['시기','표준 위험군','고위험군*'],[
  ['0–1개월','8–12','10–15'],['1–3개월','7–10','8–12'],
@@ -655,7 +657,8 @@ ${T(['상황','옵션','주의'],[
 ])}` },
 
 ddi: { g:'면역억제 · 거부', t:'CNI 약물 상호작용', s:'새 약을 처방하기 전 3초 확인', kw:'상호작용 azole fluconazole rifampin clarithromycin 자몽 한약 CYP3A4 DDI 약물',
- rel:['fk','cmv','tb'], h:`
+ rel:['ddilist','fk','cmv','tb'], h:`
+${BOX('ok','원내 약제부 상호작용 약물표 (2026.09)','약제별 <b>X/D 등급, 감량 폭, 병용금기</b>는 <b>면역억제제 상호작용 약물표</b> 항목에 Tacrolimus · Cyclosporine 따로 정리되어 있다.')}
 ${T(['CNI 농도 ↑ (독성 위험)','CNI 농도 ↓ (거부 위험)'],[
  ['<b>Azole 항진균제</b> — fluconazole, itraconazole, voriconazole, posaconazole, isavuconazole, 케토코나졸, 구강 clotrimazole<br><span class="mut">농도 2–5배 상승 → 시작 시 FK <b>50–75% 선제 감량</b></span>','<b>Rifampin · rifabutin · rifapentine</b><br><span class="mut">농도 급감 → 병용 회피 또는 대폭 증량 + 밀착 감시</span>'],
  ['<b>Macrolide</b> — clarithromycin, erythromycin, telithromycin<br><span class="mut">→ azithromycin으로 대체 권장</span>','<b>항경련제</b> — phenytoin, carbamazepine, oxcarbazepine, phenobarbital<br><span class="mut">→ levetiracetam·valproate 대체 고려</span>'],
@@ -672,6 +675,10 @@ ${BOX('warn','처방 전·후 절차',UL([
  '⑤ Plan에 "○○ 시작/중단, FK ○○mg 조정, ○일 후 농도 확인" 기재'
 ]))}
 ${BOX('note','매 방문 문진','타과·타 병원 처방약, 약국 일반의약품, 건강기능식품, <b>한약</b>을 매번 확인한다. 환자는 "약"이라고 인식하지 않는 경우가 많으므로 구체적으로 물어야 한다.')}` },
+
+ddilist: { g:'면역억제 · 거부', t:'면역억제제 상호작용 약물표 (약제부 2026.09)', s:'Tacrolimus · Cyclosporine — 약제별 등급과 조정법 (Lexicomp)', kw:'상호작용표 약제부 약물상호작용 lexicomp 병용금기 risk rating tacrolimus cyclosporine 싸이클로스포린 산디문 프로그랍 clarithromycin 클래리시드 itraconazole 스포라녹스 posaconazole 녹사필 voriconazole 브이펜드 fluconazole 디플루칸 플루나졸 caspofungin 캔시다스 foscarnet 포스카비르 paxlovid 팍스로비드 nirmatrelvir ritonavir 코로나 letermovir 프레비미스 rifampicin 리포덱스 결핵약 darunavir 프레지스타 HIV dronedarone 멀택 lercanidipine 자니딥 amiloride spironolactone 알닥톤 이뇨제 bosentan 트라클리어 ambrisentan 볼리브리스 fenofibrate 리피딜 statin 스타틴 simvastatin 조코 pitavastatin 리바로 atorvastatin 리피토 리피논 rosuvastatin 크레스토 크레스논 pravastatin 메바로친 colchicine 콜히친 통풍 carbamazepine 테그레톨 phenytoin 히단토인 항경련제 NSAID 이부프로펜 orlistat 올리엣 repaglinide 노보넘',
+ rel:['ddi','fk','pain','lipid'], h:`
+<div class="box note"><div class="h">자료 출처</div>서울아산병원 <b>약제부 제공 · 2026.09 ver.</b> · reference: <b>Lexicomp</b><br>면역억제제 · 항암제 · 원내 미보유 약제는 목록에서 제외되어 있다 — <b>표에 없다고 상호작용이 없다는 뜻은 아니다.</b></div><p class="mut">Risk rating — <span class="pill pr">X</span> Avoid · <span class="pill py">D</span> Consider therapy modification · C Monitor · B No action needed · A No known interaction</p><div class="box warn"><div class="h">Cyclosporine에서 X (병용금기)</div><ul class="pl"><li><b>CV</b> — lercanidipine(자니딥) · dronedarone(멀택) · amiloride · spironolactone(알닥톤) · bosentan(트라클리어)</li><li><b>Statin</b> — simvastatin · pitavastatin(리바로) · atorvastatin(리피토) → <b>pravastatin 10 mg 시작, 최대 20 mg</b> 또는 rosuvastatin 최대 5 mg (US 기준)</li><li>Tacrolimus 표에는 X 등급 약제가 없다</li></ul></div><h3>Tacrolimus (프로그랍 · 아드바그랍) 상호작용 약물</h3><table class="ddit"><thead><tr><th>분류</th><th>상품명</th><th>성분명</th><th>등급</th><th>Management</th><th>상호작용 내용</th></tr></thead><tbody><tr><td><b>Antibacterials</b></td><td>klaricid</td><td><b>clarithromycin</b></td><td class="c"><span class="pill py">D</span></td><td>tacrolimus 감량 권장</td><td>tacrolimus 농도 증가</td></tr><tr><td rowspan="4"><b>Antifungals</b></td><td>sporanox</td><td><b>itraconazole</b></td><td class="c"><span class="pill py">D</span></td><td>고령에서 영향 큼</td><td rowspan="4">tacrolimus 농도 증가</td></tr><tr><td>noxafil</td><td><b>posaconazole</b></td><td class="c"><span class="pill py">D</span></td><td>tacrolimus <b>1/3로 감량</b> 권장</td></tr><tr><td>vfend</td><td><b>voriconazole</b></td><td class="c"><span class="pill py">D</span></td><td>tacrolimus <b>1/3로 감량</b> 권장</td></tr><tr><td>diflucan, plunazol</td><td><b>fluconazole</b></td><td class="c"><span class="pill py">D</span></td><td>tacrolimus 감량 권장<br>fluconazole 중단 후 <b>4–5일까지 영향</b> (d/t 반감기)<br>저용량 fluconazole or IV tacrolimus는 영향 덜함</td></tr><tr><td rowspan="2"><b>Antivirals</b></td><td>foscavir</td><td><b>foscarnet</b></td><td class="c"><span class="pill py">D</span></td><td>risk &lt; benefit 일 경우 병용. 신기능 주의관찰</td><td>tacrolimus의 <b>신독성</b> 증가</td></tr><tr><td>paxlovid</td><td><b>nirmatrelvir and ritonavir</b></td><td class="c"><span class="pill py">D</span></td><td><b>병용하지 말 것</b><br>이 약 투약완료 <b>2–3일 후</b>에 tacrolimus 재개</td><td>tacrolimus의 농도 증가</td></tr><tr><td><b>TB meds</b></td><td>rifodex 등</td><td><b>rifampicin</b></td><td class="c"><span class="pill py">D</span></td><td>tacrolimus <b>증량</b> 권장<br>병용 수일~수주일 이내에 tacrolimus 최대로 감소<br>병용 중단 후 수일~수주까지도 영향 지속</td><td>tacrolimus 농도 <b>감소</b></td></tr><tr><td rowspan="2"><b>HIV meds</b></td><td>prezista</td><td><b>darunavir</b></td><td class="c"><span class="pill py">D</span></td><td>tacrolimus 감량 권장</td><td>tacrolimus 농도 증가</td></tr><tr><td>복합 HIV 치료제</td><td><b></b></td><td class="c"></td><td>별도확인 필요</td><td></td></tr><tr><td><b>CV meds</b></td><td>multaq</td><td><b>dronedarone</b></td><td class="c"><span class="pill py">D</span></td><td>tacrolimus 감량 권장<br>QTc-연장, tacrolimus 농도, 부작용 관찰</td><td>QTc-prolongation 효과 증가, tacrolimus 농도 증가</td></tr><tr><td rowspan="2"><b>Antiepileptics</b></td><td>tegretol</td><td><b>carbamazepine</b></td><td class="c"><span class="pill py">D</span></td><td rowspan="2">tacrolimus <b>증량</b> 권장<br>병용 수일~수주일 이내에 tacrolimus 최대로 감소<br>병용 중단 후 수일~수주까지도 영향 지속</td><td rowspan="2">tacrolimus 농도 <b>감소</b></td></tr><tr><td>hydantoin 등</td><td><b>phenytoin</b></td><td class="c"><span class="pill py">D</span></td></tr></tbody></table><h3>Cyclosporine (산디문 뉴오랄) 상호작용 약물</h3><table class="ddit"><thead><tr><th>분류</th><th>상품명</th><th>성분명</th><th>등급</th><th>Management</th><th>상호작용 내용</th></tr></thead><tbody><tr><td><b>Antibacterials</b></td><td>klaricid</td><td><b>clarithromycin</b></td><td class="c"><span class="pill py">D</span></td><td>cyclosporine 감량 권장</td><td>cyclosporine 농도 증가</td></tr><tr><td rowspan="4"><b>Antifungals</b></td><td>sporanox</td><td><b>itraconazole</b></td><td class="c"><span class="pill py">D</span></td><td>cyclosporine <b>50% 감량</b> 권장</td><td rowspan="3">cyclosporine의 농도 증가</td></tr><tr><td>noxafil</td><td><b>posaconazole</b></td><td class="c"><span class="pill py">D</span></td><td>cyclosporine <b>25% 감량</b> 권장</td></tr><tr><td>vfend</td><td><b>voriconazole</b></td><td class="c"><span class="pill py">D</span></td><td>cyclosporine <b>50–80% 감량</b> 권장</td></tr><tr><td>cancidas</td><td><b>caspofungin</b></td><td class="c"><span class="pill py">D</span></td><td>risk &lt; benefit 일 경우 병용<br>간기능 주의관찰</td><td>caspofungin, cyclosporine의 농도 증가, <b>간독성</b> 증가</td></tr><tr><td rowspan="3"><b>Antivirals</b></td><td>foscavir</td><td><b>foscarnet</b></td><td class="c"><span class="pill py">D</span></td><td>risk &lt; benefit 일 경우 병용<br>신기능 주의관찰</td><td>cyclosporine의 <b>신독성</b> 증가</td></tr><tr><td>paxlovid</td><td><b>nirmatrelvir and ritonavir</b></td><td class="c"><span class="pill py">D</span></td><td><b>병용피하기</b>, 다른 covid-19 약제로 변경<br>cyclosporine 감량필요 (80% 감량 제한적 자료 있음)</td><td>cyclosporine 농도 증가</td></tr><tr><td>prevymis</td><td><b>letermovir</b></td><td class="c"><span class="pill py">D</span></td><td>letermovir 감량필요, cyclosporine 부작용 관찰<br>(12세 이상, 40 kg 이상인 KT 환자: <b>240 mg qd</b>)</td><td>letermovir, cyclosporine 농도 증가</td></tr><tr><td><b>TB meds</b></td><td>rifodex 등</td><td><b>rifampicin</b></td><td class="c"><span class="pill py">D</span></td><td>cyclosporine <b>증량</b> 권장</td><td>cyclosporine 농도 <b>감소</b></td></tr><tr><td rowspan="2"><b>HIV meds</b></td><td>prezista 등</td><td><b>darunavir</b></td><td class="c"><span class="pill py">D</span></td><td>cyclosporine 감량 권장</td><td>cyclosporine 농도 증가</td></tr><tr><td>복합 HIV 치료제</td><td><b></b></td><td class="c"></td><td>별도확인 필요</td><td></td></tr><tr><td rowspan="7"><b>CV meds</b></td><td>zanidip</td><td><b>lercanidipine</b></td><td class="c"><span class="pill pr">X</span></td><td><b>병용금기</b></td><td>lercanidipine 농도 증가, cyclosporine 농도 증가</td></tr><tr><td>multaq</td><td><b>dronedarone</b></td><td class="c"><span class="pill pr">X</span></td><td><b>병용금기</b></td><td>dronedarone 농도 증가</td></tr><tr><td>amilo</td><td><b>amiloride</b></td><td class="c"><span class="pill pr">X</span></td><td rowspan="2"><b>병용금기</b></td><td rowspan="2"><b>hyperkalemic effect</b> 증가</td></tr><tr><td>aldactone 등</td><td><b>spironolactone</b></td><td class="c"><span class="pill pr">X</span></td></tr><tr><td>tracleer</td><td><b>bosentan</b></td><td class="c"><span class="pill pr">X</span></td><td><b>병용금기</b></td><td>bosentan 농도 증가, cyclosporine 농도 <b>감소</b></td></tr><tr><td>volibris</td><td><b>ambrisentan</b></td><td class="c"><span class="pill py">D</span></td><td>max. 5 mg/day, ambrisentan 부작용 관찰</td><td>ambrisentan 농도 증가</td></tr><tr><td>lipidil 등</td><td><b>fenofibrate 유도체</b></td><td class="c"><span class="pill py">D</span></td><td>risk &lt; benefit 판단해 병용<br>신기능 주의관찰</td><td>fibrates의 <b>신독성</b> 증가, cyclosporine 농도 감소</td></tr><tr><td rowspan="5"><b>Statins</b></td><td>zocor 등</td><td><b>simvastatin</b></td><td class="c"><span class="pill pr">X</span></td><td><b>병용금기</b></td><td rowspan="5">statin 농도 증가<br>myalgia, myopathy, <b>rhabdomyolysis</b> 등 statin 부작용 증가</td></tr><tr><td>livalo 등</td><td><b>pitavastatin</b></td><td class="c"><span class="pill pr">X</span></td><td><b>병용금기</b></td></tr><tr><td>lipitor, lipinon 등</td><td><b>atorvastatin</b></td><td class="c"><span class="pill pr">X</span></td><td>상호작용 덜한 <b>pravastatin으로 변경</b> 고려<br>AHA: max. 10 mg/day 가능, Canada: 병용금기</td></tr><tr><td>crestor, cresnon 등</td><td><b>rosuvastatin</b></td><td class="c"><span class="pill py">D</span></td><td>US: <b>max. 5 mg/day</b>, ezetimibe 복합제: 병용금기<br>Canada: 병용금기</td></tr><tr><td>mevalotin</td><td><b>pravastatin</b></td><td class="c"><span class="pill py">D</span></td><td>10 mg/day로 시작. <b>max. 20 mg/day</b></td></tr><tr><td><b>Gout meds</b></td><td>colchicine</td><td><b>colchicine</b></td><td class="c"><span class="pill py">D</span></td><td>colchicine 부작용 관찰<br>간/신기능, 적응증에 따라 상이함</td><td>colchicine 농도 증가<br>특정 조직(ex. 뇌)으로의 colchicine 분포 증가</td></tr><tr><td rowspan="2"><b>Antiepileptics</b></td><td>tegretol</td><td><b>carbamazepine</b></td><td class="c"><span class="pill py">D</span></td><td rowspan="2">cyclosporine <b>증량</b> 권장</td><td rowspan="2">cyclosporine 농도 <b>감소</b></td></tr><tr><td>hydantoin 등</td><td><b>phenytoin</b></td><td class="c"><span class="pill py">D</span></td></tr><tr><td rowspan="3"><b>Etc.</b></td><td>ibuprofen 등</td><td><b>NSAIDs</b></td><td class="c"><span class="pill py">D</span></td><td>신독성 관찰, 다른 진통제 사용</td><td>NSAIDs 농도 증가, cyclosporine 농도 증가, <b>신독성</b> 증가</td></tr><tr><td>oliet</td><td><b>orlistat</b></td><td class="c"><span class="pill py">D</span></td><td>orlistat 복용 <b>3시간 후</b>에 cyclosporine 복용</td><td>cyclosporine 농도 감소<br>(PO cyclosporine 제형만 상호작용 있음)</td></tr><tr><td>novonorm</td><td><b>repaglinide</b></td><td class="c"><span class="pill py">D</span></td><td>max. 6 mg<br>repaglinide 증가된 효과(혈당강하) 관찰</td><td>repaglinide 농도 증가</td></tr></tbody></table><div class="box note"><div class="h">농도를 바꾸는 약을 시작 · 중단할 때</div>시작할 때와 <b>중단할 때 모두</b> 3–5일 이내 CNI 농도를 재확인한다. Rifampicin · carbamazepine · phenytoin은 중단 후 수일~수주까지 영향이 남고, fluconazole은 중단 후 4–5일까지 영향이 남는다.</div>` },
 
 dsa: { g:'면역억제 · 거부', t:'DSA 양성 · MFI 상승', s:'de novo DSA · 항체 감시', kw:'DSA MFI PRA 항체 SAB 감작 dd-cfDNA',
  rel:['rej','cr','prot','fk'], h:`
@@ -1792,7 +1799,7 @@ ${T(['영역','확인'],[
 ]) }` };
 
 DB.pain = { g:'참조', t:'피해야 할 약 · 안전한 대체', s:'외래에서 가장 자주 실수하는 지점', kw:'금기 약물 NSAID 진통제 항생제 조영제 한약 피해야할약',
- rel:['ddi','fk','uric','surg'], h:`
+ rel:['ddilist','ddi','fk','uric','surg'], h:`
 ${T(['피해야 할 것','이유','안전한 대체'],[
  ['<b>NSAID</b> (ibuprofen, naproxen, diclofenac 등)','이식신 신독성, 고칼륨, 혈압 상승','<b>Acetaminophen</b> 우선, tramadol, 단기 스테로이드'],
  ['<b>Simvastatin · Lovastatin</b>','CNI 병용 시 횡문근융해','Pitavastatin, fluvastatin, rosuvastatin'],
@@ -2116,7 +2123,7 @@ ${T(['항목','내용'],[
  ['<b>프로그램명</b>','신장이식 외래 프로토콜 도구 (Kidney Transplant Outpatient Protocol Tool)'],
  ['<b>제작</b>','<b>Jin-Myung Kim, MD, PhD</b> (김진명)'],
  ['<b>소속</b>','Division of Kidney and Pancreas Transplantation, Department of Surgery<br>Asan Medical Center, University of Ulsan College of Medicine, Seoul, Korea<br>서울아산병원 외과 신장·췌장이식분과'],
- ['<b>버전</b>','<b>Version 3.0</b> · 2026년 9월'],
+ ['<b>버전</b>','<b>Version 3.1</b> · 2026년 9월'],
  ['<b>용도</b>','신장이식 수여자의 외래 진료 · 환자 상담을 위한 <b>진료 참고 도구</b>'],
  ['<b>근거</b>','KDIGO · AST-IDCOP · BK 제2차 국제합의(2024) · CMV 제3차 국제합의(2018) · PTDM 국제합의(2024) · Banff 2022 — 자세한 목록은 "근거 문헌" 항목 참조'],
 ]) }
@@ -2505,6 +2512,11 @@ DB.changelog = { g:'참조', t:'버전 기록 (What\u2019s new)', s:'버전별�
  rel:['about'], h:`
 ${BOX('note','읽는 법','최신 버전이 맨 위에 있다. 업데이트 후 <b>어떤 진료 내용이 바뀌었는지</b> 확인하실 때 보시면 된다. 현재 버전은 왼쪽 아래에 표시된다.')}
 
+<h3>v3.1</h3>
+${T(['항목','추가·변경된 내용'],[
+ ['<b>면역억제제 상호작용 약물표</b> (신규)','원내 <b>약제부 2026.09 ver.</b>(Lexicomp) 반영 — <b>Tacrolimus 13개 · Cyclosporine 29개</b> 약제의 등급(X/D), management, 상호작용 내용.<br><b>Cyclosporine 병용금기(X)</b> — lercanidipine · dronedarone · amiloride · spironolactone · bosentan · simvastatin · pitavastatin · atorvastatin.<br>감량 폭 — posaconazole·voriconazole은 FK <b>1/3로</b>, CSA는 itraconazole 50% · posaconazole 25% · voriconazole 50–80%. <b>Paxlovid는 FK 병용하지 말고 투약 완료 2–3일 후 재개</b>. Rifampicin·항경련제는 중단 후 수일~수주 영향 지속'],
+])}
+
 <h3>v2.9</h3>
 ${T(['항목','추가·변경된 내용'],[
  ['<b>혈당 검사 — 무엇을 언제, 왜 다른가</b>','<b>공복혈당 · 식후 2시간 · HbA1c · OGTT · C-peptide · 공복 인슐린</b>을 목적·시점·주의점으로 비교.<br><b>HbA1c를 믿으면 안 되는 상황</b> — 이식 3개월 이내, 빈혈·ESA·수혈, 진행된 신부전에서 낮게(철결핍에서는 높게).<br><b>C-peptide vs 인슐린</b> — 1:1 분비 · C-peptide는 신장 배설이라 신부전에서 상승 · <b>외부 인슐린 투여 중에는 C-peptide로만 내인성 분비를 판단</b>.<br>임상 질문별 검사 선택(인슐린 중단 가능 여부 · 1형 감별 · SPK 췌장 기능)'],
@@ -2820,7 +2832,7 @@ document.addEventListener('keydown', e => {
    확인하여, 더 높은 버전이면 내용을 교체하고 브라우저에 캐시한다.
    인터넷이 없으면 캐시된(또는 파일에 내장된) 내용을 그대로 쓴다.
    ============================================================ */
-const APP_VERSION   = '3.0';
+const APP_VERSION   = '3.1';
 const APP_DATE      = '2026.09';
 const UPDATE_URL    = 'https://jin16gemini-sketch.github.io/kt-protocol/content.json';
 const CACHE_KEY     = 'ktprotocol_content_v1';
